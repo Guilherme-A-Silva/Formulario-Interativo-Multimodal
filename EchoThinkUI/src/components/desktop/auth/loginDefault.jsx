@@ -107,52 +107,6 @@ useEffect(() => {
     }
   };
 
-  const LoginSubmit = (event) => {
-    event.preventDefault();
-    fetch("/LoginUserProfileView", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrfToken,
-      },
-      body: JSON.stringify(formData),
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((data) => {
-            throw new Error(data.error || "Network response was not ok");
-          });
-        }
-        return response.json();
-      })
-      .then((response) => {
-        return fetch("/ValidateTokenView", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrfToken,
-          },
-          body: JSON.stringify({ token: response.token }),
-          credentials: "include",
-        });
-      })
-      .then((validationResponse) => {
-        return validationResponse.json().then((data) => {
-          if (!validationResponse.ok) {
-            throw new Error(data.error || "Token validation failed");
-          }
-          navigate("/home");
-          localStorage.setItem("token", data.token);
-        });
-      })
-      .catch((error) => {
-        console.error("Erro:", error)
-        setError(true)
-        setErrorText("Erro ao logar no Sistema. Tente novamente mais tarde.")
-      });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     // Aqui você pode usar o form para enviar os dados
@@ -237,7 +191,7 @@ useEffect(() => {
               className="border w-full items-center justify-center flex flex-col border-Config"
             >
               <div className="border w-full items-center justify-center flex flex-col bg-Secundary">
-                <img src={Logo} alt="" width={10} height={10} />
+                <img src={Logo} alt="" width={"10%"} height={"10%"} />
                 <h1>Cadastro</h1>
 
                 <h2 className="Input">Insira seu nome completo</h2>
@@ -324,7 +278,7 @@ useEffect(() => {
           <div className="w-6/12 h-screen flex items-center justify-center">
             <div className="border w-full items-center justify-center flex flex-col border-Config">
               <div className="border w-full items-center justify-center flex flex-col bg-Secundary">
-                <img src={Logo} alt="" />
+                <img src={Logo}  alt="" width={"10%"} height={"10%"}/>
                 <h1>Esqueci a senha</h1>
                 <h2 className="Input">Insira seu Email</h2>
                 <input type="text" className="bg-Input" />
