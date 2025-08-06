@@ -165,7 +165,7 @@ const LoginDefault = () => {
   }, []);
 
   return (
-    <section className="w-full h-screen flex flex-col bg-Primary">
+    <section className="w-full h-screen flex flex-col bg-Primary justify-center items-center">
       <section className="w-screen flex items-center justify-center">
         {Login && (
           <div className="w-6/12 h-screen flex items-center justify-center">
@@ -187,7 +187,7 @@ const LoginDefault = () => {
           </div>
         )}
         {Register && (
-          <div className="w-6/12 h-screen flex items-center justify-center">
+          <div className="w-6/12 h-1/2 flex items-center justify-center">
             <div className="border w-full items-center justify-center flex flex-col border-Config">
               <div className="border w-full items-center justify-center flex flex-col bg-Secundary">
                 <img src={Logo} alt="" />
