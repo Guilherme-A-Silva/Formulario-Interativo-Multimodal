@@ -25,12 +25,21 @@ SECRET_KEY = 'django-insecure-f($vp@q_0r5c1%mgv$ntfdyh5s5eglzmz1*2o&x4h4mimql_=%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'frontend-production-78a1.up.railway.app',
+    'cidivan-production.up.railway.app'
+]
 
-
+CORS_ALLOWED_ORIGINS = [
+    'frontend-production-78a1.up.railway.app',
+]
 # Application definition
 
+CORS_ALLOW_CREDENTIALS = True
+
 INSTALLED_APPS = [
+    'corsheaders',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +49,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
