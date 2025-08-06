@@ -1,10 +1,14 @@
 from pathlib import Path
-
+import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-f($vp@q_0r5c1%mgv$ntfdyh5s5eglzmz1*2o&x4h4mimql_=%'
 
 DEBUG = True  # ⚠️ Lembre de colocar False em produção
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
+MEDIA_URL = '/media/'
+
 
 ALLOWED_HOSTS = [
     'frontend-production-78a1.up.railway.app',
