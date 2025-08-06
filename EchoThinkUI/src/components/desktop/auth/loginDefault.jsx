@@ -190,7 +190,7 @@ const LoginDefault = () => {
           <div className="w-6/12 h-screen flex items-center justify-center">
             <div className="border w-full items-center justify-center flex flex-col border-Config">
               <div className="border w-full items-center justify-center flex flex-col bg-Secundary">
-                <img src={Logo} alt="" />
+                <img src={Logo} alt="" width={10} height={10}/>
                 <h1>Cadastro</h1>
                 <h2 className="Input">Insira seu nome completo</h2>
                 <input type="text" className="bg-Input" />
