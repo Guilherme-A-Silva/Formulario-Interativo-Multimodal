@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getCsrfToken } from "../../CSRF/csrf";
 import { GetIMG } from "../../scripts/GetIMG";
-import "../Styles/Global.css";
-import "../Styles/LoginDefault.css";
+import "../styles/global.css";
+import "../styles/loginDefault.css";
 
 const LoginDefault = () => {
   const [Error, setError] = useState(true);
