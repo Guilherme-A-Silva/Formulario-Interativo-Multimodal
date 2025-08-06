@@ -8,3 +8,4 @@ class UserProfile(models.Model):
     endereco = models.CharField(max_length=255)
     idade = models.IntegerField()
     genero = models.CharField(max_length=20)
+    tipo = models.BooleanField(default=False)  # False for user, True for admin

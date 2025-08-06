@@ -5,6 +5,7 @@ import { isMobile } from "react-device-detect";
 import LoginScreen from "../desktop/auth/loginDefault";
 import QuestionsScreen from "../desktop/screens/questions";
 import AdminScreen from "../desktop/screens/admin";
+import Unauthorized from "../desktop/screens/admin";
 import { getCsrfToken } from "../CSRF/csrf";
 
 const PrivateRoute = ({ element: Element }) => {

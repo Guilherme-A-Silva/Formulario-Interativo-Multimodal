@@ -16,17 +16,14 @@ const LoginDefault = () => {
   const [formData, setFormData] = useState({ field1: "", field2: "" });
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({
-    INS_Email: "",
-    INS_Password: "",
-    INS_Nome: "",
-    INS_CNPJ: "",
-    INS_Rua: "",
-    INS_Numero: "",
-    INS_Bairro: "",
-    INS_Cidade: "",
-    INS_Estado: "",
-    INS_Cep: "",
+const [form, setForm] = useState({
+    nomeCompleto: "",
+    telefone: "",
+    endereco: "",
+    idade: "",
+    genero: "",
+    email: "",
+    password: "",
   });
 
   const [ErrorText, setErrorText] = useState({
@@ -129,31 +126,35 @@ const LoginDefault = () => {
       });
   };
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    const newValue = value;
-    setForm({ ...form, [name]: newValue });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Aqui você pode usar o form para enviar os dados
+    console.log(form);
+    RegisterSubmit(e)
   };
 
   const RegisterSubmit = (event) => {
     event.preventDefault();
-    fetch("/RegisterUserProfileView", {
+
+    fetch("/api/register/", {  // ajuste a URL conforme seu backend
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "X-CSRFToken": csrfToken,
       },
       body: JSON.stringify(form),
-      credentials: "include",
+      credentials: "include", // importante para manter sessão e cookie CSRF
     })
       .then((response) => response.json())
       .then((data) => {
         console.log("Success:", data);
+        // você pode redirecionar ou mostrar mensagem aqui
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   };
+
 
     const [mensagem, setMensagem] = useState('');
 
@@ -188,33 +189,92 @@ const LoginDefault = () => {
         )}
         {Register && (
           <div className="w-6/12 h-screen flex items-center justify-center">
-            <div className="border w-full items-center justify-center flex flex-col border-Config">
+            <form
+              onSubmit={handleSubmit}
+              className="border w-full items-center justify-center flex flex-col border-Config"
+            >
               <div className="border w-full items-center justify-center flex flex-col bg-Secundary">
-                <img src={Logo} alt="" width={10} height={10}/>
+                <img src={Logo} alt="" width={10} height={10} />
                 <h1>Cadastro</h1>
+
                 <h2 className="Input">Insira seu nome completo</h2>
-                <input type="text" className="bg-Input" />
+                <input
+                  type="text"
+                  name="nomeCompleto"
+                  className="bg-Input"
+                  value={form.nomeCompleto}
+                  onChange={handleChange}
+                />
+
                 <h2 className="Input">Insira seu telefone</h2>
-                <input type="tel" className="bg-Input" />
+                <input
+                  type="tel"
+                  name="telefone"
+                  className="bg-Input"
+                  value={form.telefone}
+                  onChange={handleChange}
+                />
+
                 <h2 className="Input">Insira seu endereço</h2>
-                <input type="text" className="bg-Input" />
+                <input
+                  type="text"
+                  name="endereco"
+                  className="bg-Input"
+                  value={form.endereco}
+                  onChange={handleChange}
+                />
+
                 <div className="flex w-1/2 justify-between items-center force">
                   <div className="flex flex-col w-2/5">
-                  <h2 className="InputCol">Insira sua idade</h2>
-                  <input type="text" className="bg-InputCol" />
+                    <h2 className="InputCol">Insira sua idade</h2>
+                    <input
+                      type="text"
+                      name="idade"
+                      className="bg-InputCol"
+                      value={form.idade}
+                      onChange={handleChange}
+                    />
                   </div>
 
                   <div className="flex flex-col w-2/5">
-                  <h2 className="InputCol">Insira seu genero</h2>
-                  <input type="text" className="bg-InputCol" />
+                    <h2 className="InputCol">Insira seu gênero</h2>
+                    <input
+                      type="text"
+                      name="genero"
+                      className="bg-InputCol"
+                      value={form.genero}
+                      onChange={handleChange}
+                    />
                   </div>
                 </div>
+
                 <h2 className="Input">Insira seu Email</h2>
-                <input type="text" className="bg-Input" />
-                <button className="bg-Button">CADASTRAR</button>
-                <a href="#" onClick={ShowLogin} className="mb hover:text-inherit">Já tenho uma conta.</a>
+                <input
+                  type="email"
+                  name="email"
+                  className="bg-Input"
+                  value={form.email}
+                  onChange={handleChange}
+                />
+
+                <h2 className="Input">Insira sua senha</h2>
+                <input
+                  type="password"
+                  name="password"
+                  className="bg-Input"
+                  value={form.password}
+                  onChange={handleChange}
+                />
+
+                <button type="submit" className="bg-Button">
+                  CADASTRAR
+                </button>
+
+                <a href="#" onClick={ShowLogin} className="mb hover:text-inherit">
+                  Já tenho uma conta.
+                </a>
               </div>
-            </div>
+            </form>
           </div>
         )}
         {Esqueceu && (
