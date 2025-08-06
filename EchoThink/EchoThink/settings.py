@@ -76,14 +76,10 @@ WSGI_APPLICATION = 'EchoThink.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'echothink_db',
-        'CLIENT': {
-            'host': 'mongodb://mongo:SMzxIZxUUJjejnRxQhastQmbNKhPlOKA@mongodb.railway.internal:27017',
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
