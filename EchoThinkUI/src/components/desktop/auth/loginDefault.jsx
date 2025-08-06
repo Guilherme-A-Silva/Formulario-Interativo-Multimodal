@@ -183,7 +183,7 @@ useEffect(() => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": token,
+        "X-CSRFToken": csrfToken,
       },
       body: JSON.stringify(form),
       credentials: "include", // importante para manter sessão e cookie CSRF
