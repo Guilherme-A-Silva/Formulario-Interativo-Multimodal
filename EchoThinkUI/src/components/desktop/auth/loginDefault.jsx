@@ -169,7 +169,7 @@ useEffect(() => {
       return;
     }
     // Verifica se todos os campos obrigatórios estão preenchidos
-    if (!form.nomeCompleto || !form.telefone || !form.endereco || !form.idade || !form.genero || !form.email || !form.password) {
+    if (!form.nome || !form.telefone || !form.endereco || !form.idade || !form.genero || !form.email || !form.password || !form.username) {
       console.error("Todos os campos são obrigatórios.");
       return;
     }
