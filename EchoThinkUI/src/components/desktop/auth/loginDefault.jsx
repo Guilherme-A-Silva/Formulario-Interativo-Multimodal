@@ -237,7 +237,7 @@ const [form, setForm] = useState({
                   type="text"
                   name="nomeCompleto"
                   className="bg-Input"
-                  value={form.nomeCompleto}
+                  value={form.nome}
                   onChange={handleChange}
                 />
 
