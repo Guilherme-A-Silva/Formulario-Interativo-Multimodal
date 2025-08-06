@@ -13,7 +13,6 @@ class RegisterView(APIView):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            # Autentica o usuário automaticamente após registro
             login(request, user)
             return Response({
                 'message': 'Usuário criado com sucesso!',

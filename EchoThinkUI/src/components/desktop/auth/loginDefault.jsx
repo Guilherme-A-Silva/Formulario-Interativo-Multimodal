@@ -135,7 +135,23 @@ const [form, setForm] = useState({
 
   const RegisterSubmit = (event) => {
     event.preventDefault();
-
+    const token = getCsrfToken();
+    setCsrfToken(token);
+    if (!csrfToken) {
+      console.error("CSRF token is not available");
+      return;
+    }
+    // Verifica se todos os campos obrigatórios estão preenchidos
+    if (!form.nomeCompleto || !form.telefone || !form.endereco || !form.idade || !form.genero || !form.email || !form.password) {
+      console.error("Todos os campos são obrigatórios.");
+      return;
+    }
+    // Verifica se o email é válido
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(form.email)) {
+      console.error("Email inválido.");
+      return;
+    }
     fetch("https://cidivan-production.up.railway.app/api/auth/register/", {  // ajuste a URL conforme seu backend
       method: "POST",
       headers: {
