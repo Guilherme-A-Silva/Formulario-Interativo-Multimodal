@@ -76,10 +76,15 @@ WSGI_APPLICATION = 'EchoThink.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'echothink_db',               # nome do banco
+        'USER': 'postgres',                   # seu usuário
+        'PASSWORD': 'ksZDIZPiDVgNYIlXsLcrKcUpUZBqhlBT',              # sua senha
+        'HOST': 'postgres.railway.internal',                  # ou endereço do Railway, se for remoto
+        'PORT': '5432',                       # porta padrão do PostgreSQL
     }
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
