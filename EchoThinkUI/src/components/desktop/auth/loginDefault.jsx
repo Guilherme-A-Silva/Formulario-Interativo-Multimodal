@@ -235,7 +235,7 @@ const [form, setForm] = useState({
                 <h2 className="Input">Insira seu nome completo</h2>
                 <input
                   type="text"
-                  name="nomeCompleto"
+                  name="nome"
                   className="bg-Input"
                   value={form.nome}
                   onChange={handleChange}
