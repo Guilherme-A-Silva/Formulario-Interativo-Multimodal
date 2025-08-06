@@ -136,7 +136,7 @@ const [form, setForm] = useState({
   const RegisterSubmit = (event) => {
     event.preventDefault();
 
-    fetch("https://cidivan-production.up.railway.app/api/register/", {  // ajuste a URL conforme seu backend
+    fetch("https://cidivan-production.up.railway.app/api/auth/register/", {  // ajuste a URL conforme seu backend
       method: "POST",
       headers: {
         "Content-Type": "application/json",
