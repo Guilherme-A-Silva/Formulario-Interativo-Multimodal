@@ -85,7 +85,7 @@ const LoginDefault = () => {
 
   const LoginSubmit = (event) => {
     event.preventDefault();
-    fetch("/LoginInstituicaoView", {
+    fetch("/LoginUserProfileView", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -137,7 +137,7 @@ const LoginDefault = () => {
 
   const RegisterSubmit = (event) => {
     event.preventDefault();
-    fetch("/RegisterInstituicaoView", {
+    fetch("/RegisterUserProfileView", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

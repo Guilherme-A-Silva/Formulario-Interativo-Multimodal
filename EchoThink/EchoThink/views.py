@@ -1,5 +1,37 @@
-# EchoThink/views.py
 from django.http import JsonResponse
+from django.views import View
+from django.http import HttpResponse
+import time, base64, json
+
 
 def hello(request):
     return JsonResponse({"message": "Olá do Django!"})
+
+class ValidateTokenView(View):
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            token_value = data.get('token')
+
+            if not token_value:
+                return JsonResponse({'error': 'Token is required.'}, status=400)
+
+            try:
+                decoded_data = base64.urlsafe_b64decode(token_value).decode()
+                UserProfile_id, timestamp, _ = decoded_data.split(':')
+                UserProfile = UserProfile.objects.filter(id=UserProfile_id).first()
+
+                if not UserProfile:
+                    return JsonResponse({'error': 'Invalid token.'}, status=401)
+                
+                if int(time.time()) - int(timestamp) > 3600:
+                    return JsonResponse({'error': 'Token has expired.'}, status=401)
+
+                return JsonResponse({'message': 'Token is valid.', 'token': token_value, 'valid': 1}, status=200)
+
+            except Exception as e:
+                return JsonResponse({'error': 'Invalid token format.'}, status=400)
+
+        except Exception as e:
+            print("Error:", e)
+            return JsonResponse({'error': 'Internal Server Error'}, status=500)

@@ -18,6 +18,7 @@ ALLOWED_HOSTS = [
 # CORS SETTINGS
 INSTALLED_APPS = [
     'corsheaders',
+    'authentication',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -26,6 +27,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # ⚠️ DEVE vir no topo
@@ -66,10 +76,14 @@ WSGI_APPLICATION = 'EchoThink.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': 'echothink_db',
+        'CLIENT': {
+            'host': 'mongodb://mongo:SMzxIZxUUJjejnRxQhastQmbNKhPlOKA@mongodb.railway.internal:27017',
+        }
     }
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
