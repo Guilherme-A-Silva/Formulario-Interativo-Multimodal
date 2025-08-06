@@ -2,10 +2,18 @@ from django.http import JsonResponse
 from django.views import View
 from django.http import HttpResponse
 import time, base64, json
-
+from django.views.decorators.csrf import ensure_csrf_cookie
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.utils.decorators import method_decorator
 
 def hello(request):
     return JsonResponse({"message": "Olá do Django!"})
+
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class CSRFTokenView(APIView):
+    def get(self, request):
+        return Response({"message": "CSRF cookie enviado com sucesso"})
 
 class ValidateTokenView(View):
     def post(self, request):

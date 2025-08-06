@@ -1,3 +1,4 @@
+// src/CSRF/csrf.js
 export function getCsrfToken() {
   const cookies = document.cookie.split(';');
   for (let cookie of cookies) {

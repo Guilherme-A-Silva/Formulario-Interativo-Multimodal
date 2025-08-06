@@ -39,17 +39,25 @@ const [form, setForm] = useState({
   });
 
   useEffect(() => {
+  fetch("https://cidivan-production.up.railway.app/api/csrf/", {
+    method: "GET",
+    credentials: "include", // importante!
+  })
+    .then(() => {
+      const token = getCsrfToken();
+      console.log("CSRF token:", token); // agora não será mais vazio
+      setCsrfToken(token);
+    })
+    .catch((error) => console.error("Erro ao buscar CSRF:", error));
+}, []);
+
+
+  useEffect(() => {
     document.title = "EchoThink";
     const link = document.createElement("link");
     link.rel = "icon";
     link.href = Icon;
     document.head.appendChild(link);
-    const fetchCsrfToken = async () => {
-      const token = getCsrfToken();
-      setCsrfToken(token);
-    };
-    fetchCsrfToken();
-
      const loadImages = async () => {
       const Icon = GetIMG("EchoThink.ico");
       const Logo = GetIMG("Logo.png");
@@ -154,8 +162,9 @@ const [form, setForm] = useState({
 
   const RegisterSubmit = (event) => {
     event.preventDefault();
-    const token = getCsrfToken();
-    if (!token) {
+
+    // Verifica se o CSRF token está disponível
+    if (!csrfToken) {
       console.error("CSRF token is not available");
       return;
     }

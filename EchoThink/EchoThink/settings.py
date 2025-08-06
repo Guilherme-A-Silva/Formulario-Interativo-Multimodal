@@ -21,6 +21,9 @@ CSRF_TRUSTED_ORIGINS = [
     "https://frontend-production-78a1.up.railway.app",
 ]
 
+CSRF_COOKIE_SECURE = True  # se estiver usando HTTPS (como no Railway)
+CSRF_COOKIE_HTTPONLY = False  # o token precisa estar acessível via JS
+
 CORS_ALLOW_CREDENTIALS = True
 
 # APPS
