@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'EchoThink.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'echothink_db',               # nome do banco
+        'NAME': 'railway',               # nome do banco
         'USER': 'postgres',                   # seu usuário
         'PASSWORD': 'ksZDIZPiDVgNYIlXsLcrKcUpUZBqhlBT',              # sua senha
         'HOST': 'postgres.railway.internal',                  # ou endereço do Railway, se for remoto
