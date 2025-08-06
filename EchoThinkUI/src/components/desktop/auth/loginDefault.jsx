@@ -155,8 +155,7 @@ const [form, setForm] = useState({
   const RegisterSubmit = (event) => {
     event.preventDefault();
     const token = getCsrfToken();
-    setCsrfToken(token);
-    if (!csrfToken) {
+    if (!token) {
       console.error("CSRF token is not available");
       return;
     }
@@ -175,7 +174,7 @@ const [form, setForm] = useState({
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": csrfToken,
+        "X-CSRFToken": token,
       },
       body: JSON.stringify(form),
       credentials: "include", // importante para manter sessão e cookie CSRF
