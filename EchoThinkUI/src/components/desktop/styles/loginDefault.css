@@ -1,105 +1,108 @@
 .tw-linear-90deg {
-  border-radius: 30px;
+  border-radius: 2rem;
   background: linear-gradient(90deg, #0fa112, #0099eb 100%);
 }
 
-.bg-Primary{
+.bg-Primary {
   background-color: #072E23;
 }
 
-.bg-Secundary{
+.bg-Secundary {
   background-color: #007350;
-  border-radius: 30px;
+  border-radius: 2rem;
   border-color: black;
-  border-width: 10px;
+  border-width: 0.625rem; /* 10px */
   width: 99%;
 }
 
-.bg-New{
+.bg-New {
   background-color: #EA5F0B;
-  border-radius: 20px;
+  border-radius: 1.25rem; /* 20px */
 }
 
-.bg-New2{
+.bg-New2 {
   background-color: #EA5F0B;
-  border-radius: 20px;
+  border-radius: 1.25rem;
   margin: 5%;
 }
-.border-Config{
-  border-radius: 30px;
+
+.border-Config {
+  border-radius: 2rem;
   border-color: #FC8B2E;
-  border-width: 10px;
+  border-width: 0.625rem;
 }
 
-.bg-Input{
+.bg-Input {
   background-color: white;
-  padding: 10px;
-  padding-block: 20px;
-  border-radius: 20px;
+  padding: 0.2rem;
+  padding-block: 0.5rem; /* 20px */
+  border-radius: 1rem;
   width: 50%;
   color: black;
 }
 
-.bg-InputCol{
+.bg-InputCol {
   background-color: white;
-  padding: 10px;
-  padding-block: 20px;
-  border-radius: 20px;
+  padding: 0.2rem;
+  padding-block: 0.5rem; /* 20px */
+  border-radius: 1rem;
   width: 100%;
   color: black;
 }
-.Input{
+
+.Input {
   font-weight: 600;
-  font-size: 35px;
+  font-size: 1.2rem; /* 35px */
   margin: 0;
 }
 
-.mt{
-  font-size: 20px;
+.mt {
+  font-size: 1.25rem; /* 20px */
   color: white;
   text-decoration: none;
 }
 
-.mb{
-  font-size: 20px;
+.mb {
+  font-size: 1.25rem;
   color: white;
   text-decoration: none;
   margin-bottom: 2%;
 }
-.force{
+
+.force {
   margin-left: -1.8%;
 }
 
-.InputCol{
+.InputCol {
   font-weight: 600;
-  font-size: 35px;
+  font-size: 1.2rem;
   margin: 0;
 }
 
-.radius20px{
+.radius20px {
   border-radius: 20%;
   padding: 5%;
 }
 
-.bg-Button{
+.bg-Button {
   margin-top: 3%;
-  background-color: #F48607;
-  font-size: 35px;
   margin-bottom: 5%;
+  background-color: #F48607;
+  font-size: 1.4rem;
 }
 
 .bg-linear-box {
   background: linear-gradient(90deg, #0fa112, #0099eb 100%);
 }
 
-.Indisponivel-box{
+.Indisponivel-box {
   background: linear-gradient(90deg, #0290dd, #006ea8 100%);
 }
 
-.Disponivel-box{
+.Disponivel-box {
   background: linear-gradient(90deg, #0fa112, #09550a 100%);
 }
 
-.fade-out-active{
+.fade-out-active {
   animation: Notification linear 3s forwards;
 }

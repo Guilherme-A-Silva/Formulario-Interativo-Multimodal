@@ -31,7 +31,7 @@ ALLOWED_HOSTS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'frontend-production-78a1.up.railway.app',
+    "https://frontend-production-78a1.up.railway.app",
 ]
 # Application definition
 
