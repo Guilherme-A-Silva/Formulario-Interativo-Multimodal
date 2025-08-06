@@ -4,6 +4,7 @@ from django.http import HttpResponse
 import time, base64, json
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework.views import APIView
+from django.middleware.csrf import get_token
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 
@@ -13,7 +14,8 @@ def hello(request):
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class CSRFTokenView(APIView):
     def get(self, request):
-        return Response({"message": "CSRF cookie enviado com sucesso"})
+        token = get_token(request)
+        return Response({'csrfToken': token})
 
 class ValidateTokenView(View):
     def post(self, request):

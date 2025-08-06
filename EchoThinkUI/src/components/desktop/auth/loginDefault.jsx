@@ -38,17 +38,17 @@ const [form, setForm] = useState({
     Text: "",
   });
 
-  useEffect(() => {
+useEffect(() => {
   fetch("https://cidivan-production.up.railway.app/api/csrf/", {
     method: "GET",
-    credentials: "include", // importante!
+    credentials: "include",
   })
-    .then(() => {
-      const token = getCsrfToken();
-      console.log("CSRF token:", token); // agora não será mais vazio
-      setCsrfToken(token);
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("Token do backend:", data.csrfToken);
+      setCsrfToken(data.csrfToken);
     })
-    .catch((error) => console.error("Erro ao buscar CSRF:", error));
+    .catch((err) => console.error("Erro ao buscar CSRF:", err));
 }, []);
 
 
