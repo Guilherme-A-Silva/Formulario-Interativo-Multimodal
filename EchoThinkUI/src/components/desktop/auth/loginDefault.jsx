@@ -17,7 +17,8 @@ const LoginDefault = () => {
   const navigate = useNavigate();
 
 const [form, setForm] = useState({
-    nomeCompleto: "",
+    username: "",
+    nome: "",
     telefone: "",
     endereco: "",
     idade: "",
@@ -25,6 +26,13 @@ const [form, setForm] = useState({
     email: "",
     password: "",
   });
+
+    // Gera username a partir do nome completo
+  const generateUsername = (nomeCompleto) => {
+    const primeiroNome = nomeCompleto.trim().split(" ")[0].toLowerCase();
+    const numeroAleatorio = Math.floor(1000 + Math.random() * 9000); // 4 dígitos
+    return `${primeiroNome}${numeroAleatorio}`;
+  };
 
   const [ErrorText, setErrorText] = useState({
     Text: "",
@@ -73,11 +81,22 @@ const [form, setForm] = useState({
   };
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setForm({
-      ...form,
-      [name]: type === "checkbox" ? checked : value,
-    });
+    const { name, value } = e.target;
+
+    // Se for o nome completo, gera o username automaticamente
+    if (name === "nome") {
+      const novoUsername = generateUsername(value);
+      setForm((prev) => ({
+        ...prev,
+        [name]: value,
+        username: novoUsername, // atualiza o username gerado
+      }));
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const LoginSubmit = (event) => {
