@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from django.middleware.csrf import get_token
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
+from rest_framework.permissions import IsAuthenticated
 
 def hello(request):
     return JsonResponse({"message": "Olá do Django!"})
@@ -16,6 +17,16 @@ class CSRFTokenView(APIView):
     def get(self, request):
         token = get_token(request)
         return Response({'csrfToken': token})
+
+# Verificar se o usuário está logado
+class CurrentUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({
+            "username": request.user.username,
+            "email": request.user.email,
+        })
 
 class ValidateTokenView(View):
     def post(self, request):

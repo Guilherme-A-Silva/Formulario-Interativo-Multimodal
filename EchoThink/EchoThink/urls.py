@@ -19,12 +19,13 @@ from django.urls import path, include
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import CSRFTokenView
+from .views import CSRFTokenView, CurrentUserView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/hello/', views.hello),
     path('api/auth/', include('authentication.urls')),
     path("api/csrf/", CSRFTokenView.as_view(), name="get_csrf"),
-    path('ValidateTokenView', views.ValidateTokenView.as_view(), name='validate_token'),
+    path("me/", CurrentUserView.as_view()),
+    path('ValidateTokenView/', views.ValidateTokenView.as_view(), name='validate_token'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

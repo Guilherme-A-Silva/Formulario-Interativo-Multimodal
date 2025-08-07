@@ -110,7 +110,6 @@ const LoginDefault = () => {
       return;
     }
     fetch("https://cidivan-production.up.railway.app/api/auth/login/", {
-      // ajuste a URL conforme seu backend
       method: "POST",
       headers: {
         "Content-Type": "application/json",
