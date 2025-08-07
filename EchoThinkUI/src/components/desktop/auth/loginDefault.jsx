@@ -131,7 +131,7 @@ const LoginDefault = () => {
       .then((data) => {
         console.log("Success:", data);
         // você pode redirecionar ou mostrar mensagem aqui
-        navigate("/dashboard"); // Redireciona para a página de dashboard após login
+        navigate("/questions2"); // Redireciona para a página de dashboard após login
       })
       .catch((error) => {
         console.error("Error:", error);
