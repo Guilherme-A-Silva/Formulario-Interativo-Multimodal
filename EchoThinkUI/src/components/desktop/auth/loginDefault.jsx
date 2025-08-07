@@ -114,6 +114,43 @@ useEffect(() => {
     RegisterSubmit(e)
   };
 
+  const LoginSubmit = (event) => {
+    event.preventDefault();
+    // Verifica se o CSRF token está disponível
+    if (!csrfToken) {
+      console.error("CSRF token is not available");
+      return;
+    }
+    fetch("https://cidivan-production.up.railway.app/api/auth/login/", { // ajuste a URL conforme seu backend
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+      },
+      body: JSON.stringify({
+        email: form.email,
+        password: form.password,
+      }),
+      credentials: "include", // importante para manter sessão e cookie CSRF
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Success:", data);
+        // você pode redirecionar ou mostrar mensagem aqui
+        navigate("/dashboard"); // Redireciona para a página de dashboard após login
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        setErrorText({ Text: "Erro ao fazer login. Verifique suas credenciais." });
+      });
+  };
+
+
   const RegisterSubmit = (event) => {
     event.preventDefault();
 
@@ -153,7 +190,7 @@ useEffect(() => {
   };
 
 
-    const [mensagem, setMensagem] = useState('');
+  const [mensagem, setMensagem] = useState('');
 
   useEffect(() => {
     fetch('https://cidivan-production.up.railway.app/api/hello/')
@@ -173,11 +210,15 @@ useEffect(() => {
                 Mensagem do backend: {mensagem}
               </div>
                 <h1>Login</h1>
-                <h2 className="Input">Insira seu Email</h2>
-                <input type="text" className="bg-Input" />
+                <form onSubmit={LoginSubmit}>
+                <h2 className="Input" >Insira seu Email</h2>
+                <input type="text" className="bg-Input" value={form.email}
+                  onChange={handleChange} />
                 <h2 className="Input">Insira sua senha</h2>
-                <input type="password" className="bg-Input" />
-                <button className="bg-Button">Logar</button>
+                <input type="password" className="bg-Input" value={form.password}
+                  onChange={handleChange}/>
+                <button className="bg-Button" type="submit">Logar</button>
+                </form>
                 <a href="#" onClick={ShowEsqueceu} className="mt hover:text-inherit">Esqueceu sua senha?</a>
                 <a href="#" onClick={ShowRegister} className="mb hover:text-inherit">Não tem uma conta? Clique aqui</a>
               </div>
