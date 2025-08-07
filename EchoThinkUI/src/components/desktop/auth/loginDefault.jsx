@@ -16,7 +16,7 @@ const LoginDefault = () => {
   const [formData, setFormData] = useState({ field1: "", field2: "" });
   const navigate = useNavigate();
 
-const [form, setForm] = useState({
+  const [form, setForm] = useState({
     username: "",
     nome: "",
     telefone: "",
@@ -27,7 +27,7 @@ const [form, setForm] = useState({
     password: "",
   });
 
-    // Gera username a partir do nome completo
+  // Gera username a partir do nome completo
   const generateUsername = (nomeCompleto) => {
     const primeiroNome = nomeCompleto.trim().split(" ")[0].toLowerCase();
     const numeroAleatorio = Math.floor(1000 + Math.random() * 9000); // 4 dígitos
@@ -38,19 +38,18 @@ const [form, setForm] = useState({
     Text: "",
   });
 
-useEffect(() => {
-  fetch("https://cidivan-production.up.railway.app/api/csrf/", {
-    method: "GET",
-    credentials: "include",
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("Token do backend:", data.csrfToken);
-      setCsrfToken(data.csrfToken);
+  useEffect(() => {
+    fetch("https://cidivan-production.up.railway.app/api/csrf/", {
+      method: "GET",
+      credentials: "include",
     })
-    .catch((err) => console.error("Erro ao buscar CSRF:", err));
-}, []);
-
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Token do backend:", data.csrfToken);
+        setCsrfToken(data.csrfToken);
+      })
+      .catch((err) => console.error("Erro ao buscar CSRF:", err));
+  }, []);
 
   useEffect(() => {
     document.title = "EchoThink";
@@ -58,7 +57,7 @@ useEffect(() => {
     link.rel = "icon";
     link.href = Icon;
     document.head.appendChild(link);
-     const loadImages = async () => {
+    const loadImages = async () => {
       const Icon = GetIMG("EchoThink.ico");
       const Logo = GetIMG("Logo.png");
       setIcon(Icon);
@@ -111,7 +110,7 @@ useEffect(() => {
     e.preventDefault();
     // Aqui você pode usar o form para enviar os dados
     console.log(form);
-    RegisterSubmit(e)
+    RegisterSubmit(e);
   };
 
   const LoginSubmit = (event) => {
@@ -121,7 +120,8 @@ useEffect(() => {
       console.error("CSRF token is not available");
       return;
     }
-    fetch("https://cidivan-production.up.railway.app/api/auth/login/", { // ajuste a URL conforme seu backend
+    fetch("https://cidivan-production.up.railway.app/api/auth/login/", {
+      // ajuste a URL conforme seu backend
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -146,10 +146,11 @@ useEffect(() => {
       })
       .catch((error) => {
         console.error("Error:", error);
-        setErrorText({ Text: "Erro ao fazer login. Verifique suas credenciais." });
+        setErrorText({
+          Text: "Erro ao fazer login. Verifique suas credenciais.",
+        });
       });
   };
-
 
   const RegisterSubmit = (event) => {
     event.preventDefault();
@@ -160,7 +161,16 @@ useEffect(() => {
       return;
     }
     // Verifica se todos os campos obrigatórios estão preenchidos
-    if (!form.nome || !form.telefone || !form.endereco || !form.idade || !form.genero || !form.email || !form.password || !form.username) {
+    if (
+      !form.nome ||
+      !form.telefone ||
+      !form.endereco ||
+      !form.idade ||
+      !form.genero ||
+      !form.email ||
+      !form.password ||
+      !form.username
+    ) {
       console.error("Todos os campos são obrigatórios.");
       return;
     }
@@ -170,7 +180,8 @@ useEffect(() => {
       console.error("Email inválido.");
       return;
     }
-    fetch("https://cidivan-production.up.railway.app/api/auth/register/", {  // ajuste a URL conforme seu backend
+    fetch("https://cidivan-production.up.railway.app/api/auth/register/", {
+      // ajuste a URL conforme seu backend
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -189,14 +200,13 @@ useEffect(() => {
       });
   };
 
-
-  const [mensagem, setMensagem] = useState('');
+  const [mensagem, setMensagem] = useState("");
 
   useEffect(() => {
-    fetch('https://cidivan-production.up.railway.app/api/hello/')
-      .then(res => res.json())
-      .then(data => setMensagem(data.message))
-      .catch(err => console.error(err));
+    fetch("https://cidivan-production.up.railway.app/api/hello/")
+      .then((res) => res.json())
+      .then((data) => setMensagem(data.message))
+      .catch((err) => console.error(err));
   }, []);
 
   return (
@@ -207,20 +217,44 @@ useEffect(() => {
             <div className="border w-full items-center justify-center flex flex-col border-Config">
               <div className="border w-full items-center justify-center flex flex-col bg-Secundary">
                 <div className="p-4 text-xl">
-                Mensagem do backend: {mensagem}
-              </div>
+                  Mensagem do backend: {mensagem}
+                </div>
                 <h1>Login</h1>
-                <form onSubmit={LoginSubmit}>
-                <h2 className="Input" >Insira seu Email</h2>
-                <input type="text" className="bg-Input" value={form.email}
-                  onChange={handleChange} />
-                <h2 className="Input">Insira sua senha</h2>
-                <input type="password" className="bg-Input" value={form.password}
-                  onChange={handleChange}/>
-                <button className="bg-Button" type="submit">Logar</button>
+                <form onSubmit={LoginSubmit} className="w-full items-center justify-center flex flex-col border-Config">
+                  <h2 className="Input">Insira seu Email</h2>
+                  <input
+                    type="email"
+                    className="bg-Input"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                  />
+                  <h2 className="Input">Insira sua senha</h2>
+                  <input
+                    type="password"
+                    name="password"
+                    className="bg-Input"
+                    value={form.password}
+                    onChange={handleChange}
+                  />
+                  <button className="bg-Button" type="submit">
+                    Logar
+                  </button>
                 </form>
-                <a href="#" onClick={ShowEsqueceu} className="mt hover:text-inherit">Esqueceu sua senha?</a>
-                <a href="#" onClick={ShowRegister} className="mb hover:text-inherit">Não tem uma conta? Clique aqui</a>
+                <a
+                  href="#"
+                  onClick={ShowEsqueceu}
+                  className="mt hover:text-inherit"
+                >
+                  Esqueceu sua senha?
+                </a>
+                <a
+                  href="#"
+                  onClick={ShowRegister}
+                  className="mb hover:text-inherit"
+                >
+                  Não tem uma conta? Clique aqui
+                </a>
               </div>
             </div>
           </div>
@@ -308,7 +342,11 @@ useEffect(() => {
                   CADASTRAR
                 </button>
 
-                <a href="#" onClick={ShowLogin} className="mb hover:text-inherit">
+                <a
+                  href="#"
+                  onClick={ShowLogin}
+                  className="mb hover:text-inherit"
+                >
                   Já tenho uma conta.
                 </a>
               </div>
@@ -319,13 +357,25 @@ useEffect(() => {
           <div className="w-6/12 h-screen flex items-center justify-center">
             <div className="border w-full items-center justify-center flex flex-col border-Config">
               <div className="border w-full items-center justify-center flex flex-col bg-Secundary">
-                <img src={Logo}  alt="" width={"10%"} height={"10%"}/>
+                <img src={Logo} alt="" width={"10%"} height={"10%"} />
                 <h1>Esqueci a senha</h1>
                 <h2 className="Input">Insira seu Email</h2>
                 <input type="text" className="bg-Input" />
                 <button className="bg-Button">Recuperar</button>
-                <a href="#" onClick={ShowLogin} className="mt hover:text-inherit">Possui uma conta? Clique aqui</a>
-                <a href="#" onClick={ShowRegister} className="mb hover:text-inherit">Não tem uma conta? Clique aqui</a>
+                <a
+                  href="#"
+                  onClick={ShowLogin}
+                  className="mt hover:text-inherit"
+                >
+                  Possui uma conta? Clique aqui
+                </a>
+                <a
+                  href="#"
+                  onClick={ShowRegister}
+                  className="mb hover:text-inherit"
+                >
+                  Não tem uma conta? Clique aqui
+                </a>
               </div>
             </div>
           </div>
