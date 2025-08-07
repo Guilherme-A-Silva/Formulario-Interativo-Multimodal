@@ -89,21 +89,10 @@ const LoginDefault = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    // Se for o nome completo, gera o username automaticamente
-    if (name === "nome") {
-      const novoUsername = generateUsername(value);
-      setForm((prev) => ({
-        ...prev,
-        [name]: value,
-        username: novoUsername, // atualiza o username gerado
-      }));
-    } else {
       setForm((prev) => ({
         ...prev,
         [name]: value,
       }));
-    }
   };
 
   const handleSubmit = (e) => {
@@ -128,7 +117,7 @@ const LoginDefault = () => {
         "X-CSRFToken": csrfToken,
       },
       body: JSON.stringify({
-        email: form.email,
+        username: form.username,
         password: form.password,
       }),
       credentials: "include", // importante para manter sessão e cookie CSRF
@@ -221,12 +210,12 @@ const LoginDefault = () => {
                 </div>
                 <h1>Login</h1>
                 <form onSubmit={LoginSubmit} className="w-full items-center justify-center flex flex-col border-Config">
-                  <h2 className="Input">Insira seu Email</h2>
+                  <h2 className="Input">Insira seu Username</h2>
                   <input
-                    type="email"
+                    type="text"
                     className="bg-Input"
-                    name="email"
-                    value={form.email}
+                    name="username"
+                    value={form.username}
                     onChange={handleChange}
                   />
                   <h2 className="Input">Insira sua senha</h2>
@@ -277,7 +266,14 @@ const LoginDefault = () => {
                   value={form.nome}
                   onChange={handleChange}
                 />
-
+                <h2 className="Input">Insira seu username</h2>
+                <input 
+                  type="text"
+                  name="username"
+                  className="bg-Input"
+                  value={form.username}
+                  onChange={handleChange}
+                />
                 <h2 className="Input">Insira seu telefone</h2>
                 <input
                   type="tel"
