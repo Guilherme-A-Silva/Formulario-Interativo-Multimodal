@@ -28,7 +28,7 @@ const PrivateRoute = ({ element: Element }) => {
     if (csrfToken && token) {
       const sendToken = async () => {
         try {
-          const response = await fetch("/ValidateTokenView", {
+          const response = await fetch("https://cidivan-production.up.railway.app/ValidateTokenView", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
