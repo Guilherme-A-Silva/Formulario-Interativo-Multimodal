@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getCsrfToken } from "../../CSRF/csrf";
+import { getCSRFToken } from "../../CSRF/csrf";
 import { GetIMG } from "../../scripts/GetIMG";
 import "../styles/global.css";
 import "../styles/loginDefault.css";
@@ -22,7 +22,7 @@ const LoginDefault = () => {
     link.href = Icon;
     document.head.appendChild(link);
     const fetchCsrfToken = async () => {
-      getCsrfToken();
+      getCSRFToken();
     };
     fetchCsrfToken();
 

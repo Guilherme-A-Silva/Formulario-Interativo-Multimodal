@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCsrfToken } from "../../CSRF/csrf";
+import { getCSRFToken } from "../../CSRF/csrf";
 import { GetIMG } from "../../scripts/GetIMG";
 import "../styles/global.css";
 import "../styles/loginDefault.css";
