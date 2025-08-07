@@ -12,7 +12,8 @@ const BACKEND_URL = "https://cidivan-production.up.railway.app";
 
 const PrivateRoute = ({ element: Element }) => {
   const [isValid, setIsValid] = useState(null);
-
+  const [csrfToken, setCsrfToken] = useState("");
+  
   useEffect(() => {
     const validateSession = async () => {
       try {
@@ -20,14 +21,14 @@ const PrivateRoute = ({ element: Element }) => {
         await fetch(`${BACKEND_URL}/api/csrf/`, {
           method: "GET",
           credentials: "include",
-        });
-
-        const csrfToken = getCookie("csrftoken"); // ou pegue via cookie se o backend não retornar no corpo
-        if (!csrfToken) {
-          setIsValid(false);
-          return;
-        }
-
+        })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Token do backend:", data.csrfToken);
+          setCsrfToken(data.csrfToken);
+        })
+        .catch((err) => console.error("Erro ao buscar CSRF:", err));
+      
         // Segundo: validar a sessão com CSRF
         const response = await fetch(`${BACKEND_URL}/me/`, {
           method: "GET",
