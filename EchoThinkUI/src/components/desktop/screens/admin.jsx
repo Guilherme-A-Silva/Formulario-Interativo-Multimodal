@@ -22,8 +22,7 @@ const LoginDefault = () => {
     link.href = Icon;
     document.head.appendChild(link);
     const fetchCsrfToken = async () => {
-      const token = getCsrfToken();
-      setCsrfToken(token);
+      getCsrfToken();
     };
     fetchCsrfToken();
 

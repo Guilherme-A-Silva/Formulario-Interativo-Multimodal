@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCsrfToken } from "../../CSRF/csrf";
+import { getCsrfToken } from "../../CSRF/csrf";getCsrfToken
 import { GetIMG } from "../../scripts/GetIMG";
 import "../styles/global.css";
 import "../styles/loginDefault.css";
@@ -92,8 +92,7 @@ const LoginDefault = () => {
     document.head.appendChild(link);
 
     const fetchCsrfToken = async () => {
-      const token = getCsrfToken();
-      setCsrfToken(token);
+      getCsrfToken();
     };
     fetchCsrfToken();
 
