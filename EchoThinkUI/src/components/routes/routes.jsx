@@ -14,14 +14,16 @@ const PrivateRoute = ({ element: Element }) => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    document.title = "Delivery - Register";
-
-    const fetchCsrfToken = async () => {
-      const token = getCsrfToken();
-      setCsrfToken(token);
-    };
-
-    fetchCsrfToken();
+    fetch("https://cidivan-production.up.railway.app/api/csrf/", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Token do backend:", data.csrfToken);
+        setCsrfToken(data.csrfToken);
+      })
+      .catch((err) => console.error("Erro ao buscar CSRF:", err));
   }, []);
 
   useEffect(() => {
