@@ -27,7 +27,7 @@ const PrivateRoute = ({ element: Element }) => {
   }, []);
 
   useEffect(() => {
-    if (csrfToken && token) {
+    if ( !csrfToken ) {
       const sendToken = async () => {
         try {
           const response = await fetch("https://cidivan-production.up.railway.app/ValidateTokenView", {
