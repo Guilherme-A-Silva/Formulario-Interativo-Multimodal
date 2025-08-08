@@ -90,31 +90,31 @@ const LoginDefault = () => {
   };
 
   return (
-    <section className="w-full h-screen flex flex-col bg-Primary">
-      <section className="w-screen flex items-center justify-center">
+    <section className="w-full menu-box flex flex-col bg-Primary">
+      <section className="w-screen menu-box flex items-center justify-center">
         {(home || relatorio || addPerguntas || listarPerguntas || listarParticipantes) && (
-          <div className="w-10/12 h-screen flex items-center justify-center">
-            <div className="border w-full items-center justify-center flex flex-col border-Config">
-              <div className="border w-full flex bg-Secundary justify-between">
-                <div className="w-3/12 bg-New justify-around items-center flex flex-col admin-menu">
+          <div className="w-11/12 h-screen flex items-center justify-center">
+            <div className="border w-full items-center justify-center flex flex-col border-Config menu-box">
+              <div className="border w-full flex bg-Secundary justify-between menu-box1">
+                <div className="bg-New items-center flex flex-col admin-menu">
                   <div className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item" onClick={ShowHome}>
-                    <img src={Principal} alt="" width={"10%"} height={"10%"} />
+                    <img src={Principal} alt="" width={"50%"} height={"50%"} />
                     <h2>Home</h2>
                   </div>
                   <div className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item" onClick={ShowAddPerguntas}>
-                    <img src={AdicionarPergunta} alt="" width={"10%"} height={"10%"} />
+                    <img src={AdicionarPergunta} alt="" width={"50%"} height={"50%"} />
                     <h2 className="text-center">Adicionar Perguntas</h2>
                   </div>
                   <div className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item" onClick={ShowListarPerguntas}>
-                    <img src={Perguntas} alt="" width={"10%"} height={"10%"} />
+                    <img src={Perguntas} alt="" width={"50%"} height={"50%"} />
                     <h2>Listar Perguntas</h2>
                   </div>
                   <div className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item" onClick={ShowListarParticipantes}>
-                    <img src={Participantes} alt="" width={"10%"} height={"10%"} />
+                    <img src={Participantes} alt="" width={"50%"} height={"50%"} />
                     <h2>Listar Participantes</h2>
                   </div>
                   <div className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item" onClick={ShowRelatorio}>
-                    <img src={Relatorio} alt="" width={"10%"} height={"10%"} />
+                    <img src={Relatorio} alt="" width={"50%"} height={"50%"} />
                     <h2>Relatório</h2>
                   </div>
                 </div>

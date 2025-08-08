@@ -7,15 +7,24 @@
   background-color: #072E23;
 }
 
+.menu-box{
+  height: 90%;
+}
+
+.menu-box1{
+  height: 98%;
+}
 .admin-menu{
   padding: 1rem;
   gap: 1rem;
   margin: 0.7rem;
+  width: 25%;
+  height: 92%;
 }
 
 .admin-item{
   width: 80%;
-  height: 20%;
+  height: 14%;
   font-size: 0.8rem;
   text-align: center;
   border-radius: 8%;
