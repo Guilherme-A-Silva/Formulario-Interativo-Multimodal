@@ -19,7 +19,7 @@
   gap: 1rem;
   margin: 0.7rem;
   width: 25%;
-  height: 92%;
+  height: 91%;
 }
 
 .admin-item{
@@ -40,6 +40,8 @@
 
 .bg-New {
   background-color: #EA5F0B;
+  border-color: #EF8006;
+  border-width: 0.625rem;
   border-radius: 1.25rem; /* 20px */
 }
 

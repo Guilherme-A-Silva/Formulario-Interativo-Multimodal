@@ -96,7 +96,7 @@ const LoginDefault = () => {
           <div className="w-11/12 h-screen flex items-center justify-center">
             <div className="border w-full items-center justify-center flex flex-col border-Config menu-box">
               <div className="border w-full flex bg-Secundary justify-between menu-box1">
-                <div className="bg-New items-center flex flex-col admin-menu">
+                <div className="border bg-New items-center flex flex-col admin-menu">
                   <div className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item" onClick={ShowHome}>
                     <img src={Principal} alt="" width={"25%"} height={"50%"} />
                     <h2>Home</h2>
@@ -119,7 +119,7 @@ const LoginDefault = () => {
                   </div>
                 </div>
 
-                <div className="w-full bg-New3 justify-center items-center flex flex-col">
+                <div className="border w-full bg-New3 justify-center items-center flex flex-col">
                   {home && <h1>Home</h1>}
                   {relatorio && (
                     <>
