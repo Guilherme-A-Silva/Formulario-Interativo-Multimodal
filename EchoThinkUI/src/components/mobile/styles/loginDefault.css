@@ -7,20 +7,6 @@
   background-color: #072E23;
 }
 
-.admin-menu{
-  padding: 1rem;
-  gap: 1rem;
-  margin: 0.7rem;
-}
-
-.admin-item{
-  width: 80%;
-  height: 20%;
-  font-size: 0.8rem;
-  text-align: center;
-  border-radius: 8%;
-  padding: 5%;
-}
 .bg-Secundary {
   background-color: #007350;
   border-radius: 2rem;

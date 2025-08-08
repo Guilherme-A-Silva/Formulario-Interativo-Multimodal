@@ -8,11 +8,6 @@ const LoginDefault = () => {
   const [Error, setError] = useState(true);
   const [Icon, setIcon] = useState("");
   const [Logo, setLogo] = useState("");
-  const [AdicionarPergunta, setAdicionarPergunta] = useState("");
-  const [Principal, setPrincipal] = useState("");
-  const [Participantes, setParticipantes] = useState("");
-  const [Perguntas, setPerguntas] = useState("");
-  const [Relatorio, setRelatorio] = useState("");
   const [home, setHome] = useState(true);
   const [relatorio, setrelatorio] = useState(false);
   const [addPerguntas, setaddPerguntas] = useState(false);
@@ -34,16 +29,6 @@ const LoginDefault = () => {
     const loadImages = async () => {
       const Icon = GetIMG("EchoThink.ico");
       const Logo = GetIMG("Logo.png");
-      const Home = GetIMG("Home.png");
-      const AddPergunta = GetIMG("AdicionarPergunta.png");
-      const Participantes = GetIMG("Participantes.png");
-      const Perguntas = GetIMG("Perguntas.png");
-      const Relatorio = GetIMG("Relatorio.png");
-      setAdicionarPergunta(AddPergunta);
-      setPrincipal(Home);
-      setParticipantes(Participantes);
-      setPerguntas(Perguntas);
-      setRelatorio(Relatorio);
       setIcon(Icon);
       setLogo(Logo);
     };
@@ -93,28 +78,23 @@ const LoginDefault = () => {
     <section className="w-full h-screen flex flex-col bg-Primary">
       <section className="w-screen flex items-center justify-center">
         {(home || relatorio || addPerguntas || listarPerguntas || listarParticipantes) && (
-          <div className="w-10/12 h-screen flex items-center justify-center">
+          <div className="w-6/12 h-screen flex items-center justify-center">
             <div className="border w-full items-center justify-center flex flex-col border-Config">
               <div className="border w-full flex bg-Secundary justify-between">
-                <div className="w-3/12 bg-New justify-around items-center flex flex-col admin-menu">
-                  <div className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item" onClick={ShowHome}>
-                    <img src={Principal} alt="" width={"10%"} height={"10%"} />
+                <div className="w-5/12 bg-New justify-center items-center flex flex-col gap-2 p-4">
+                  <div className="border radius20px p-2 cursor-pointer" onClick={ShowHome}>
                     <h2>Home</h2>
                   </div>
-                  <div className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item" onClick={ShowAddPerguntas}>
-                    <img src={AdicionarPergunta} alt="" width={"10%"} height={"10%"} />
-                    <h2 className="text-center">Adicionar Perguntas</h2>
+                  <div className="border radius20px p-2 cursor-pointer" onClick={ShowAddPerguntas}>
+                    <h2>Adicionar Perguntas</h2>
                   </div>
-                  <div className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item" onClick={ShowListarPerguntas}>
-                    <img src={Perguntas} alt="" width={"10%"} height={"10%"} />
+                  <div className="border radius20px p-2 cursor-pointer" onClick={ShowListarPerguntas}>
                     <h2>Listar Perguntas</h2>
                   </div>
-                  <div className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item" onClick={ShowListarParticipantes}>
-                    <img src={Participantes} alt="" width={"10%"} height={"10%"} />
+                  <div className="border radius20px p-2 cursor-pointer" onClick={ShowListarParticipantes}>
                     <h2>Listar Participantes</h2>
                   </div>
-                  <div className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item" onClick={ShowRelatorio}>
-                    <img src={Relatorio} alt="" width={"10%"} height={"10%"} />
+                  <div className="border radius20px p-2 cursor-pointer" onClick={ShowRelatorio}>
                     <h2>Relatório</h2>
                   </div>
                 </div>
