@@ -119,7 +119,7 @@ const LoginDefault = () => {
                   </div>
                 </div>
 
-                <div className="w-full bg-New2 justify-center items-center flex flex-col">
+                <div className="w-full bg-New3 justify-center items-center flex flex-col">
                   {home && <h1>Home</h1>}
                   {relatorio && (
                     <>

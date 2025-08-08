@@ -43,6 +43,14 @@
   border-radius: 1.25rem; /* 20px */
 }
 
+.bg-New3{
+  background-color: #006143;
+  border-color: #004C31;
+  border-width: 0.625rem;
+  border-radius: 1.25rem;
+  margin: 5%;
+}
+
 .bg-New2 {
   background-color: #EA5F0B;
   border-radius: 1.25rem;
