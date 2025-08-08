@@ -98,23 +98,23 @@ const LoginDefault = () => {
               <div className="border w-full flex bg-Secundary justify-between menu-box1">
                 <div className="bg-New items-center flex flex-col admin-menu">
                   <div className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item" onClick={ShowHome}>
-                    <img src={Principal} alt="" width={"50%"} height={"50%"} />
+                    <img src={Principal} alt="" width={"25%"} height={"50%"} />
                     <h2>Home</h2>
                   </div>
                   <div className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item" onClick={ShowAddPerguntas}>
-                    <img src={AdicionarPergunta} alt="" width={"50%"} height={"50%"} />
+                    <img src={AdicionarPergunta} alt="" width={"25%"} height={"50%"} />
                     <h2 className="text-center">Adicionar Perguntas</h2>
                   </div>
                   <div className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item" onClick={ShowListarPerguntas}>
-                    <img src={Perguntas} alt="" width={"50%"} height={"50%"} />
+                    <img src={Perguntas} alt="" width={"25%"} height={"50%"} />
                     <h2>Listar Perguntas</h2>
                   </div>
                   <div className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item" onClick={ShowListarParticipantes}>
-                    <img src={Participantes} alt="" width={"50%"} height={"50%"} />
+                    <img src={Participantes} alt="" width={"25%"} height={"50%"} />
                     <h2>Listar Participantes</h2>
                   </div>
                   <div className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item" onClick={ShowRelatorio}>
-                    <img src={Relatorio} alt="" width={"50%"} height={"50%"} />
+                    <img src={Relatorio} alt="" width={"25%"} height={"50%"} />
                     <h2>Relatório</h2>
                   </div>
                 </div>
