@@ -33,7 +33,7 @@ const LoginDefault = () => {
   if (!window.confirm("Tem certeza que deseja excluir esta pergunta?")) return;
 
   try {
-    const response = await fetch(`https://cidivan-production.up.railway.app/api/deletar-pergunta/${id}/`, {
+    const response = await fetch(`https://cidivan-production.up.railway.app/api/questions/deletar-pergunta/${id}/`, {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -55,7 +55,7 @@ const LoginDefault = () => {
   const fetchPerguntas = async () => {
   try {
     setLoadingPerguntas(true);
-    const response = await fetch("https://cidivan-production.up.railway.app/api/listar-perguntas/", {
+    const response = await fetch("https://cidivan-production.up.railway.app/api/questions/listar-perguntas/", {
       method: "GET",
       credentials: "include", // mantém cookies/CSRF
     });
@@ -198,7 +198,7 @@ const LoginDefault = () => {
                             options.forEach((opt) => formData.append("options", opt));
 
                             try {
-                              const response = await fetch("http://127.0.0.1:8000/api/criar-pergunta/", {
+                              const response = await fetch("https://cidivan-production.up.railway.app/api/questions/criar-pergunta/", {
                                 method: "POST",
                                 body: formData,
                                 credentials: "include", // mantém CSRF/session
