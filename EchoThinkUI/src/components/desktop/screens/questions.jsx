@@ -86,7 +86,6 @@ const LoginDefault = () => {
 
   const fetchPerguntas = async () => {
   try {
-    setLoadingPerguntas(true);
     const response = await fetch("https://cidivan-production.up.railway.app/api/questions/listar-perguntas/", {
       method: "GET",
       credentials: "include", // mantém cookies/CSRF
@@ -98,7 +97,7 @@ const LoginDefault = () => {
     console.error(error);
     alert("Erro ao carregar perguntas");
   } finally {
-    setLoadingPerguntas(false);
+    console.log(ListaPerguntas);
   }
 };
   useEffect(() => {
