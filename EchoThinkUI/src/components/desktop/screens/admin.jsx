@@ -339,16 +339,16 @@ const LoginDefault = () => {
                                   <td className="border border-gray-400 p-2">{p.title}</td>
                                   <td className="border border-gray-400 p-2">{p.question || "-"}</td>
                                   <td className="border border-gray-400 p-2">
-                                    {p.image ? (
-                                      <img src={p.image} alt="Pergunta" className="w-16 h-16 object-cover" />
+                                    {p.image_url ? (
+                                      <img src={p.image_url} alt="Pergunta" className="w-16 h-16 object-cover" />
                                     ) : (
                                       "-"
                                     )}
                                   </td>
                                   <td className="border border-gray-400 p-2">
-                                    {p.audio ? (
+                                    {p.audio_url ? (
                                       <audio controls className="w-32">
-                                        <source src={p.audio} type="audio/mpeg" />
+                                        <source src={p.audio_url} type="audio/mpeg" />
                                         Seu navegador não suporta áudio
                                       </audio>
                                     ) : (
@@ -358,7 +358,7 @@ const LoginDefault = () => {
                                   <td className="border border-gray-400 p-2">
                                     <ul className="list-disc pl-4">
                                       {p.options.map((opt, idx) => (
-                                        <li key={idx}>{opt}</li>
+                                        <li key={idx}>{opt.text}</li>  // <-- aqui, use opt.text
                                       ))}
                                     </ul>
                                   </td>
@@ -372,6 +372,7 @@ const LoginDefault = () => {
                                   </td>
                                 </tr>
                               ))}
+
                             </tbody>
                         </table>
                       )}
