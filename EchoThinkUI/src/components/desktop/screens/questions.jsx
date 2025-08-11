@@ -87,7 +87,7 @@ const LoginDefault = () => {
   const fetchPerguntas = async () => {
   try {
     setLoadingPerguntas(true);
-    const response = await fetch("https://cidivan-production.up.railway.app/api/listar-perguntas/", {
+    const response = await fetch("https://cidivan-production.up.railway.app/api/questions/listar-perguntas/", {
       method: "GET",
       credentials: "include", // mantém cookies/CSRF
     });
