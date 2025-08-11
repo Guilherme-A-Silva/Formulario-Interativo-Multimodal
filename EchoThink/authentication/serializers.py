@@ -43,3 +43,15 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
 
         return user
+
+class UserSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email']
+
+class UserProfileListSerializer(serializers.ModelSerializer):
+    user = UserSimpleSerializer(read_only=True)
+
+    class Meta:
+        model = UserProfile
+        fields = ['id', 'user', 'nome', 'telefone', 'endereco', 'idade', 'genero', 'tipo']

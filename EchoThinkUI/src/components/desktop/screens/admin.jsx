@@ -29,6 +29,8 @@ const LoginDefault = () => {
   const [listaPerguntas, setListaPerguntas] = useState([]);
   const [loadingPerguntas, setLoadingPerguntas] = useState(false);
 
+  const [loadingParticipantes, setLoadingParticipantes] = useState(false);
+
   const [isValid, setIsValid] = useState(null);
 
   const BACKEND_URL = "https://cidivan-production.up.railway.app";
@@ -70,6 +72,22 @@ const LoginDefault = () => {
     
         validateSession();
       }, []);
+
+  const fetchParticipantes = async () => {
+    setLoadingParticipantes(true);
+  try {
+    const res = await fetch("https://cidivan-production.up.railway.app/api/auth/participantes/", {
+      credentials: "include",
+    });
+    const data = await res.json();
+    setlistarParticipantes(data);
+  } catch (error) {
+    alert("Erro ao carregar participantes");
+  } finally {
+    setLoadingParticipantes(false);
+    console.log("Lista de participantes:", listarParticipantes);
+  }
+};
 
   const deletePergunta = async (id) => {
   if (!window.confirm("Tem certeza que deseja excluir esta pergunta?")) return;
@@ -181,6 +199,7 @@ const LoginDefault = () => {
     e.preventDefault();
     resetViews();
     setlistarParticipantes(true);
+    fetchParticipantes();
   };
 
   return (
@@ -381,7 +400,38 @@ const LoginDefault = () => {
                   {listarParticipantes && (
                     <>
                       <h1>Lista de Participantes</h1>
-                      <p>(aqui virá a lista dos participantes...)</p>
+                      {loadingParticipantes ? (
+                        <p>Carregando participantes...</p>
+                      ) : (
+                        <table className="w-full border-collapse border border-gray-400">
+                          <thead>
+                            <tr className="bg-gray-200">
+                              <th className="border border-gray-400 p-2">ID</th>
+                              <th className="border border-gray-400 p-2">Usuário</th>
+                              <th className="border border-gray-400 p-2">Nome</th>
+                              <th className="border border-gray-400 p-2">Telefone</th>
+                              <th className="border border-gray-400 p-2">Endereço</th>
+                              <th className="border border-gray-400 p-2">Idade</th>
+                              <th className="border border-gray-400 p-2">Gênero</th>
+                              <th className="border border-gray-400 p-2">Tipo</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {listarParticipantes.map((p) => (
+                              <tr key={p.id}>
+                                <td className="border border-gray-400 p-2">{p.id}</td>
+                                <td className="border border-gray-400 p-2">{p.user.username}</td>
+                                <td className="border border-gray-400 p-2">{p.nome}</td>
+                                <td className="border border-gray-400 p-2">{p.telefone}</td>
+                                <td className="border border-gray-400 p-2">{p.endereco}</td>
+                                <td className="border border-gray-400 p-2">{p.idade}</td>
+                                <td className="border border-gray-400 p-2">{p.genero}</td>
+                                <td className="border border-gray-400 p-2">{p.tipo ? "Admin" : "Usuário"}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      )}
                     </>
                   )}
                 </div>

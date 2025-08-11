@@ -1,30 +1,29 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import RegisterSerializer
+from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import ensure_csrf_cookie
-from rest_framework.decorators import api_view
 from django.utils.decorators import method_decorator
 from django.core.mail import send_mail
 from django.conf import settings
+
+from .serializers import RegisterSerializer, UserProfileListSerializer  # Importe seu serializer de participantes aqui
+from .models import UserProfile
 
 # Registro do usuário
 class RegisterView(APIView):
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
-
         if not serializer.is_valid():
             return Response(
                 {"erro": "Dados inválidos", "detalhes": serializer.errors},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # Salva o novo usuário e faz login automático
         user = serializer.save()
         login(request, user)
 
-        # Envia o e-mail de boas-vindas
         email_status = self._enviar_email_boas_vindas(user)
 
         return Response({
@@ -43,7 +42,6 @@ class RegisterView(APIView):
             "Explore, aprenda e evolua com a gente!\n\n"
             "Atenciosamente,\nEquipe EchoThink"
         )
-
         try:
             send_mail(
                 subject=assunto,
@@ -54,7 +52,6 @@ class RegisterView(APIView):
             )
             return "enviado com sucesso"
         except Exception as e:
-            # Logue se desejar (ex: logger.error(str(e)))
             return f"falha no envio: {str(e)}"
 
 # Login baseado em sessão (SessionAuthentication)
@@ -64,9 +61,8 @@ class LoginView(APIView):
         password = request.data.get('password')
 
         user = authenticate(username=username, password=password)
-
         if user:
-            login(request, user)  # Cria a sessão no backend
+            login(request, user)
             return Response({
                 'message': 'Login bem-sucedido',
                 'username': user.username,
@@ -80,3 +76,10 @@ class LoginView(APIView):
 class CSRFTokenView(APIView):
     def get(self, request):
         return Response({'message': 'CSRF token definido'})
+
+# View para listar participantes
+@api_view(['GET'])
+def listar_participantes(request):
+    participantes = UserProfile.objects.all()
+    serializer = UserProfileListSerializer(participantes, many=True)
+    return Response(serializer.data)

@@ -40,7 +40,7 @@ def criar_pergunta(request):
 def listar_perguntas(request):
     perguntas = Question.objects.all()
     serializer = QuestionSerializer(perguntas, many=True, context={"request": request})
-    return Response(serializer.data)
+    return Response(serializer.data, status=200)
 
 @api_view(["DELETE"])
 def deletar_pergunta(request, pk):
