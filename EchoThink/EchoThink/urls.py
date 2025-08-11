@@ -22,9 +22,9 @@ from django.conf.urls.static import static
 from .views import CSRFTokenView, CurrentUserView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('api/hello/', views.hello),
     path('api/auth/', include('authentication.urls')),
+    path('api/questions/', include('questions.urls')),
     path("api/csrf/", CSRFTokenView.as_view(), name="get_csrf"),
     path("me/", CurrentUserView.as_view()),
     path('ValidateTokenView/', views.ValidateTokenView.as_view(), name='validate_token'),

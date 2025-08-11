@@ -84,13 +84,30 @@ const LoginDefault = () => {
     },
   ]);
 
+  const fetchPerguntas = async () => {
+  try {
+    setLoadingPerguntas(true);
+    const response = await fetch("https://cidivan-production.up.railway.app/api/listar-perguntas/", {
+      method: "GET",
+      credentials: "include", // mantém cookies/CSRF
+    });
+    if (!response.ok) throw new Error("Erro ao carregar perguntas");
+    const data = await response.json();
+    setListaPerguntas(data);
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao carregar perguntas");
+  } finally {
+    setLoadingPerguntas(false);
+  }
+};
   useEffect(() => {
     document.title = "EchoThink";
     const link = document.createElement("link");
     link.rel = "icon";
     link.href = Icon;
     document.head.appendChild(link);
-
+    fetchPerguntas();
     const fetchCsrfToken = async () => {
       getCSRFToken();
     };
