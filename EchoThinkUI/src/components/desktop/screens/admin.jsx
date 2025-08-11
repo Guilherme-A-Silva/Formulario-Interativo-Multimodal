@@ -76,7 +76,7 @@ const LoginDefault = () => {
   const fetchParticipantes = async () => {
     setLoadingParticipantes(true);
   try {
-    const res = await fetch("https://cidivan-production.up.railway.app/api/auth/participantes/", {
+    const res = await fetch("https://cidivan-production.up.railway.app/api/auth/listar-participantes/", {
       credentials: "include",
     });
     const data = await res.json();
