@@ -237,7 +237,7 @@ const marcarRelevante = async (id) => {
             <div className="w-full flex flex-1 bg-Secundary justify-between overflow-hidden">
               
               {/* MENU LATERAL */}
-              <div className="w-2/12 min-w-[160px] m-1 bg-New flex flex-col admin-menu overflow-auto justify-center items-center">
+              <div className="w-2/12 min-w-[160px] bg-New flex flex-col admin-menu overflow-auto justify-center items-center">
                 <div
                   className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item"
                   onClick={ShowHome}
