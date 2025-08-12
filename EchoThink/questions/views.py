@@ -76,7 +76,7 @@ def gerar_relatorio_respostas(request, formato):
     # Filtra apenas respostas de perguntas marcadas como relevantes
     respostas = UserResponse.objects.filter(question__is_relevant=True).values(
         "user__username",
-        "question__texto",
+        "question__question",  # texto da pergunta
         "resposta_texto",
         "resposta_opcao",
         "tempo_resposta",
