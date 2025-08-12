@@ -245,7 +245,7 @@ const LoginDefault = () => {
                   Mensagem do backend: {mensagem}
                 </div>
                 <h1>Login</h1>
-                <form onSubmit={LoginSubmit} className="w-full items-center justify-center flex flex-col border-Config">
+                <form onSubmit={LoginSubmit} className="w-full items-center justify-center flex flex-col">
                   <h2 className="Input">Insira seu Username</h2>
                   <input
                     type="text"
