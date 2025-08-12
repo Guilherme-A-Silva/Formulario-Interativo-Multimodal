@@ -233,11 +233,11 @@ const marcarRelevante = async (id) => {
     <section className="flex-1 flex items-center justify-center overflow-hidden">
       {(home || relatorio || addPerguntas || listarPerguntas || listarParticipantes) && (
         <div className="w-11/12 h-5/6 flex items-center justify-center overflow-hidden">
-          <div className="border w-full h-full flex flex-col border-Config overflow-hidden">
-            <div className="border w-full flex flex-1 bg-Secundary justify-between overflow-hidden">
+          <div className="w-full h-full flex flex-col border-Config overflow-hidden">
+            <div className="w-full flex flex-1 bg-Secundary justify-between overflow-hidden">
               
               {/* MENU LATERAL */}
-              <div className="w-2/12 min-w-[160px] m-1 border bg-New flex flex-col admin-menu overflow-auto justify-center items-center">
+              <div className="w-2/12 min-w-[160px] m-1 bg-New flex flex-col admin-menu overflow-auto justify-center items-center">
                 <div
                   className="border p-2 cursor-pointer flex flex-col justify-center items-center admin-item"
                   onClick={ShowHome}
@@ -276,7 +276,7 @@ const marcarRelevante = async (id) => {
               </div>
 
               {/* CONTEÚDO PRINCIPAL */}
-              <div className="w-10/12 border bg-New3 flex flex-col overflow-auto p-4">
+              <div className="w-10/12  bg-New3 flex flex-col overflow-auto p-4">
                 
                 {home && 
                 <div className="flex flex-col items-center justify-center h-full">
@@ -289,7 +289,7 @@ const marcarRelevante = async (id) => {
                     <img src={Logo} alt="Logo" className="max-w-[150px] h-auto" />
                     <h1>Relatório</h1>
                     <p>Insira seu nome completo</p>
-                    <input type="text" className="p-2 border mt-2 w-full max-w-sm" />
+                    <input type="text" className="p-2  mt-2 w-full max-w-sm" />
                   </div>
                 )}
 
@@ -379,32 +379,32 @@ const marcarRelevante = async (id) => {
                     {loadingPerguntas ? (
                       <p>Carregando perguntas...</p>
                     ) : (
-                      <table className="w-full min-w-[800px] border-collapse border border-gray-400">
+                      <table className="w-full min-w-[800px] border-collapse  border-gray-400">
                         <thead>
                           <tr className="bg-gray-200">
-                            <th className="border border-gray-400 p-2">ID</th>
-                            <th className="border border-gray-400 p-2">Título</th>
-                            <th className="border border-gray-400 p-2">Pergunta</th>
-                            <th className="border border-gray-400 p-2">Imagem</th>
-                            <th className="border border-gray-400 p-2">Áudio</th>
-                            <th className="border border-gray-400 p-2">Opções</th>
-                            <th className="border border-gray-400 p-2">Ações</th>
+                            <th className=" border-gray-400 p-2">ID</th>
+                            <th className=" border-gray-400 p-2">Título</th>
+                            <th className=" border-gray-400 p-2">Pergunta</th>
+                            <th className=" border-gray-400 p-2">Imagem</th>
+                            <th className=" border-gray-400 p-2">Áudio</th>
+                            <th className=" border-gray-400 p-2">Opções</th>
+                            <th className=" border-gray-400 p-2">Ações</th>
                           </tr>
                         </thead>
                         <tbody>
                           {listaPerguntas.map((p) => (
                             <tr key={p.id}>
-                              <td className="border border-gray-400 p-2">{p.id}</td>
-                              <td className="border border-gray-400 p-2">{p.title}</td>
-                              <td className="border border-gray-400 p-2">{p.question || "-"}</td>
-                              <td className="border border-gray-400 p-2">
+                              <td className=" border-gray-400 p-2">{p.id}</td>
+                              <td className=" border-gray-400 p-2">{p.title}</td>
+                              <td className=" border-gray-400 p-2">{p.question || "-"}</td>
+                              <td className=" border-gray-400 p-2">
                                 {p.image_url ? (
                                   <img src={p.image_url} alt="Pergunta" className="max-w-[100px] max-h-[100px] object-cover" />
                                 ) : (
                                   "-"
                                 )}
                               </td>
-                              <td className="border border-gray-400 p-2">
+                              <td className=" border-gray-400 p-2">
                                 {p.audio_url ? (
                                   <audio controls className="w-32">
                                     <source src={p.audio_url} type="audio/mpeg" />
@@ -414,14 +414,14 @@ const marcarRelevante = async (id) => {
                                   "-"
                                 )}
                               </td>
-                              <td className="border border-gray-400 p-2">
+                              <td className=" border-gray-400 p-2">
                                 <ul className="list-disc pl-4">
                                   {p.options.map((opt, idx) => (
                                     <li key={idx}>{opt.text}</li>
                                   ))}
                                 </ul>
                               </td>
-                              <td className="border border-gray-400 p-2 text-center">
+                              <td className=" border-gray-400 p-2 text-center">
                                 <button
                                   onClick={() => deletePergunta(p.id)}
                                   className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
@@ -449,30 +449,30 @@ const marcarRelevante = async (id) => {
                     {loadingParticipantes ? (
                       <p>Carregando participantes...</p>
                     ) : (
-                      <table className="w-full min-w-[700px] border-collapse border border-gray-400">
+                      <table className="w-full min-w-[700px] border-collapse  border-gray-400">
                         <thead>
                           <tr className="bg-gray-200">
-                            <th className="border border-gray-400 p-2">ID</th>
-                            <th className="border border-gray-400 p-2">Usuário</th>
-                            <th className="border border-gray-400 p-2">Nome</th>
-                            <th className="border border-gray-400 p-2">Telefone</th>
-                            <th className="border border-gray-400 p-2">Endereço</th>
-                            <th className="border border-gray-400 p-2">Idade</th>
-                            <th className="border border-gray-400 p-2">Gênero</th>
-                            <th className="border border-gray-400 p-2">Tipo</th>
+                            <th className=" border-gray-400 p-2">ID</th>
+                            <th className=" border-gray-400 p-2">Usuário</th>
+                            <th className=" border-gray-400 p-2">Nome</th>
+                            <th className=" border-gray-400 p-2">Telefone</th>
+                            <th className=" border-gray-400 p-2">Endereço</th>
+                            <th className=" border-gray-400 p-2">Idade</th>
+                            <th className=" border-gray-400 p-2">Gênero</th>
+                            <th className=" border-gray-400 p-2">Tipo</th>
                           </tr>
                         </thead>
                         <tbody>
                           {listarParticipantesArray.map((p) => (
                             <tr key={p.id}>
-                              <td className="border border-gray-400 p-2">{p.id}</td>
-                              <td className="border border-gray-400 p-2">{p.user.username}</td>
-                              <td className="border border-gray-400 p-2">{p.nome}</td>
-                              <td className="border border-gray-400 p-2">{p.telefone}</td>
-                              <td className="border border-gray-400 p-2">{p.endereco}</td>
-                              <td className="border border-gray-400 p-2">{p.idade}</td>
-                              <td className="border border-gray-400 p-2">{p.genero}</td>
-                              <td className="border border-gray-400 p-2">{p.tipo ? "Admin" : "Usuário"}</td>
+                              <td className=" border-gray-400 p-2">{p.id}</td>
+                              <td className=" border-gray-400 p-2">{p.user.username}</td>
+                              <td className=" border-gray-400 p-2">{p.nome}</td>
+                              <td className=" border-gray-400 p-2">{p.telefone}</td>
+                              <td className=" border-gray-400 p-2">{p.endereco}</td>
+                              <td className=" border-gray-400 p-2">{p.idade}</td>
+                              <td className=" border-gray-400 p-2">{p.genero}</td>
+                              <td className=" border-gray-400 p-2">{p.tipo ? "Admin" : "Usuário"}</td>
                             </tr>
                           ))}
                         </tbody>
