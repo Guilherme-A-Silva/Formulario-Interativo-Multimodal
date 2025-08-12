@@ -115,8 +115,8 @@ const marcarRelevante = async (id) => {
   try {
     const response = await fetch(`https://cidivan-production.up.railway.app/api/questions/marcar-relevante/${id}/`, {
       method: "PATCH",
+      credentials: "include",
       headers: {
-        "Content-Type": "application/json",
         "X-CSRFToken": csrfToken,
       },
       body: JSON.stringify({ is_relevant: true }),
