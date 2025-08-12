@@ -238,54 +238,47 @@ const LoginDefault = () => {
     <section className="w-full h-full flex flex-col bg-Primary justify-center items-center">
       <section className="w-screen h-full flex items-center justify-center">
         {Login && (
-          <div className="w-6/12 h-screen flex items-center justify-center">
-            <div className="border w-full items-center justify-center flex flex-col border-Config">
-              <div className="border w-full items-center justify-center flex flex-col bg-Secundary">
-                <div className="p-4 text-xl">
-                  Mensagem do backend: {mensagem}
-                </div>
-                <h1>Login</h1>
-                <form onSubmit={LoginSubmit} className="w-full items-center justify-center flex flex-col">
-                  <h2 className="Input">Insira seu Username</h2>
-                  <input
-                    type="text"
-                    className="bg-Input"
-                    name="username"
-                    value={form.username}
-                    onChange={handleChange}
-                  />
-                  <h2 className="Input">Insira sua senha</h2>
-                  <input
-                    type="password"
-                    name="password"
-                    className="bg-Input"
-                    value={form.password}
-                    onChange={handleChange}
-                  />
-                  <button className="bg-Button" type="submit">
-                    Logar
-                  </button>
-                </form>
-                <a
-                  href="#"
-                  onClick={ShowEsqueceu}
-                  className="mt hover:text-inherit"
-                >
-                  Esqueceu sua senha?
-                </a>
-                <a
-                  href="#"
-                  onClick={ShowRegister}
-                  className="mb hover:text-inherit"
-                >
-                  Não tem uma conta? Clique aqui
-                </a>
+          <div className="w-full flex justify-center items-center min-h-screen p-4">
+            <div className="responsive-container">
+              <div className="border w-full items-center justify-center resposive-containerblack">
+              <div className="mb-4 text-center text-white font-medium text-sm">
+                Mensagem do backend: {mensagem}
+              </div>
+              <h1 className="text-center">Login</h1>
+              <form onSubmit={LoginSubmit}>
+                <h2>Insira seu Username</h2>
+                <input
+                  type="text"
+                  name="username"
+                  value={form.username}
+                  onChange={handleChange}
+                  required
+                />
+                <h2>Insira sua senha</h2>
+                <input
+                  type="password"
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  required
+                />
+                <button type="submit">Logar</button>
+              </form>
+              <div className="flex flex-col items-center justify-center text-white gap-2 mt-4">
+              <a href="#" onClick={ShowEsqueceu}>
+                Esqueceu sua senha?
+              </a>
+              <a href="#" onClick={ShowRegister}>
+                Não tem uma conta? Clique aqui
+              </a>
               </div>
             </div>
           </div>
+          </div>
         )}
         {Register && (
-          <div className="w-6/12 h-screen flex items-center justify-center">
+          <div className="w-full flex justify-center items-center min-h-screen p-4">
+            <div className="responsive-containerRegister">
             <form
               onSubmit={handleSubmit}
               className="border w-full items-center justify-center flex flex-col border-Config"
@@ -328,7 +321,7 @@ const LoginDefault = () => {
                   onChange={handleChange}
                 />
 
-                <div className="flex w-1/2 justify-between items-center force">
+                <div className="flex w-1/2 justify-between items-center">
                   <div className="flex flex-col w-2/5">
                     <h2 className="InputCol">Insira sua idade</h2>
                     <input
@@ -383,16 +376,18 @@ const LoginDefault = () => {
                 </a>
               </div>
             </form>
+            </div>
           </div>
         )}
         {Esqueceu && (
-          <div className="w-6/12 h-screen flex items-center justify-center">
+          <div className="w-full h-screen flex items-center justify-center ">
+            <div className="responsive-containerEsqueceu">
             <div className="border w-full items-center justify-center flex flex-col border-Config">
               <div className="border w-full items-center justify-center flex flex-col bg-Secundary">
                 <img src={Logo} alt="" width={"10%"} height={"10%"} />
                 <h1>Esqueci a senha</h1>
                 <h2 className="Input">Insira seu Email</h2>
-                <input type="text" className="bg-Input" />
+                <input type="text" className="bg-white p-2 rounded-lg w-10/12 text-black " />
                 <button className="bg-Button">Recuperar</button>
                 <a
                   href="#"
@@ -409,6 +404,7 @@ const LoginDefault = () => {
                   Não tem uma conta? Clique aqui
                 </a>
               </div>
+            </div>
             </div>
           </div>
         )}
