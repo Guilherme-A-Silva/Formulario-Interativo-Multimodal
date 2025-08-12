@@ -117,6 +117,7 @@ const marcarRelevante = async (id) => {
       method: "PATCH",
       credentials: "include",
       headers: {
+        "Content-Type": "application/json",
         "X-CSRFToken": csrfToken,
       },
       body: JSON.stringify({ is_relevant: true }),
