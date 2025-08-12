@@ -6,6 +6,6 @@ urlpatterns = [
     path("listar-perguntas/", views.listar_perguntas, name="listar_perguntas"),
     path("deletar-pergunta/<int:pk>/", views.deletar_pergunta, name="deletar_pergunta"),
     path('marcar-relevante/<int:pk>/', views.marcar_relevante, name='marcar-relevante'),
-    path('relatorio-respostas/<str:formato>/', views.gerar_relatorio_respostas, name='gerar-relatorio-respostas'),
-     path("responder-multiplo/", views.registrar_varias_respostas, name="registrar-varias-respostas"),
+    path('relatorio-respostas/<str:formato>/', views.gerar_relatorio_respostas_pivotado, name='gerar-relatorio-respostas'),
+    path("responder-multiplo/", views.registrar_varias_respostas, name="registrar-varias-respostas"),
 ]
