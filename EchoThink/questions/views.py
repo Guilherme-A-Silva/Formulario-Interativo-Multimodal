@@ -72,10 +72,15 @@ def marcar_relevante(request, pk):
 
     return Response({"mensagem": "Relevância atualizada com sucesso"})
 
-def gerar_relatorio_respostas(request, formato):
+import pandas as pd
+from django.http import HttpResponse
+
+def gerar_relatorio_respostas_pivotado(request, formato):
+    # Busca respostas de perguntas relevantes
     respostas = UserResponse.objects.filter(question__is_relevant=True).values(
         "user__username",
-        "question__question",
+        "question__id",
+        "question__title",
         "resposta_texto",
         "resposta_opcao",
         "tempo_resposta",
@@ -87,25 +92,40 @@ def gerar_relatorio_respostas(request, formato):
 
     df = pd.DataFrame(list(respostas))
 
-    # Converter datetime com timezone para naive, só se tiver coluna 'data_resposta'
+    # Converter datetime com timezone para naive, para evitar erro no Excel
     if 'data_resposta' in df.columns:
         df['data_resposta'] = pd.to_datetime(df['data_resposta']).dt.tz_localize(None)
 
+    # Definir coluna com a resposta final, usando resposta_opcao se existir, senão resposta_texto
+    df['resposta_final'] = df['resposta_opcao'].combine_first(df['resposta_texto'])
+
+    # Montar um pivot para respostas
+    df_pivot_resp = df.pivot(index='user__username', columns='question__title', values='resposta_final')
+    df_pivot_resp.columns = [f"Resposta - {col}" for col in df_pivot_resp.columns]
+
+    # Montar um pivot para tempo de resposta
+    df_pivot_tempo = df.pivot(index='user__username', columns='question__title', values='tempo_resposta')
+    df_pivot_tempo.columns = [f"Tempo (s) - {col}" for col in df_pivot_tempo.columns]
+
+    # Juntar os dois pivots lado a lado
+    df_final = pd.concat([df_pivot_resp, df_pivot_tempo], axis=1).reset_index()
+
     if formato == "csv":
         response = HttpResponse(content_type="text/csv")
-        response["Content-Disposition"] = 'attachment; filename="relatorio_respostas.csv"'
-        df.to_csv(path_or_buf=response, index=False)
+        response["Content-Disposition"] = 'attachment; filename="relatorio_respostas_pivotado.csv"'
+        df_final.to_csv(path_or_buf=response, index=False)
         return response
 
     elif formato == "excel":
         response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-        response["Content-Disposition"] = 'attachment; filename="relatorio_respostas.xlsx"'
-        df.to_excel(response, index=False, engine="openpyxl")
+        response["Content-Disposition"] = 'attachment; filename="relatorio_respostas_pivotado.xlsx"'
+        df_final.to_excel(response, index=False, engine="openpyxl")
         return response
 
     else:
         return HttpResponse("Formato inválido. Use 'csv' ou 'excel'.", status=400)
-    
+
+
 @api_view(["POST"])
 def registrar_resposta(request):
     serializer = UserResponseSerializer(data=request.data)
