@@ -201,7 +201,7 @@ const LoginDefault = () => {
               <img
                 src={Logo}
                 alt="logo"
-                className="max-w-xs w-full object-contain"
+                className="max-w-20 w-full object-contain"
               />
               <h1 className="text-3xl font-bold text-center">Instrução</h1>
               <ul className="list-disc pl-6 text-left text-white space-y-2 max-w-md">
@@ -223,11 +223,11 @@ const LoginDefault = () => {
         {Perguntas && (
           <div className="w-full max-w-4xl h-full flex items-center justify-center">
             <div className="borderlaran">
-            <div className="w-full max-w-md bg-Secundary rounded-lg p-6 flex flex-col items-center gap-6">
+            <div className="w-full max-w-md bg-Secundary p-6 flex flex-col items-center gap-6">
               <img
                 src={Logo}
                 alt="logo"
-                className="max-w-xs w-full object-contain"
+                className="max-w-20 w-full object-contain"
               />
               {ListaPerguntas.length === 0 ? (
                 <p>Carregando perguntas...</p>
