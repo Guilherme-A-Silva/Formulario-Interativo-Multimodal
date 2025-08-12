@@ -17,72 +17,7 @@ const LoginDefault = () => {
   const [startTime, setStartTime] = useState(null);
   const [IndicePergunta, setIndicePergunta] = useState(0);
 
-  const [ListaPerguntas, setListaPerguntas] = useState([
-    {
-      id: 1,
-      title: "Pergunta 1",
-      question: "Qual dessas alternativas você prefere?",
-      image: null,
-      audio: null,
-      options: ["Alternativa 1", "Alternativa 2", "Alternativa 3"],
-    },
-    {
-      id: 2,
-      title: "Pergunta 2",
-      question: null,
-      image: "https://via.placeholder.com/150",
-      audio: null,
-      options: ["Alternativa 1", "Alternativa 2", "Alternativa 3"],
-    },
-    {
-      id: 3,
-      title: "Pergunta 3",
-      question: null,
-      image: null,
-      audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-      options: ["Alternativa 1", "Alternativa 2", "Alternativa 3"],
-    },
-    {
-      id: 4,
-      title: "Pergunta 4",
-      question: "Observe a imagem e escolha a alternativa correta.",
-      image: "https://via.placeholder.com/150",
-      audio: null,
-      options: ["Alternativa 1", "Alternativa 2", "Alternativa 3"],
-    },
-    {
-      id: 5,
-      title: "Pergunta 5",
-      question: "Ouça o áudio e escolha a alternativa correta.",
-      image: null,
-      audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-      options: ["Alternativa 1", "Alternativa 2", "Alternativa 3"],
-    },
-    {
-      id: 6,
-      title: "Pergunta 6",
-      question: "Veja a imagem e escute o áudio antes de responder.",
-      image: "https://via.placeholder.com/150",
-      audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-      options: ["Alternativa 1", "Alternativa 2", "Alternativa 3"],
-    },
-    {
-      id: 7,
-      title: "Pergunta 7",
-      question: null,
-      image: "https://via.placeholder.com/150",
-      audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-      options: ["Alternativa 1", "Alternativa 2", "Alternativa 3"],
-    },
-    {
-      id: 8,
-      title: "Pergunta 8",
-      question: "Apenas texto, sem imagem ou áudio.",
-      image: null,
-      audio: null,
-      options: ["Alternativa 1", "Alternativa 2", "Alternativa 3"],
-    },
-  ]);
+  const [ListaPerguntas, setListaPerguntas] = useState([]);
 
   const fetchPerguntas = async () => {
   try {
@@ -242,8 +177,8 @@ const LoginDefault = () => {
       <section className="w-screen flex items-center justify-center">
         {Instrucao && (
           <div className="w-6/12 h-screen flex items-center justify-center">
-            <div className="border w-full items-center justify-center flex flex-col border-Config">
-              <div className="border w-full items-center justify-center flex flex-col bg-Secundary">
+            <div className=" w-full items-center justify-center flex flex-col border-Config">
+              <div className=" w-full items-center justify-center flex flex-col bg-Secundary">
                 <img src={Logo} alt="logo" />
                 <h1>Instrução</h1>
                 <ul>
@@ -259,8 +194,8 @@ const LoginDefault = () => {
 
         {Perguntas && (
           <div className="w-6/12 h-screen flex items-center justify-center">
-            <div className="border w-full items-center justify-center flex flex-col border-Config">
-              <div className="border w-full items-center justify-center flex flex-col bg-Secundary">
+            <div className=" w-full items-center justify-center flex flex-col border-Config">
+              <div className=" w-full items-center justify-center flex flex-col bg-Secundary">
                 <img src={Logo} alt="logo" />
                 {ListaPerguntas.length === 0 ? (
                   <p>Carregando perguntas...</p>
