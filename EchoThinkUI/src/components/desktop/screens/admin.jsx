@@ -117,7 +117,7 @@ const marcarRelevante = async (id) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": getCSRFToken(), // se estiver usando CSRF
+        "X-CSRFToken": csrfToken,
       },
       body: JSON.stringify({ is_relevant: true }),
     });
@@ -381,7 +381,7 @@ const marcarRelevante = async (id) => {
                                   <td className="border border-gray-400 p-2">{p.question || "-"}</td>
                                   <td className="border border-gray-400 p-2">
                                     {p.image_url ? (
-                                      <img src={p.image_url} alt="Pergunta" className="w-16 h-16 object-cover" />
+                                      <img src={p.image_url} alt="Pergunta" className="w-1/2 object-cover" />
                                     ) : (
                                       "-"
                                     )}
