@@ -77,6 +77,43 @@ const LoginDefault = () => {
         validateSession();
       }, []);
 
+  const baixarRelatorio = async (formato) => {
+  try {
+    const response = await fetch(`https://cidivan-production.up.railway.app/api/questions/relatorio-respostas/${formato}/`, {
+      method: "GET",
+      credentials: "include", // se estiver usando autenticação por sessão/cookie
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      alert(`Erro ao gerar relatório: ${text}`);
+      return;
+    }
+
+    const blob = await response.blob();
+
+    // Define o nome do arquivo conforme o formato
+    const nomeArquivo = formato === "excel" ? "relatorio_respostas.xlsx" : "relatorio_respostas.csv";
+
+    // Cria uma URL temporária para download
+    const url = window.URL.createObjectURL(blob);
+
+    // Cria um elemento <a> para disparar o download
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = nomeArquivo;
+    document.body.appendChild(a);
+    a.click();
+
+    // Remove o elemento e libera a URL
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    alert("Erro ao baixar relatório: " + error.message);
+  }
+};
+
+
   const fetchParticipantes = async () => {
     setLoadingParticipantes(true);
   try {
@@ -288,8 +325,8 @@ const marcarRelevante = async (id) => {
                   <div className="flex flex-col items-center gap-2">
                     <img src={Logo} alt="Logo" className="max-w-[150px] h-auto" />
                     <h1>Relatório</h1>
-                    <p>Insira seu nome completo</p>
-                    <input type="text" className="p-2  mt-2 w-full max-w-sm" />
+                    <button onClick={() => baixarRelatorio("csv")}>Baixar CSV</button>
+                    <button onClick={() => baixarRelatorio("excel")}>Baixar Excel</button>
                   </div>
                 )}
 

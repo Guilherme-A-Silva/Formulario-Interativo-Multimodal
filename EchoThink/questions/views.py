@@ -2,6 +2,8 @@ from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
 from .models import Question, Option, UserResponse
 from .serializers import QuestionSerializer, UserResponseSerializer, MultipleUserResponsesSerializer
 from django.http import HttpResponse
@@ -110,9 +112,32 @@ def registrar_resposta(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def registrar_varias_respostas(request):
-    serializer = MultipleUserResponsesSerializer(data=request.data)
+    user = request.user
+    respostas = request.data.get("respostas", [])
+
+    # Pega os IDs das perguntas enviadas
+    question_ids = [r.get("question") for r in respostas if r.get("question") is not None]
+
+    # Verifica se já existem respostas do usuário para essas perguntas
+    respostas_existentes = UserResponse.objects.filter(user=user, question_id__in=question_ids)
+
+    if respostas_existentes.exists():
+        return Response(
+            {"error": "Você já enviou respostas para essas perguntas."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    # Adiciona o usuário nos dados das respostas (pois seu serializer espera campo user)
+    for resposta in respostas:
+        resposta["user"] = user.id
+
+    serializer = MultipleUserResponsesSerializer(data={"respostas": respostas})
     if serializer.is_valid():
         serializer.save()
-        return Response({"message": "Todas as respostas foram registradas com sucesso"}, status=status.HTTP_201_CREATED)
+        return Response(
+            {"message": "Todas as respostas foram registradas com sucesso"},
+            status=status.HTTP_201_CREATED
+        )
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
