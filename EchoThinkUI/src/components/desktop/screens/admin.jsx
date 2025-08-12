@@ -316,11 +316,14 @@ const marcarRelevante = async (id) => {
               <div className="w-10/12  bg-New3 flex flex-col overflow-auto p-4">
                 
                 {home && 
-                <div className="flex flex-col items-center justify-center h-full">
-                <h1>Home</h1>
-                </div>
+                  <div className="flex flex-col items-center justify-center h-full p-4 text-center">
+                    <h1 className="text-2xl font-semibold mb-4">Bem-vindo ao sistema!</h1>
+                    <p className="max-w-md">
+                      Use o menu à esquerda para acessar as opções relevantes do sistema.
+                      Aqui você pode navegar e gerenciar todas as funcionalidades disponíveis.
+                    </p>
+                  </div>
                 }
-
                 {relatorio && (
                   <div className="flex flex-col items-center gap-2">
                     <img src={Logo} alt="Logo" className="max-w-[150px] h-auto" />
