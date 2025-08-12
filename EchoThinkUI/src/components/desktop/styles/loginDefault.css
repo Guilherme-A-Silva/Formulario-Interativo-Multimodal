@@ -159,6 +159,11 @@
   width: 100%;
   max-width: 900px; /* limite maximo para telas grandes */
 }
+
+.borderlaran{
+  border-radius: 30px;
+  border: 10px solid #f27d0c;
+}
 /* Classe para container responsivo */
 .responsive-container {
   width: 100%;
