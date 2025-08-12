@@ -138,47 +138,60 @@ const LoginDefault = () => {
   };
 
   const enviarRespostas = async (todasRespostas) => {
-    try {
-      const response = await fetch("/api/salvar-respostas", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(todasRespostas),
-      });
-      if (response.ok) {
-        alert("Respostas enviadas com sucesso!");
-      } else {
-        alert("Erro ao enviar respostas.");
-      }
-    } catch (err) {
-      console.error("Erro ao enviar respostas:", err);
-    }
-  };
-
-  const proximaPergunta = () => {
-    const endTime = Date.now();
-    const tempoResposta = Math.floor((endTime - startTime) / 1000);
-
-    const pergunta = ListaPerguntas[IndicePergunta];
-
-    const respostaAtual = {
-      perguntaId: pergunta.id,
-      perguntaTexto: pergunta.question || pergunta.title,
-      resposta: respostaSelecionada,
-      tempoEmSegundos: tempoResposta,
+  try {
+    const payload = {
+      respostas: todasRespostas.map(r => ({
+        user: 1, // Pega o ID do usuário logado (pode vir do contexto ou localStorage)
+        question: r.perguntaId,
+        resposta_texto: r.resposta,
+        resposta_opcao: r.resposta, // se quiser diferenciar texto de opção, adapte
+        tempo_resposta: r.tempoEmSegundos
+      }))
     };
 
-    const novasRespostas = [...respostas, respostaAtual];
-    setRespostas(novasRespostas);
+    const response = await fetch("https://cidivan-production.up.railway.app/api/questions/responder-multiplo/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+      credentials: "include" // importante se usar CSRF
+    });
 
-    if (IndicePergunta + 1 < ListaPerguntas.length) {
-      setIndicePergunta(IndicePergunta + 1);
-      setRespostaSelecionada(null);
+    if (response.ok) {
+      alert("Respostas enviadas com sucesso!");
     } else {
-      enviarRespostas(novasRespostas);
+      alert("Erro ao enviar respostas.");
     }
+  } catch (err) {
+    console.error("Erro ao enviar respostas:", err);
+  }
+};
+
+  const proximaPergunta = () => {
+  const endTime = Date.now();
+  const tempoResposta = Math.floor((endTime - startTime) / 1000);
+
+  const pergunta = ListaPerguntas[IndicePergunta];
+
+  const respostaAtual = {
+    perguntaId: pergunta.id,
+    perguntaTexto: pergunta.question || pergunta.title,
+    resposta: respostaSelecionada,
+    tempoEmSegundos: tempoResposta,
   };
+
+  const novasRespostas = [...respostas, respostaAtual];
+  setRespostas(novasRespostas);
+
+  if (IndicePergunta + 1 < ListaPerguntas.length) {
+    setIndicePergunta(IndicePergunta + 1);
+    setRespostaSelecionada(null);
+  } else {
+    enviarRespostas(novasRespostas);
+  }
+};
+
 
   const renderPergunta = (pergunta) => (
     <div className="w-full p-4 flex flex-col items-center justify-center text-white gap-4">

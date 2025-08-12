@@ -111,6 +111,28 @@ const LoginDefault = () => {
   }
 };
 
+const marcarRelevante = async (id) => {
+  try {
+    const response = await fetch(`https://cidivan-production.up.railway.app/api/questions/marcar-relevante/${id}/`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCSRFToken(), // se estiver usando CSRF
+      },
+      body: JSON.stringify({ is_relevant: true }),
+    });
+
+    if (!response.ok) throw new Error("Erro ao marcar pergunta como relevante");
+
+    alert("Pergunta marcada como relevante!");
+    // Atualiza lista
+    listarPerguntas();
+  } catch (error) {
+    console.error(error);
+    alert("Falha ao marcar relevante");
+  }
+};
+
 
   const fetchPerguntas = async () => {
   try {
@@ -332,71 +354,51 @@ const LoginDefault = () => {
                         </form>
                       </>
                     )}
-                  {listarPerguntas && (
-                    <div className="w-full flex flex-col gap-4 p-4">
-                      <h1 className="text-2xl font-bold">Lista de Perguntas</h1>
-
-                      {loadingPerguntas ? (
-                        <p>Carregando perguntas...</p>
-                      ) : (
-                        <table className="w-full border-collapse border border-gray-400">
-                          <thead>
-                              <tr className="bg-gray-200">
-                                <th className="border border-gray-400 p-2">ID</th>
-                                <th className="border border-gray-400 p-2">Título</th>
-                                <th className="border border-gray-400 p-2">Pergunta</th>
-                                <th className="border border-gray-400 p-2">Imagem</th>
-                                <th className="border border-gray-400 p-2">Áudio</th>
-                                <th className="border border-gray-400 p-2">Opções</th>
-                                <th className="border border-gray-400 p-2">Ações</th> {/* nova coluna */}
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {listaPerguntas.map((p) => (
-                                <tr key={p.id}>
-                                  <td className="border border-gray-400 p-2">{p.id}</td>
-                                  <td className="border border-gray-400 p-2">{p.title}</td>
-                                  <td className="border border-gray-400 p-2">{p.question || "-"}</td>
-                                  <td className="border border-gray-400 p-2">
-                                    {p.image_url ? (
-                                      <img src={p.image_url} alt="Pergunta" className="w-16 h-16 object-cover" />
-                                    ) : (
-                                      "-"
-                                    )}
-                                  </td>
-                                  <td className="border border-gray-400 p-2">
-                                    {p.audio_url ? (
-                                      <audio controls className="w-32">
-                                        <source src={p.audio_url} type="audio/mpeg" />
-                                        Seu navegador não suporta áudio
-                                      </audio>
-                                    ) : (
-                                      "-"
-                                    )}
-                                  </td>
-                                  <td className="border border-gray-400 p-2">
-                                    <ul className="list-disc pl-4">
-                                      {p.options.map((opt, idx) => (
-                                        <li key={idx}>{opt.text}</li>  // <-- aqui, use opt.text
-                                      ))}
-                                    </ul>
-                                  </td>
-                                  <td className="border border-gray-400 p-2 text-center">
-                                    <button
-                                      onClick={() => deletePergunta(p.id)}
-                                      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-                                    >
-                                      Excluir
-                                    </button>
-                                  </td>
-                                </tr>
-                              ))}
-
-                            </tbody>
-                        </table>
-                      )}
-                    </div>
-                  )}
+                  {listaPerguntas.map((p) => (
+                    <tr key={p.id}>
+                      <td className="border border-gray-400 p-2">{p.id}</td>
+                      <td className="border border-gray-400 p-2">{p.title}</td>
+                      <td className="border border-gray-400 p-2">{p.question || "-"}</td>
+                      <td className="border border-gray-400 p-2">
+                        {p.image_url ? (
+                          <img src={p.image_url} alt="Pergunta" className="w-16 h-16 object-cover" />
+                        ) : (
+                          "-"
+                        )}
+                      </td>
+                      <td className="border border-gray-400 p-2">
+                        {p.audio_url ? (
+                          <audio controls className="w-32">
+                            <source src={p.audio_url} type="audio/mpeg" />
+                            Seu navegador não suporta áudio
+                          </audio>
+                        ) : (
+                          "-"
+                        )}
+                      </td>
+                      <td className="border border-gray-400 p-2">
+                        <ul className="list-disc pl-4">
+                          {p.options.map((opt, idx) => (
+                            <li key={idx}>{opt.text}</li>
+                          ))}
+                        </ul>
+                      </td>
+                      <td className="border border-gray-400 p-2 text-center">
+                        <button
+                          onClick={() => deletePergunta(p.id)}
+                          className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 mr-2"
+                        >
+                          Excluir
+                        </button>
+                        <button
+                          onClick={() => marcarRelevante(p.id)}
+                          className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
+                        >
+                          Marcar Relevante
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
                   {listarParticipantes && (
                     <>
                       <h1>Lista de Participantes</h1>

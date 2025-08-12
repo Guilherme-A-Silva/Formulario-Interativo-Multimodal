@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Question, Option
+from .models import Question, Option, UserResponse
 
 class OptionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,7 +13,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ["id", "title", "question", "image_url", "audio_url", "options"]
+        fields = ["id", "title", "question", "image_url", "audio_url", "options", "is_relevant"]
 
     def get_image_url(self, obj):
         request = self.context.get("request")
@@ -26,3 +26,16 @@ class QuestionSerializer(serializers.ModelSerializer):
         if obj.audio and request:
             return request.build_absolute_uri(obj.audio.url)
         return None
+
+class UserResponseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserResponse
+        fields = ["user", "question", "resposta_texto", "resposta_opcao", "tempo_resposta", "data_resposta"]
+        
+class MultipleUserResponsesSerializer(serializers.Serializer):
+    respostas = UserResponseSerializer(many=True)
+
+    def create(self, validated_data):
+        respostas_data = validated_data.pop("respostas")
+        respostas_objs = [UserResponse(**item) for item in respostas_data]
+        return UserResponse.objects.bulk_create(respostas_objs)

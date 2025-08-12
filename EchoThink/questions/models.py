@@ -1,11 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Question(models.Model):
     title = models.CharField(max_length=255)
     question = models.TextField(null=True, blank=True)
     image = models.ImageField(upload_to="perguntas/imagens/", null=True, blank=True)
     audio = models.FileField(upload_to="perguntas/audios/", null=True, blank=True)
-
+    is_relevant = models.BooleanField(default=False)
+    
     def __str__(self):
         return self.title
 
@@ -27,3 +29,14 @@ class Option(models.Model):
 
     def __str__(self):
         return f"{self.question.title} - {self.text}"
+
+class UserResponse(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    resposta_texto = models.TextField(blank=True, null=True)
+    resposta_opcao = models.CharField(max_length=255, blank=True, null=True)
+    tempo_resposta = models.FloatField(blank=True, null=True)  # segundos
+    data_resposta = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} → {self.question.texto}"
