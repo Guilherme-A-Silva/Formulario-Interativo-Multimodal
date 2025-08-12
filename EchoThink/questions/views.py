@@ -73,10 +73,9 @@ def marcar_relevante(request, pk):
     return Response({"mensagem": "Relevância atualizada com sucesso"})
 
 def gerar_relatorio_respostas(request, formato):
-    # Filtra apenas respostas de perguntas marcadas como relevantes
     respostas = UserResponse.objects.filter(question__is_relevant=True).values(
         "user__username",
-        "question__question",  # texto da pergunta
+        "question__question",
         "resposta_texto",
         "resposta_opcao",
         "tempo_resposta",
@@ -87,6 +86,10 @@ def gerar_relatorio_respostas(request, formato):
         return HttpResponse("Nenhuma resposta relevante encontrada", status=404)
 
     df = pd.DataFrame(list(respostas))
+
+    # Converter datetime com timezone para naive, só se tiver coluna 'data_resposta'
+    if 'data_resposta' in df.columns:
+        df['data_resposta'] = pd.to_datetime(df['data_resposta']).dt.tz_localize(None)
 
     if formato == "csv":
         response = HttpResponse(content_type="text/csv")
