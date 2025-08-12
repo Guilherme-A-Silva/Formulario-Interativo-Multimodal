@@ -130,7 +130,7 @@ const LoginDefault = () => {
   };
 
   const renderPergunta = (pergunta) => (
-    <div className="w-full max-w-md p-4 flex flex-col items-center justify-center text-white gap-4">
+    <div className="w-full max-w-xl p-4 flex flex-col items-center justify-center text-white gap-4">
       <h2 className="text-2xl font-bold uppercase text-center">{pergunta.title}</h2>
 
       {pergunta.question && (
@@ -192,12 +192,12 @@ const LoginDefault = () => {
   );
 
   return (
-    <section className="w-screen min-h-screen flex flex-col bg-Primary px-4 py-8">
+    <section className="w-screen min-h-screen flex flex-col bg-Primary px-4 py-8 justify-center items-center">
       <section className="w-full flex items-center justify-center h-full">
         {Instrucao && (
-          <div className="w-full max-w-4xl h-full flex items-center justify-center">
-            <div className="borderlaran">
-            <div className="w-full max-w-md bg-Secundary rounded-lg p-6 flex flex-col items-center gap-6">
+          <div className="w-full max-w-7xl h-full flex items-center justify-center">
+            <div className="w-full max-w-4xl borderlaran">
+            <div className="w-full max-w-4xl bg-Secundary rounded-lg p-6 flex flex-col items-center gap-6">
               <img
                 src={Logo}
                 alt="logo"
@@ -221,9 +221,9 @@ const LoginDefault = () => {
         )}
 
         {Perguntas && (
-          <div className="w-full max-w-4xl h-full flex items-center justify-center">
-            <div className="borderlaran">
-            <div className="w-full max-w-md bg-Secundary p-6 flex flex-col items-center gap-6">
+          <div className="w-full max-w-7xl h-full flex items-center justify-center">
+            <div className="borderlaran max-w-4xl w-full">
+            <div className="w-full max-w-4xl bg-Secundary p-6 flex flex-col items-center gap-6">
               <img
                 src={Logo}
                 alt="logo"
