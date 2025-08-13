@@ -8,12 +8,16 @@ from django.middleware.csrf import get_token
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 
 def hello(request):
     return JsonResponse({"message": "Olá do Django!"})
 
+
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class CSRFTokenView(APIView):
+    permission_classes = [AllowAny]  # <-- permite acesso sem login
+
     def get(self, request):
         token = get_token(request)
         return Response({'csrfToken': token})

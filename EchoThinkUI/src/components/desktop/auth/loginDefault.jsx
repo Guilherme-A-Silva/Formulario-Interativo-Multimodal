@@ -74,9 +74,11 @@ const LoginDefault = () => {
   const [ErrorText, setErrorText] = useState({
     Text: "",
   });
+  
   useEffect(() => {
     fetch("https://cidivan-production.up.railway.app/api/csrf/", {
       method: "GET",
+      credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {
