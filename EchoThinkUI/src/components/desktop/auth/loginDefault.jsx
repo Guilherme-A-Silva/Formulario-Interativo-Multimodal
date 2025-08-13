@@ -57,7 +57,7 @@ const LoginDefault = () => {
     }, []);
 
   if (isValid === true) {
-    navigate("/questions2");
+    navigate("/questions");
   }
 
   const [form, setForm] = useState({
@@ -74,7 +74,7 @@ const LoginDefault = () => {
   const [ErrorText, setErrorText] = useState({
     Text: "",
   });
-  
+
   useEffect(() => {
     fetch("https://cidivan-production.up.railway.app/api/csrf/", {
       method: "GET",
@@ -199,7 +199,7 @@ const LoginDefault = () => {
       .then((data) => {
         console.log("Success:", data);
         // você pode redirecionar ou mostrar mensagem aqui
-        navigate("/questions2"); // Redireciona para a página de dashboard após login
+        navigate("/questions"); // Redireciona para a página de dashboard após login
       })
       .catch((error) => {
         console.error("Error:", error);

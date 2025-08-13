@@ -6,8 +6,9 @@ import LoginScreen from "../desktop/auth/loginDefault";
 import QuestionsScreen from "../desktop/screens/questions";
 import AdminScreen from "../desktop/screens/admin";
 import ResetPasswordScreen from "../desktop/screens/reset";
-import Unauthorized from "../desktop/screens/admin";
+import Unauthorized from "../desktop/screens/Unauthorized";
 import { getCookie } from "../CSRF/csrf";
+import PrivateRouteAdmin from "./PrivateRouteAdmin";
 
 const BACKEND_URL = "https://cidivan-production.up.railway.app";
 
@@ -66,12 +67,15 @@ function RoutesComponent() {
       <Routes>
         <Route path="/" element={<LoginScreen />} />
         <Route path="/login" element={<LoginScreen />} />
-        <Route path="/questions" element={<QuestionsScreen />} />
         <Route
-          path="/questions2"
+          path="/questions"
           element={<PrivateRoute element={QuestionsScreen} />}
         />
-        <Route path="/admin" element={<AdminScreen />} />
+        <Route
+          path="/admin"
+          element={<PrivateRouteAdmin element={AdminScreen} />}
+        />
+        <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/redefinir-senha" element={<ResetPasswordScreen />} />
       </Routes>
     </BrowserRouter>

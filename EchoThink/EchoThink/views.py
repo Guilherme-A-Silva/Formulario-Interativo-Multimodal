@@ -27,9 +27,12 @@ class CurrentUserView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        profile = getattr(request.user, "profile", None)
+        tipo = profile.tipo if profile else False  # False se não tiver perfil
         return Response({
             "username": request.user.username,
             "email": request.user.email,
+            "tipo": tipo
         })
 
 class ValidateTokenView(View):
