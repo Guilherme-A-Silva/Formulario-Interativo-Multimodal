@@ -10,6 +10,7 @@ const LoginDefault = () => {
   const [Logo, setLogo] = useState("");
   const [Instrucao, setInstrucao] = useState(true);
   const [Perguntas, setPerguntas] = useState(false);
+  const [Finalizacao, setFinalizacao] = useState(false);
   const [csrfToken, setCsrfToken] = useState("");
   const [respostaSelecionada, setRespostaSelecionada] = useState(null);
   const [respostas, setRespostas] = useState([]);
@@ -196,6 +197,8 @@ const ShowPerguntas = (event) => {
     setIndicePergunta(IndicePergunta + 1);
     setRespostaSelecionada(null);
   } else {
+    setPerguntas(false);
+    setFinalizacao(true);
     enviarRespostas(novasRespostas);
   }
 };
@@ -248,7 +251,6 @@ const ShowPerguntas = (event) => {
           );
         })}
       </div>
-
       <button
         onClick={proximaPergunta}
         disabled={!respostaSelecionada}
@@ -258,7 +260,7 @@ const ShowPerguntas = (event) => {
             : "bg-gray-500 text-gray-300 cursor-not-allowed"
         }`}
       >
-        PRÓXIMO
+        {IndicePergunta + 1 < ListaPerguntas.length ? "PRÓXIMO" : "FINALIZAR"}
       </button>
     </div>
   );
@@ -317,6 +319,50 @@ const ShowPerguntas = (event) => {
             </div>
           </div>
         )}
+
+        {Finalizacao && (
+          <div className="w-full max-w-7xl h-full flex items-center justify-center">
+            <div className="borderlaran max-w-4xl w-full">
+            <div className="w-full max-w-4xl bg-Secundary p-6 flex flex-col items-center gap-6">
+              <img
+                src={Logo}
+                alt="logo"
+                className="max-w-20 w-full object-contain"
+              />
+              <h1 className="text-3xl font-bold text-center">Obrigado por participar!</h1>
+              <p className="text-center">Suas respostas foram enviadas com sucesso.</p>
+              <button
+                className="bg-Button px-6 py-2 rounded font-bold hover:bg-gray-200 transition"
+                onClick={handleLogout}
+              >
+                Sair
+              </button>
+            </div>
+            </div>
+          </div>
+        )}
+        {Error && (
+          <div className="w-full max-w-7xl h-full flex items-center justify-center">
+            <div className="borderlaran max-w-4xl w-full">
+            <div className="w-full max-w-4xl bg-Secundary p-6 flex flex-col items-center gap-6">
+              <img
+                src={Logo}
+                alt="logo"
+                className="max-w-20 w-full object-contain"
+              />
+              <h1 className="text-3xl font-bold text-center">Erro ao carregar perguntas</h1>
+              <p className="text-center">Por favor, tente novamente mais tarde.</p>
+              <button
+                className="bg-Button px-6 py-2 rounded font-bold hover:bg-gray-200 transition"
+                onClick={ShowInstrucao}
+              >
+                Tentar Novamente
+              </button>
+            </div>
+            </div>
+          </div>
+        )     
+              }
       </section>
     </section>
   );
