@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -13,9 +13,12 @@ from .serializers import RegisterSerializer, UserProfileListSerializer
 from .models import UserProfile
 from .utils.token_reset import gerar_token_reset
 from .utils.token_reset import validar_token_reset
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 
 # ------------------ Registro ------------------
 class RegisterView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if not serializer.is_valid():
@@ -60,6 +63,7 @@ class RegisterView(APIView):
 
 # ------------------ Login ------------------
 class LoginView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
@@ -93,6 +97,7 @@ def listar_participantes(request):
 
 # ------------------ Solicitar Redefinição de Senha ------------------
 @api_view(["POST"])
+@permission_classes([AllowAny])
 def solicitar_redefinicao(request):
     """
     Solicita redefinição de senha enviando um link temporário por e-mail.
@@ -144,6 +149,7 @@ def solicitar_redefinicao(request):
         )
 # ------------------ Redefinir Senha ------------------
 @api_view(["POST"])
+@permission_classes([AllowAny])
 def redefinir_senha(request):
     token = request.data.get("token")
     nova_senha = request.data.get("nova_senha")
