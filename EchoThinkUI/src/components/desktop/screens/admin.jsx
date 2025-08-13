@@ -349,26 +349,47 @@ const marcarRelevante = async (id) => {
                 {home && 
                   <div className="flex flex-col items-center justify-center h-full p-4 text-center">
                     
-                    <h1 className="text-2xl font-semibold mb-4">Bem-vindo ao sistema!</h1>
-                    <p className="max-w-md">
+                    <h1 className="text-2xl font-semibold mb-4 text-white">Bem-vindo ao sistema!</h1>
+                    <p className="max-w-md text-white">
                       Use o menu à esquerda para acessar as opções relevantes do sistema.
                       Aqui você pode navegar e gerenciar todas as funcionalidades disponíveis.
                     </p>
                     <button onClick={handleLogout} className="mt-5 w-1/12 bg-red-500 text-white p-2 rounded">SAIR</button>
                   </div>
                 }
-                {relatorio && (
-                  <div className="flex flex-col items-center gap-2">
-                    <img src={Logo} alt="Logo" className="max-w-[150px] h-auto" />
-                    <h1>Relatório</h1>
-                    <button onClick={() => baixarRelatorio("csv")}>Baixar CSV</button>
-                    <button onClick={() => baixarRelatorio("excel")}>Baixar Excel</button>
-                  </div>
-                )}
+            {relatorio && (
+                <div className="self-center self- w-2/6 flex flex-col items-center gap-4 p-6 bg-green-900 rounded-lg shadow-lg">
+                  {/* Logo */}
+                  <img
+                    src={Logo}
+                    alt="Logo"
+                    className="max-w-[150px] h-auto drop-shadow-lg"
+                  />
 
+                  {/* Título */}
+                  <h1 className="text-white text-2xl font-bold">Relatório</h1>
+
+                  {/* Botões */}
+                  <div className="flex gap-3 mt-2">
+                    <button
+                      className="flex items-center gap-2 bg-green-700 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md transition"
+                      onClick={() => baixarRelatorio("csv")}
+                    >
+                      📄 CSV
+                    </button>
+
+                    <button
+                      className="flex items-center gap-2 bg-green-700 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md transition"
+                      onClick={() => baixarRelatorio("excel")}
+                    >
+                      📊 Excel
+                    </button>
+                  </div>
+                </div>
+              )}
                 {addPerguntas && (
                   <div className="flex flex-col items-center gap-4">
-                    <h1>Adicionar Perguntas</h1>
+                    <h1 className="text-white">Adicionar Perguntas</h1>
                     <form
                       className="flex flex-col gap-2 w-full max-w-lg"
                       onSubmit={async (e) => {
@@ -404,75 +425,102 @@ const marcarRelevante = async (id) => {
                         }
                       }}
                     >
-                      <input
-                        type="text"
-                        placeholder="Título da pergunta"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        className="p-2 border"
-                        required
-                      />
-
-                      <textarea
-                        placeholder="Texto da pergunta (opcional)"
-                        value={question}
-                        onChange={(e) => setQuestion(e.target.value)}
-                        className="p-2 border"
-                      />
-
-                      <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} />
-                      <input type="file" accept="audio/*" onChange={(e) => setAudio(e.target.files[0])} />
-
-                      {options.map((opt, idx) => (
+                      {/* Título */}
                         <input
-                          key={idx}
                           type="text"
-                          placeholder={`Alternativa ${idx + 1}`}
-                          value={opt}
-                          onChange={(e) => {
-                            const newOpts = [...options];
-                            newOpts[idx] = e.target.value;
-                            setOptions(newOpts);
-                          }}
-                          className="p-2 border"
+                          placeholder="Título da pergunta"
+                          value={title}
+                          onChange={(e) => setTitle(e.target.value)}
+                          className="p-2 border border-green-950 rounded-lg bg-green-900 text-white w-full"
                           required
                         />
-                      ))}
 
-                      <button type="submit" className="bg-blue-500 text-white p-2 rounded">
-                        Salvar Pergunta
-                      </button>
+                        <textarea
+                          placeholder="Texto da pergunta (opcional)"
+                          value={question}
+                          onChange={(e) => setQuestion(e.target.value)}
+                          className="p-2 border border-green-950 rounded-lg bg-green-900 text-white w-full"
+                          rows={3}
+                        />
+
+                        {/* Uploads */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+                          <label className="flex flex-col items-center justify-center border border-green-950 rounded-lg p-4 bg-green-900 text-white cursor-pointer hover:bg-green-800 transition">
+                            📷 Imagem
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => setImage(e.target.files[0])}
+                              className="hidden"
+                            />
+                          </label>
+
+                          <label className="flex flex-col items-center justify-center border border-green-950 rounded-lg p-4 bg-green-900 text-white cursor-pointer hover:bg-green-800 transition">
+                            🎵 Áudio
+                            <input
+                              type="file"
+                              accept="audio/*"
+                              onChange={(e) => setAudio(e.target.files[0])}
+                              className="hidden"
+                            />
+                          </label>
+                        </div>
+
+                        {/* Alternativas */}
+                        {options.map((opt, idx) => (
+                          <input
+                            key={idx}
+                            type="text"
+                            placeholder={`Alternativa ${idx + 1}`}
+                            value={opt}
+                            onChange={(e) => {
+                              const newOpts = [...options];
+                              newOpts[idx] = e.target.value;
+                              setOptions(newOpts);
+                            }}
+                            className="p-2 border border-green-950 rounded-lg bg-green-900 text-white w-full"
+                            required
+                          />
+                        ))}
+
+                        {/* Botão */}
+                        <button
+                          type="submit"
+                          className="bg-blue-500 text-white p-2 rounded w-full hover:bg-blue-600 transition"
+                        >
+                          Salvar Pergunta
+                        </button>
                     </form>
                   </div>
                 )}
 
                 {listarPerguntas && (
                   <div className="w-full overflow-auto flex flex-col justify-start items-center">
-                    <h1 className="text-2xl font-bold mb-5">Lista de Perguntas</h1>
+                    <h1 className="text-2xl font-bold mb-5 text-white">Lista de Perguntas</h1>
                     {loadingPerguntas ? (
                       <p>Carregando perguntas...</p>
                     ) : (
                       <table className="border w-full min-w-[800px] border-collapse  border-gray-400">
                         <thead>
                           <tr className="bg-green-900">
-                            <th className=" border-gray-400 p-2 border">Relevante</th>
-                            <th className=" border-gray-400 p-2 border">Título</th>
-                            <th className=" border-gray-400 p-2 border">Pergunta</th>
-                            <th className=" border-gray-400 p-2 border">Imagem</th>
-                            <th className=" border-gray-400 p-2 border">Áudio</th>
-                            <th className=" border-gray-400 p-2 border">Opções</th>
-                            <th className=" border-gray-400 p-2 border">Ações</th>
+                            <th className=" border-gray-400 p-2 border text-white">Relevante</th>
+                            <th className=" border-gray-400 p-2 border text-white">Título</th>
+                            <th className=" border-gray-400 p-2 border text-white">Pergunta</th>
+                            <th className=" border-gray-400 p-2 border text-white">Imagem</th>
+                            <th className=" border-gray-400 p-2 border text-white">Áudio</th>
+                            <th className=" border-gray-400 p-2 border text-white">Opções</th>
+                            <th className=" border-gray-400 p-2 border text-white">Ações</th>
                           </tr>
                         </thead>
                         <tbody>
                           {listaPerguntas.map((p) => (
                             <tr key={p.id} > 
-                              <td className=" border-gray-400 p-2 border text-center">{p.is_relevant ? "On" : "Off"}</td>
-                              <td className=" border-gray-400 p-2 border text-center">{p.title}</td>
-                              <td className=" border-gray-400 p-2 border text-center">{p.question || "-"}</td>
+                              <td className=" border-gray-400 p-2 border text-center text-white">{p.is_relevant ? "On" : "Off"}</td>
+                              <td className=" border-gray-400 p-2 border text-center text-white">{p.title}</td>
+                              <td className=" border-gray-400 p-2 border text-center text-white">{p.question || "-"}</td>
                               <td className=" border-gray-400 p-2 border">
                                 {p.image_url ? (
-                                  <img src={p.image_url} alt="Pergunta" className="border max-w-[100px] max-h-[100px] object-cover" />
+                                  <img src={p.image_url} alt="Pergunta" className="border max-w-[100px] max-h-[100px] object-cover " />
                                 ) : (
                                   "-"
                                 )}
@@ -488,7 +536,7 @@ const marcarRelevante = async (id) => {
                                 )}
                               </td>
                               <td className=" border-gray-400 p-2 border text-center">
-                                <ul className="list-disc pl-4">
+                                <ul className="list-disc pl-4 text-white">
                                   {p.options.map((opt, idx) => (
                                     <li key={idx}>{opt.text}</li>
                                   ))}
@@ -520,32 +568,32 @@ const marcarRelevante = async (id) => {
 
                 {listarParticipantes && (
                   <div className="w-full overflow-auto flex flex-col justify-start items-center">
-                    <h1 className="text-2xl font-bold mb-5">Lista de Participantes</h1>
+                    <h1 className="text-2xl font-bold mb-5 text-white">Lista de Participantes</h1>
                     {loadingParticipantes ? (
                       <p>Carregando participantes...</p>
                     ) : (
                       <table className="w-full min-w-[700px] border-collapse  border-gray-400">
                         <thead>
                           <tr className="bg-green-900">
-                            <th className=" border-gray-400 p-2 border">ID</th>
-                            <th className=" border-gray-400 p-2 border">Nome</th>
-                            <th className=" border-gray-400 p-2 border">Telefone</th>
-                            <th className=" border-gray-400 p-2 border">Endereço</th>
-                            <th className=" border-gray-400 p-2 border">Idade</th>
-                            <th className=" border-gray-400 p-2 border">Gênero</th>
-                            <th className=" border-gray-400 p-2 border">Tipo</th>
+                            <th className=" border-gray-400 p-2 border text-white">ID</th>
+                            <th className=" border-gray-400 p-2 border text-white">Nome</th>
+                            <th className=" border-gray-400 p-2 border text-white">Telefone</th>
+                            <th className=" border-gray-400 p-2 border text-white">Endereço</th>
+                            <th className=" border-gray-400 p-2 border text-white">Idade</th>
+                            <th className=" border-gray-400 p-2 border text-white">Gênero</th>
+                            <th className=" border-gray-400 p-2 border text-white">Tipo</th>
                           </tr>
                         </thead>
                         <tbody>
                           {listarParticipantesArray.map((p) => (
                             <tr key={p.id}>
-                              <td className=" border-gray-400 p-2 border text-center">{p.id}</td>
-                              <td className=" border-gray-400 p-2 border text-center">{p.nome}</td>
-                              <td className=" border-gray-400 p-2 border text-center">{p.telefone}</td>
-                              <td className=" border-gray-400 p-2 border text-center">{p.endereco}</td>
-                              <td className=" border-gray-400 p-2 border text-center">{p.idade}</td>
-                              <td className=" border-gray-400 p-2 border text-center">{p.genero}</td>
-                              <td className=" border-gray-400 p-2 border text-center">{p.tipo ? "Admin" : "Usuário"}</td>
+                              <td className=" border-gray-400 p-2 border text-center text-white">{p.id}</td>
+                              <td className=" border-gray-400 p-2 border text-center text-white">{p.nome}</td>
+                              <td className=" border-gray-400 p-2 border text-center text-white">{p.telefone}</td>
+                              <td className=" border-gray-400 p-2 border text-center text-white">{p.endereco}</td>
+                              <td className=" border-gray-400 p-2 border text-center text-white">{p.idade}</td>
+                              <td className=" border-gray-400 p-2 border text-center text-white">{p.genero}</td>
+                              <td className=" border-gray-400 p-2 border text-center text-white">{p.tipo ? "Admin" : "Usuário"}</td>
                             </tr>
                           ))}
                         </tbody>

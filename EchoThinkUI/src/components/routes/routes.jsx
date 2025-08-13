@@ -75,6 +75,8 @@ function RoutesComponent() {
           path="/admin"
           element={<PrivateRouteAdmin element={AdminScreen} />}
         />
+        <Route path="/questions1" element={<QuestionsScreen />} />
+        <Route path="/admin1" element={<AdminScreen />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/redefinir-senha" element={<ResetPasswordScreen />} />
       </Routes>

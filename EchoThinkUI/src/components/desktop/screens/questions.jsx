@@ -235,7 +235,7 @@ const ShowPerguntas = (event) => {
           return (
             <label
               key={opcao.id || idx}
-              className="flex items-center gap-2 cursor-pointer select-none"
+              className="flex items-center gap-2 cursor-pointer select-none text-white"
             >
               <input
                 type="radio"
@@ -243,7 +243,7 @@ const ShowPerguntas = (event) => {
                 value={textoOpcao}
                 checked={respostaSelecionada === textoOpcao}
                 onChange={(e) => setRespostaSelecionada(e.target.value)}
-                className="accent-white"
+                className="accent-white text-white"
                 required
               />
               {textoOpcao}
@@ -276,14 +276,24 @@ const ShowPerguntas = (event) => {
             <div className="w-full max-w-4xl borderlaran">
               
             <div className="w-full max-w-4xl bg-Secundary flex flex-col gap-6 items-end">
-              <button onClick={handleLogout} className="w-1/12 bg-red-500 text-white p-2 rounded">Sair</button>
+              <button
+                onClick={handleLogout}
+                className="
+                  w-3/12 sm:w-6/12 md:w-4/12 lg:w-2/12 xl:w-1/12
+                  bg-red-500 text-white p-2
+                  text-center font-semibold arr
+                "
+              >
+                Sair
+              </button>
+
               <div className="w-full max-w-4xl p-6 flex flex-col items-center gap-6">
               <img
                 src={Logo}
                 alt="logo"
                 className="max-w-20 w-full object-contain"
               />
-              <h1 className="text-3xl font-bold text-center">Instrução</h1>
+              <h1 className="text-3xl font-bold text-center text-white">Instrução</h1>
               <ul className="list-disc pl-6 text-left text-white space-y-2 max-w-md">
                 <li>Leia atentamente cada pergunta.</li>
                 <li>Escolha apenas uma alternativa por pergunta.</li>
