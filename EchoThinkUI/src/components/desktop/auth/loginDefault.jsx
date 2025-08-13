@@ -251,13 +251,31 @@ const LoginDefault = () => {
       .then((data) => {
         console.log("Success:", data);
         alert("Cadastro realizado com sucesso! Você já pode fazer login.");
-        ShowLogin();
+        reload(); // recarrega a página para limpar o formulário
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   };
 
+  const reload = () => {
+    setForm({
+      username: "",
+      nome: "",
+      telefone: "",
+      endereco: "",
+      idade: "",
+      genero: "",
+      email: "",
+      password: "",
+    });
+    setErrorText({ Text: "" });
+    setLogin(true);
+    setRegister(false);
+    setEsqueceu(false);
+    window.location.reload();
+  };
+  
   const [mensagem, setMensagem] = useState("");
 
   useEffect(() => {
