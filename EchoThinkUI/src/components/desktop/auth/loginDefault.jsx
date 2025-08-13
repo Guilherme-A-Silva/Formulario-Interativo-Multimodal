@@ -114,8 +114,11 @@ const LoginDefault = () => {
   try {
     const response = await fetch("https://cidivan-production.up.railway.app/api/auth/solicitar-redefinicao/", {
       method: "POST",
-      credentials: "include", // mantém cookies/CSRF se necessário
-      headers: { "Content-Type": "application/json" },
+      credentials: "include", 
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+      },
       body: JSON.stringify({ email: email })
     });
 
