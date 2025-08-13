@@ -104,11 +104,23 @@ const LoginDefault = () => {
     setPerguntas(false);
   };
 
-  const ShowPerguntas = (event) => {
-    event.preventDefault();
-    setInstrucao(false);
-    setPerguntas(true);
-  };
+const ShowPerguntas = (event) => {
+  event.preventDefault();
+  setInstrucao(false);
+  setPerguntas(true);
+
+  // Tentar entrar em modo tela cheia
+  const elem = document.documentElement; // pega o <html>
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.mozRequestFullScreen) { // Firefox
+    elem.mozRequestFullScreen();
+  } else if (elem.webkitRequestFullscreen) { // Chrome, Safari e Opera
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { // IE/Edge antigo
+    elem.msRequestFullscreen();
+  }
+};
 
   const enviarRespostas = async (todasRespostas) => {
     try {
@@ -164,29 +176,30 @@ const LoginDefault = () => {
     }
   };
 
-  const proximaPergunta = () => {
-    const endTime = Date.now();
-    const tempoResposta = Math.floor((endTime - startTime) / 1000);
+ const proximaPergunta = () => {
+  const endTime = Date.now();
+  const tempoResposta = endTime - startTime; // já está em milissegundos
 
-    const pergunta = ListaPerguntas[IndicePergunta];
+  const pergunta = ListaPerguntas[IndicePergunta];
 
-    const respostaAtual = {
-      perguntaId: pergunta.id,
-      perguntaTexto: pergunta.question || pergunta.title,
-      resposta: respostaSelecionada,
-      tempoEmSegundos: tempoResposta,
-    };
-
-    const novasRespostas = [...respostas, respostaAtual];
-    setRespostas(novasRespostas);
-
-    if (IndicePergunta + 1 < ListaPerguntas.length) {
-      setIndicePergunta(IndicePergunta + 1);
-      setRespostaSelecionada(null);
-    } else {
-      enviarRespostas(novasRespostas);
-    }
+  const respostaAtual = {
+    perguntaId: pergunta.id,
+    perguntaTexto: pergunta.question || pergunta.title,
+    resposta: respostaSelecionada,
+    tempoEmMilissegundos: tempoResposta, // nome ajustado
   };
+
+  const novasRespostas = [...respostas, respostaAtual];
+  setRespostas(novasRespostas);
+
+  if (IndicePergunta + 1 < ListaPerguntas.length) {
+    setIndicePergunta(IndicePergunta + 1);
+    setRespostaSelecionada(null);
+  } else {
+    enviarRespostas(novasRespostas);
+  }
+};
+
 
   const renderPergunta = (pergunta) => (
     <div className="w-full max-w-xl p-4 flex flex-col items-center justify-center text-white gap-4">
