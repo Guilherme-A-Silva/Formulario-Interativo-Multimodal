@@ -8,6 +8,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from django.core.mail import send_mail
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 
 from .serializers import RegisterSerializer, UserProfileListSerializer
 from .models import UserProfile
@@ -80,11 +81,13 @@ class LoginView(APIView):
         return Response({'error': 'Credenciais inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
 
 # ------------------ Logout ------------------
-@api_view(["POST"])
-@permission_classes([AllowAny])
-def logout_view(request):
-    logout(request)
-    return Response({"mensagem": "Logout realizado com sucesso"})
+@method_decorator(csrf_exempt, name='dispatch')
+class LogoutView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        logout(request)
+        return Response({"mensagem": "Logout realizado com sucesso"}, status=status.HTTP_200_OK)
 
 # ------------------ CSRF ------------------
 @method_decorator(ensure_csrf_cookie, name='dispatch')
