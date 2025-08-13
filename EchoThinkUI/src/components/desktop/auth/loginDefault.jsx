@@ -325,131 +325,183 @@ const LoginDefault = () => {
           </div>
         )}
         {Register && (
-          <div className="w-full flex justify-center items-center min-h-screen p-4">
-            <div className="responsive-containerRegister">
-            <form
-              onSubmit={handleSubmit}
-              className="w-full items-center justify-center flex flex-col border-Config"
-            >
-              <div className="w-full items-center justify-center flex flex-col bg-Secundary">
-                <img src={Logo} alt="" width={"10%"} height={"10%"} />
-                <h1>Cadastro</h1>
+            <div className="bg-Primary w-full flex justify-center items-center min-h-screen p-4 bg-gray-100">
+              <div className="border-Config w-full max-w-2xl rounded-lg shadow-lg">
+              <div className="bg-Secundary  w-full max-w-2xl rounded-lg shadow-lg p-6">
+                <form
+                  onSubmit={handleSubmit}
+                  className="flex flex-col gap-4"
+                >
+                  <h1 className="text-2xl font-bold text-center text-white">Cadastro</h1>
 
-                <h2 className="Input">Insira seu nome completo</h2>
-                <input
-                  type="text"
-                  name="nome"
-                  className="bg-Input"
-                  value={form.nome}
-                  onChange={handleChange}
-                />
-                <h2 className="Input">Insira seu username</h2>
-                <input 
-                  type="text"
-                  name="username"
-                  className="bg-Input"
-                  value={form.username}
-                  onChange={handleChange}
-                />
-                <h2 className="Input">Insira seu telefone</h2>
-                <input
-                  type="tel"
-                  name="telefone"
-                  className="bg-Input"
-                  value={form.telefone}
-                  onChange={handleChange}
-                />
-
-                <h2 className="Input">Insira seu endereço</h2>
-                <input
-                  type="text"
-                  name="endereco"
-                  className="bg-Input"
-                  value={form.endereco}
-                  onChange={handleChange}
-                />
-
-                <div className="flex w-1/2 justify-between items-center">
-                  <div className="flex flex-col w-2/5">
-                    <h2 className="InputCol">Insira sua idade</h2>
+                  {/* Nome completo */}
+                  <div>
+                    <label className="block font-medium text-white">Nome completo</label>
                     <input
                       type="text"
-                      name="idade"
-                      className="bg-InputCol"
-                      value={form.idade}
+                      name="nome"
+                      className="w-full p-2 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500"
+                      value={form.nome}
                       onChange={handleChange}
                     />
                   </div>
 
-                  <div className="flex flex-col w-2/5">
-                    <h2 className="InputCol">Insira seu gênero</h2>
+                  {/* Username */}
+                  <div>
+                    <label className="block font-medium text-white">Username</label>
                     <input
                       type="text"
-                      name="genero"
-                      className="bg-InputCol"
-                      value={form.genero}
+                      name="username"
+                      className="w-full p-2 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500"
+                      value={form.username}
                       onChange={handleChange}
                     />
                   </div>
+
+                  {/* Telefone */}
+                  <div>
+                    <label className="block font-medium text-white">Telefone</label>
+                    <input
+                      type="tel"
+                      name="telefone"
+                      className="w-full p-2 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500"
+                      value={form.telefone}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  {/* Endereço */}
+                  <div>
+                    <label className="block font-medium text-white">Endereço</label>
+                    <input
+                      type="text"
+                      name="endereco"
+                      className="w-full p-2 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500"
+                      value={form.endereco}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  {/* Idade e Gênero - lado a lado no desktop */}
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex-1">
+                      <label className="block font-medium text-white">Idade</label>
+                      <input
+                        type="text"
+                        name="idade"
+                        className="w-full p-2 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500"
+                        value={form.idade}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    <div className="flex-1">
+                      <label className="block font-medium text-white">Gênero</label>
+                      <input
+                        type="text"
+                        name="genero"
+                        className="w-full p-2 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500"
+                        value={form.genero}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Email */}
+                  <div>
+                    <label className="block font-medium text-white">Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      className="w-full p-2 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500"
+                      value={form.email}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  {/* Senha */}
+                  <div>
+                    <label className="block font-medium text-white">Senha</label>
+                    <input
+                      type="password"
+                      name="password"
+                      className="w-full p-2 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500"
+                      value={form.password}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  {/* Botão */}
+                  <button
+                    type="submit"
+                    className="w-full bg-green-600 text-white font-semibold p-2 rounded-lg hover:bg-green-700 transition"
+                  >
+                    Cadastrar
+                  </button>
+
+                  {/* Link para login */}
+                  <p className="text-center text-sm text-white">
+                    Já tem uma conta?{" "}
+                    <a
+                      href="#"
+                      onClick={ShowLogin}
+                      className="text-green-600 hover:underline"
+                    >
+                      Entrar
+                    </a>
+                  </p>
+                </form>
+              </div>
+              </div>
+            </div>
+          )}
+        {Esqueceu && (
+          <div className="bg-Primary w-full min-h-screen flex items-center justify-center bg-gray-100 p-4">
+            <div className="border-Config w-full max-w-md rounded-lg shadow-lg">
+            <div className="bg-Secundary w-full max-w-md bg-white rounded-xl shadow-lg p-6 flex flex-col items-center">
+              {/* Logo */}
+              <img src={Logo} alt="Logo" className="w-24 h-24 mb-4" />
+
+              <h1 className="text-2xl font-bold text-white mb-6">Esqueci a senha</h1>
+
+              {/* Formulário */}
+              <form
+                onSubmit={handleSubmitReset}
+                className="w-full flex flex-col gap-4 items-center"
+              >
+                <div className="w-full">
+                  <label className="block text-white font-medium mb-1">Email</label>
+                  <input
+                    type="text"
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Digite seu email"
+                    required
+                  />
                 </div>
 
-                <h2 className="Input">Insira seu Email</h2>
-                <input
-                  type="email"
-                  name="email"
-                  className="bg-Input"
-                  value={form.email}
-                  onChange={handleChange}
-                />
-
-                <h2 className="Input">Insira sua senha</h2>
-                <input
-                  type="password"
-                  name="password"
-                  className="bg-Input"
-                  value={form.password}
-                  onChange={handleChange}
-                />
-
-                <button type="submit" className="bg-Button">
-                  CADASTRAR
+                <button
+                  type="submit"
+                  className="w-full bg-green-600 text-white font-semibold p-2 rounded-lg hover:bg-green-700 transition"
+                >
+                  Recuperar
                 </button>
+              </form>
 
+              {/* Links */}
+              <div className="flex flex-col gap-2 mt-6 text-sm text-white">
                 <a
                   href="#"
                   onClick={ShowLogin}
-                  className="mb hover:text-inherit"
+                  className="hover:text-green-600 hover:underline text-center text-white" 
                 >
-                  Já tenho uma conta.
-                </a>
-              </div>
-            </form>
-            </div>
-          </div>
-        )}
-        {Esqueceu && (
-          <div className="w-full h-screen flex items-center justify-center ">
-            <div className="responsive-containerEsqueceu">
-            <div className="w-full items-center justify-center flex flex-col border-Config">
-              <div className="w-full items-center justify-center flex flex-col bg-Secundary">
-                <img src={Logo} alt="" width={"10%"} height={"10%"} />
-                <h1>Esqueci a senha</h1>
-                <form onSubmit={handleSubmitReset} className="space-y-4 justify-start w-full items-center flex flex-col">
-                <h2 className="Input">Insira seu Email</h2>
-                <input type="text" className="bg-white p-2 rounded-lg w-10/12 text-black " value={email} onChange={(e) => setEmail(e.target.value)}/>
-                <button className="bg-Button" type="submit">Recuperar</button>
-                </form>
-                <a
-                  href="#"
-                  onClick={ShowLogin}
-                  className="mt hover:text-inherit"
-                >
-                  Possui uma conta? Clique aqui
+                  Já possui uma conta? Clique aqui
                 </a>
                 <a
                   href="#"
                   onClick={ShowRegister}
-                  className="mb hover:text-inherit"
+                  className="hover:text-green-600 hover:underline text-center text-white"
                 >
                   Não tem uma conta? Clique aqui
                 </a>
