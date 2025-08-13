@@ -82,7 +82,7 @@ class LoginView(APIView):
 
 # ------------------ Logout ------------------
 class LogoutView(APIView):
-    permission_classes = [IsAuthenticated]  # apenas usuários logados
+    permission_classes = [AllowAny]
 
     def post(self, request):
         logout(request)
