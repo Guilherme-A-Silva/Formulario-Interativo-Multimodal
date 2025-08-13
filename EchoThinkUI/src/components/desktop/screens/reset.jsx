@@ -5,6 +5,46 @@ export default function RedefinirSenha() {
   const [confirmarSenha, setConfirmarSenha] = useState("");
   const [mensagem, setMensagem] = useState("");
   const [token, setToken] = useState("");
+  const [csrfToken, setCsrfToken] = useState("");
+  const [isValid, setIsValid] = useState(null);
+  const BACKEND_URL = "https://cidivan-production.up.railway.app";
+      useEffect(() => {
+        const validateSession = async () => {
+          try {
+            // Primeiro: obter o CSRF token (o cookie será setado aqui)
+            await fetch(`${BACKEND_URL}/api/csrf/`, {
+              method: "GET",
+              credentials: "include",
+            })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log("Token do backend:", data.csrfToken);
+              setCsrfToken(data.csrfToken);
+            })
+            .catch((err) => console.error("Erro ao buscar CSRF:", err));
+          
+            // Segundo: validar a sessão com CSRF
+            const response = await fetch(`${BACKEND_URL}/me/`, {
+              method: "GET",
+              headers: {
+                "X-CSRFToken": csrfToken,
+              },
+              credentials: "include",
+            });
+    
+            if (response.ok) {
+              setIsValid(true);
+            } else {
+              setIsValid(false);
+            }
+          } catch (error) {
+            console.error("Erro na validação da sessão:", error);
+            setIsValid(false);
+          }
+        };
+    
+        validateSession();
+      }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -33,7 +73,10 @@ export default function RedefinirSenha() {
       const response = await fetch("https://cidivan-production.up.railway.app/api/auth/redefinir-senha/", {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+      },
         body: JSON.stringify({
           token: token,
           nova_senha: novaSenha
