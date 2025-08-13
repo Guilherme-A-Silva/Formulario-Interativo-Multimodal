@@ -3,15 +3,18 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from django.core.mail import send_mail
 from django.conf import settings
 
-from .serializers import RegisterSerializer, UserProfileListSerializer  # Importe seu serializer de participantes aqui
+from .serializers import RegisterSerializer, UserProfileListSerializer
 from .models import UserProfile
+from .utils.token_reset import gerar_token_reset
+from .utils.token_reset import validar_token_reset
 
-# Registro do usuário
+# ------------------ Registro ------------------
 class RegisterView(APIView):
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
@@ -54,7 +57,8 @@ class RegisterView(APIView):
         except Exception as e:
             return f"falha no envio: {str(e)}"
 
-# Login baseado em sessão (SessionAuthentication)
+
+# ------------------ Login ------------------
 class LoginView(APIView):
     def post(self, request):
         username = request.data.get('username')
@@ -71,15 +75,108 @@ class LoginView(APIView):
 
         return Response({'error': 'Credenciais inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
 
-# Define o cookie de CSRF para que o frontend possa usá-lo
+
+# ------------------ CSRF ------------------
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class CSRFTokenView(APIView):
     def get(self, request):
         return Response({'message': 'CSRF token definido'})
 
-# View para listar participantes
+
+# ------------------ Listar Participantes ------------------
 @api_view(['GET'])
 def listar_participantes(request):
     participantes = UserProfile.objects.all()
     serializer = UserProfileListSerializer(participantes, many=True)
     return Response(serializer.data)
+
+
+# ------------------ Solicitar Redefinição de Senha ------------------
+@api_view(["POST"])
+def solicitar_redefinicao(request):
+    """
+    Solicita redefinição de senha enviando um link temporário por e-mail.
+    """
+    email = request.data.get("email")
+    if not email:
+        return Response({"erro": "Email é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        # Sempre responde igual para evitar exposição de dados
+        return Response(
+            {"mensagem": "Se este email existir, você receberá instruções."},
+            status=status.HTTP_200_OK
+        )
+
+    # Gera token temporário (com expiração definida no util)
+    token = gerar_token_reset(user.username)
+
+    # Link para frontend
+    link = f"https://frontend-production-78a1.up.railway.app/redefinir-senha/?token={token}"
+
+    assunto = "🔑 Redefinição de senha - EchoThink"
+    mensagem = (
+        f"Olá, {user.username}!\n\n"
+        "Recebemos uma solicitação para redefinir sua senha.\n"
+        f"Acesse o link abaixo para continuar (válido por 30 minutos):\n\n"
+        f"{link}\n\n"
+        "Se você não solicitou, ignore este email."
+    )
+
+    try:
+        send_mail(
+            subject=assunto,
+            message=mensagem,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[user.email],
+            fail_silently=False,
+        )
+        return Response(
+            {"mensagem": "Se este email existir, você receberá instruções."},
+            status=status.HTTP_200_OK
+        )
+    except Exception as e:
+        return Response(
+            {"erro": f"Falha no envio do email: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+# ------------------ Redefinir Senha ------------------
+@api_view(["POST"])
+def redefinir_senha(request):
+    token = request.data.get("token")
+    nova_senha = request.data.get("nova_senha")
+
+    if not token or not nova_senha:
+        return Response(
+            {"erro": "Token e nova senha são obrigatórios"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    # Valida o token
+    resultado = validar_token_reset(token)
+    if not resultado["valido"]:
+        return Response(
+            {"erro": "Token inválido ou expirado", "detalhes": resultado.get("erro")},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    username = resultado["dados"]["username"]
+
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return Response(
+            {"erro": "Usuário não encontrado"},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    # Atualiza a senha
+    user.set_password(nova_senha)
+    user.save()
+
+    return Response(
+        {"mensagem": "Senha redefinida com sucesso"},
+        status=status.HTTP_200_OK
+    )

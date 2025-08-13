@@ -103,6 +103,35 @@ const LoginDefault = () => {
     loadImages();
   }, []);
 
+  const [email, setEmail] = useState("");
+
+  const handleSubmitReset = (e) => {
+    e.preventDefault();
+    solicitarRedefinicaoSenha(email);
+  };
+
+  async function solicitarRedefinicaoSenha(email) {
+  try {
+    const response = await fetch("https://cidivan-production.up.railway.app/api/auth/solicitar-redefinicao/", {
+      method: "POST",
+      credentials: "include", // mantém cookies/CSRF se necessário
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert(data.mensagem || "Se este email existir, você receberá instruções.");
+    } else {
+      alert(data.erro || "Erro ao solicitar redefinição de senha.");
+    }
+  } catch (error) {
+    alert("❌ Erro de conexão com o servidor.");
+  }
+}
+
+
   const ShowLogin = (event) => {
     event.preventDefault();
     setLogin(true);
@@ -386,9 +415,11 @@ const LoginDefault = () => {
               <div className="w-full items-center justify-center flex flex-col bg-Secundary">
                 <img src={Logo} alt="" width={"10%"} height={"10%"} />
                 <h1>Esqueci a senha</h1>
+                <form onSubmit={handleSubmit} className="space-y-4 justify-start w-full items-center flex flex-col">
                 <h2 className="Input">Insira seu Email</h2>
-                <input type="text" className="bg-white p-2 rounded-lg w-10/12 text-black " />
+                <input type="text" className="bg-white p-2 rounded-lg w-10/12 text-black " value={email} onChange={(e) => setEmail(e.target.value)}/>
                 <button className="bg-Button">Recuperar</button>
+                </form>
                 <a
                   href="#"
                   onClick={ShowLogin}

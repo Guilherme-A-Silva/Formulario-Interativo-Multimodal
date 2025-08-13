@@ -197,7 +197,7 @@ const LoginDefault = () => {
         {Instrucao && (
           <div className="w-full max-w-7xl h-full flex items-center justify-center">
             <div className="w-full max-w-4xl borderlaran">
-            <div className="w-full max-w-4xl bg-Secundary rounded-lg p-6 flex flex-col items-center gap-6">
+            <div className="w-full max-w-4xl bg-Secundary p-6 flex flex-col items-center gap-6">
               <img
                 src={Logo}
                 alt="logo"

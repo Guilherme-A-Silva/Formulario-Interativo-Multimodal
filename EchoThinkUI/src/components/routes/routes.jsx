@@ -5,6 +5,7 @@ import { isMobile } from "react-device-detect";
 import LoginScreen from "../desktop/auth/loginDefault";
 import QuestionsScreen from "../desktop/screens/questions";
 import AdminScreen from "../desktop/screens/admin";
+import ResetPasswordScreen from "../desktop/screens/reset";
 import Unauthorized from "../desktop/screens/admin";
 import { getCookie } from "../CSRF/csrf";
 
@@ -70,6 +71,7 @@ function RoutesComponent() {
           element={<PrivateRoute element={QuestionsScreen} />}
         />
         <Route path="/admin" element={<AdminScreen />} />
+        <Route path="/redefinir-senha" element={<ResetPasswordScreen />} />
       </Routes>
     </BrowserRouter>
   );
