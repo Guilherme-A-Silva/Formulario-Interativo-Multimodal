@@ -421,7 +421,7 @@ const LoginDefault = () => {
                 <form onSubmit={handleSubmit} className="space-y-4 justify-start w-full items-center flex flex-col">
                 <h2 className="Input">Insira seu Email</h2>
                 <input type="text" className="bg-white p-2 rounded-lg w-10/12 text-black " value={email} onChange={(e) => setEmail(e.target.value)}/>
-                <button className="bg-Button">Recuperar</button>
+                <button className="bg-Button" type="submit">Recuperar</button>
                 </form>
                 <a
                   href="#"
