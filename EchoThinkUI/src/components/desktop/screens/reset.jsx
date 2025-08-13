@@ -30,7 +30,7 @@ export default function RedefinirSenha() {
     }
 
     try {
-      const response = await fetch("https://seusite.com/api/redefinir-senha/", {
+      const response = await fetch("https://cidivan-production.up.railway.app/api/redefinir-senha/", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
