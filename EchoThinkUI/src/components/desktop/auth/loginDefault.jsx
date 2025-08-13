@@ -240,7 +240,7 @@ const LoginDefault = () => {
         {Login && (
           <div className="w-full flex justify-center items-center min-h-screen p-4">
             <div className="responsive-container">
-              <div className="border w-full items-center justify-center resposive-containerblack">
+              <div className="w-full items-center justify-center resposive-containerblack">
               <div className="mb-4 text-center text-white font-medium text-sm">
                 Mensagem do backend: {mensagem}
               </div>
@@ -281,9 +281,9 @@ const LoginDefault = () => {
             <div className="responsive-containerRegister">
             <form
               onSubmit={handleSubmit}
-              className="border w-full items-center justify-center flex flex-col border-Config"
+              className="w-full items-center justify-center flex flex-col border-Config"
             >
-              <div className="border w-full items-center justify-center flex flex-col bg-Secundary">
+              <div className="w-full items-center justify-center flex flex-col bg-Secundary">
                 <img src={Logo} alt="" width={"10%"} height={"10%"} />
                 <h1>Cadastro</h1>
 
@@ -382,8 +382,8 @@ const LoginDefault = () => {
         {Esqueceu && (
           <div className="w-full h-screen flex items-center justify-center ">
             <div className="responsive-containerEsqueceu">
-            <div className="border w-full items-center justify-center flex flex-col border-Config">
-              <div className="border w-full items-center justify-center flex flex-col bg-Secundary">
+            <div className="w-full items-center justify-center flex flex-col border-Config">
+              <div className="w-full items-center justify-center flex flex-col bg-Secundary">
                 <img src={Logo} alt="" width={"10%"} height={"10%"} />
                 <h1>Esqueci a senha</h1>
                 <h2 className="Input">Insira seu Email</h2>

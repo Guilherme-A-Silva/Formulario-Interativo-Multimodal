@@ -28,6 +28,15 @@ const LoginDefault = () => {
   const [options, setOptions] = useState(["", "", ""]);
 
   const [listaPerguntas, setListaPerguntas] = useState([
+    {
+      id: 0,
+      title: "",
+      question: "",
+      image_url: "",
+      audio_url: "",
+      options: [],
+      is_relevant: false,
+    },
   ]);
 
   //const [listaPerguntas, setListaPerguntas] = useState([]);
@@ -419,32 +428,32 @@ const marcarRelevante = async (id) => {
                     {loadingPerguntas ? (
                       <p>Carregando perguntas...</p>
                     ) : (
-                      <table className="w-full min-w-[800px] border-collapse  border-gray-400">
+                      <table className="border w-full min-w-[800px] border-collapse  border-gray-400">
                         <thead>
-                          <tr className="bg-gray-200">
-                            <th className=" border-gray-400 p-2">ID</th>
-                            <th className=" border-gray-400 p-2">Título</th>
-                            <th className=" border-gray-400 p-2">Pergunta</th>
-                            <th className=" border-gray-400 p-2">Imagem</th>
-                            <th className=" border-gray-400 p-2">Áudio</th>
-                            <th className=" border-gray-400 p-2">Opções</th>
-                            <th className=" border-gray-400 p-2">Ações</th>
+                          <tr className="bg-green-900">
+                            <th className=" border-gray-400 p-2 border">Relevante</th>
+                            <th className=" border-gray-400 p-2 border">Título</th>
+                            <th className=" border-gray-400 p-2 border">Pergunta</th>
+                            <th className=" border-gray-400 p-2 border">Imagem</th>
+                            <th className=" border-gray-400 p-2 border">Áudio</th>
+                            <th className=" border-gray-400 p-2 border">Opções</th>
+                            <th className=" border-gray-400 p-2 border">Ações</th>
                           </tr>
                         </thead>
                         <tbody>
                           {listaPerguntas.map((p) => (
-                            <tr key={p.id}>
-                              <td className=" border-gray-400 p-2">{p.id}</td>
-                              <td className=" border-gray-400 p-2">{p.title}</td>
-                              <td className=" border-gray-400 p-2">{p.question || "-"}</td>
-                              <td className=" border-gray-400 p-2">
+                            <tr key={p.id} > 
+                              <td className=" border-gray-400 p-2 border text-center">{p.is_relevant ? "On" : "Off"}</td>
+                              <td className=" border-gray-400 p-2 border text-center">{p.title}</td>
+                              <td className=" border-gray-400 p-2 border text-center">{p.question || "-"}</td>
+                              <td className=" border-gray-400 p-2 border">
                                 {p.image_url ? (
-                                  <img src={p.image_url} alt="Pergunta" className="max-w-[100px] max-h-[100px] object-cover" />
+                                  <img src={p.image_url} alt="Pergunta" className="border max-w-[100px] max-h-[100px] object-cover" />
                                 ) : (
                                   "-"
                                 )}
                               </td>
-                              <td className=" border-gray-400 p-2">
+                              <td className=" border-gray-400 p-2 border">
                                 {p.audio_url ? (
                                   <audio controls className="w-32">
                                     <source src={p.audio_url} type="audio/mpeg" />
@@ -454,26 +463,28 @@ const marcarRelevante = async (id) => {
                                   "-"
                                 )}
                               </td>
-                              <td className=" border-gray-400 p-2">
+                              <td className=" border-gray-400 p-2 border text-center">
                                 <ul className="list-disc pl-4">
                                   {p.options.map((opt, idx) => (
                                     <li key={idx}>{opt.text}</li>
                                   ))}
                                 </ul>
                               </td>
-                              <td className=" border-gray-400 p-2 text-center">
+                              <td className=" border-gray-400 p-2 text-center border flex justify-center items-center gap-2">
                                 <button
                                   onClick={() => deletePergunta(p.id)}
                                   className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
                                 >
                                   Excluir
                                 </button>
+             
                                 <button
                                   onClick={() => marcarRelevante(p.id)}
-                                  className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 ml-1"
+                                  className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
                                 >
-                                  Marcar Relevante
+                                  Ativar relevância 
                                 </button>
+                            
                               </td>
                             </tr>
                           ))}
@@ -484,35 +495,33 @@ const marcarRelevante = async (id) => {
                 )}
 
                 {listarParticipantes && (
-                  <div className="w-full overflow-auto">
-                    <h1>Lista de Participantes</h1>
+                  <div className="w-full overflow-auto flex flex-col justify-start items-center">
+                    <h1 className="text-2xl font-bold mb-5">Lista de Participantes</h1>
                     {loadingParticipantes ? (
                       <p>Carregando participantes...</p>
                     ) : (
                       <table className="w-full min-w-[700px] border-collapse  border-gray-400">
                         <thead>
-                          <tr className="bg-gray-200">
-                            <th className=" border-gray-400 p-2">ID</th>
-                            <th className=" border-gray-400 p-2">Usuário</th>
-                            <th className=" border-gray-400 p-2">Nome</th>
-                            <th className=" border-gray-400 p-2">Telefone</th>
-                            <th className=" border-gray-400 p-2">Endereço</th>
-                            <th className=" border-gray-400 p-2">Idade</th>
-                            <th className=" border-gray-400 p-2">Gênero</th>
-                            <th className=" border-gray-400 p-2">Tipo</th>
+                          <tr className="bg-green-900">
+                            <th className=" border-gray-400 p-2 border">ID</th>
+                            <th className=" border-gray-400 p-2 border">Nome</th>
+                            <th className=" border-gray-400 p-2 border">Telefone</th>
+                            <th className=" border-gray-400 p-2 border">Endereço</th>
+                            <th className=" border-gray-400 p-2 border">Idade</th>
+                            <th className=" border-gray-400 p-2 border">Gênero</th>
+                            <th className=" border-gray-400 p-2 border">Tipo</th>
                           </tr>
                         </thead>
                         <tbody>
                           {listarParticipantesArray.map((p) => (
                             <tr key={p.id}>
-                              <td className=" border-gray-400 p-2">{p.id}</td>
-                              <td className=" border-gray-400 p-2">{p.user.username}</td>
-                              <td className=" border-gray-400 p-2">{p.nome}</td>
-                              <td className=" border-gray-400 p-2">{p.telefone}</td>
-                              <td className=" border-gray-400 p-2">{p.endereco}</td>
-                              <td className=" border-gray-400 p-2">{p.idade}</td>
-                              <td className=" border-gray-400 p-2">{p.genero}</td>
-                              <td className=" border-gray-400 p-2">{p.tipo ? "Admin" : "Usuário"}</td>
+                              <td className=" border-gray-400 p-2 border text-center">{p.id}</td>
+                              <td className=" border-gray-400 p-2 border text-center">{p.nome}</td>
+                              <td className=" border-gray-400 p-2 border text-center">{p.telefone}</td>
+                              <td className=" border-gray-400 p-2 border text-center">{p.endereco}</td>
+                              <td className=" border-gray-400 p-2 border text-center">{p.idade}</td>
+                              <td className=" border-gray-400 p-2 border text-center">{p.genero}</td>
+                              <td className=" border-gray-400 p-2 border text-center">{p.tipo ? "Admin" : "Usuário"}</td>
                             </tr>
                           ))}
                         </tbody>
