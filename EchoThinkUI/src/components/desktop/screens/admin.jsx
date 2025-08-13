@@ -281,6 +281,7 @@ const marcarRelevante = async (id) => {
         credentials: "include", // importante para enviar cookies de sessão
         headers: {
           "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
         },
       });
 
