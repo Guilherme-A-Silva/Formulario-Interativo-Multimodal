@@ -418,7 +418,7 @@ const LoginDefault = () => {
               <div className="w-full items-center justify-center flex flex-col bg-Secundary">
                 <img src={Logo} alt="" width={"10%"} height={"10%"} />
                 <h1>Esqueci a senha</h1>
-                <form onSubmit={handleSubmit} className="space-y-4 justify-start w-full items-center flex flex-col">
+                <form onSubmit={handleSubmitReset} className="space-y-4 justify-start w-full items-center flex flex-col">
                 <h2 className="Input">Insira seu Email</h2>
                 <input type="text" className="bg-white p-2 rounded-lg w-10/12 text-black " value={email} onChange={(e) => setEmail(e.target.value)}/>
                 <button className="bg-Button" type="submit">Recuperar</button>
