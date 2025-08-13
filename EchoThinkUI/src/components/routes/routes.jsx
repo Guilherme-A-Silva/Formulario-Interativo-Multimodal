@@ -65,6 +65,7 @@ function RoutesComponent() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LoginScreen />} />
+        <Route path="/login" element={<LoginScreen />} />
         <Route path="/questions" element={<QuestionsScreen />} />
         <Route
           path="/questions2"

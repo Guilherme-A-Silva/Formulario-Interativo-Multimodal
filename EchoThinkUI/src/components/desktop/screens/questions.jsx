@@ -105,6 +105,28 @@ const LoginDefault = () => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("https://cidivan-production.up.railway.app/api/auth/logout/", {
+        method: "POST",
+        credentials: "include", // importante para enviar cookies de sessão
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        alert("Logout realizado com sucesso!");
+        window.location.href = "/"; // redireciona para a tela de login
+      } else {
+        const data = await response.json();
+        alert("Erro ao deslogar: " + (data.mensagem || "Erro desconhecido"));
+      }
+    } catch (error) {
+      console.error("Erro no logout:", error);
+    }
+  };
+
   const proximaPergunta = () => {
     const endTime = Date.now();
     const tempoResposta = Math.floor((endTime - startTime) / 1000);
@@ -191,13 +213,19 @@ const LoginDefault = () => {
     </div>
   );
 
+  
   return (
     <section className="w-screen min-h-screen flex flex-col bg-Primary px-4 py-8 justify-center items-center">
+      
       <section className="w-full flex items-center justify-center h-full">
         {Instrucao && (
           <div className="w-full max-w-7xl h-full flex items-center justify-center">
+            
             <div className="w-full max-w-4xl borderlaran">
-            <div className="w-full max-w-4xl bg-Secundary p-6 flex flex-col items-center gap-6">
+              
+            <div className="w-full max-w-4xl bg-Secundary flex flex-col gap-6 items-end">
+              <button onClick={handleLogout} className="w-1/12 bg-red-500 text-white p-2 rounded">Sair</button>
+              <div className="w-full max-w-4xl p-6 flex flex-col items-center gap-6">
               <img
                 src={Logo}
                 alt="logo"
@@ -215,6 +243,7 @@ const LoginDefault = () => {
               >
                 INICIAR
               </button>
+              </div>
             </div>
             </div>
           </div>

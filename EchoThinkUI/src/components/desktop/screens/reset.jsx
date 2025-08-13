@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function RedefinirSenha() {
   const [novaSenha, setNovaSenha] = useState("");
@@ -7,6 +8,7 @@ export default function RedefinirSenha() {
   const [token, setToken] = useState("");
   const [csrfToken, setCsrfToken] = useState("");
   const [isValid, setIsValid] = useState(null);
+  const navigate = useNavigate();
   const BACKEND_URL = "https://cidivan-production.up.railway.app";
       useEffect(() => {
         const validateSession = async () => {
@@ -88,6 +90,7 @@ export default function RedefinirSenha() {
         setMensagem("✅ Senha redefinida com sucesso! Você já pode fazer login.");
         setNovaSenha("");
         setConfirmarSenha("");
+        navigate("/login");
       } else {
         setMensagem(data.erro || "❌ Erro ao redefinir senha.");
       }

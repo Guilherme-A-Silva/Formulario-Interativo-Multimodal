@@ -274,6 +274,28 @@ const marcarRelevante = async (id) => {
     fetchParticipantes();
   };
 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("https://cidivan-production.up.railway.app/api/auth/logout/", {
+        method: "POST",
+        credentials: "include", // importante para enviar cookies de sessão
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        alert("Logout realizado com sucesso!");
+        window.location.href = "/"; // redireciona para a tela de login
+      } else {
+        const data = await response.json();
+        alert("Erro ao deslogar: " + (data.mensagem || "Erro desconhecido"));
+      }
+    } catch (error) {
+      console.error("Erro no logout:", error);
+    }
+  };
+
   return (
   <section className="w-screen h-screen flex flex-col bg-Primary overflow-hidden">
     <section className="flex-1 flex items-center justify-center overflow-hidden">
@@ -326,11 +348,13 @@ const marcarRelevante = async (id) => {
                 
                 {home && 
                   <div className="flex flex-col items-center justify-center h-full p-4 text-center">
+                    
                     <h1 className="text-2xl font-semibold mb-4">Bem-vindo ao sistema!</h1>
                     <p className="max-w-md">
                       Use o menu à esquerda para acessar as opções relevantes do sistema.
                       Aqui você pode navegar e gerenciar todas as funcionalidades disponíveis.
                     </p>
+                    <button onClick={handleLogout} className="mt-5 w-1/12 bg-red-500 text-white p-2 rounded">SAIR</button>
                   </div>
                 }
                 {relatorio && (
