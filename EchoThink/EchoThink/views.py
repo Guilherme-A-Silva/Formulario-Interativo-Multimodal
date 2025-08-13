@@ -24,7 +24,7 @@ class CSRFTokenView(APIView):
 
 # Verificar se o usuário está logado
 class CurrentUserView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         return Response({
