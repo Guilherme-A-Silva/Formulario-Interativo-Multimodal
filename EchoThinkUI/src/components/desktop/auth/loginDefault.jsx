@@ -275,7 +275,7 @@ const LoginDefault = () => {
     setEsqueceu(false);
     window.location.reload();
   };
-  
+
   const [mensagem, setMensagem] = useState("");
 
   useEffect(() => {
@@ -292,9 +292,6 @@ const LoginDefault = () => {
           <div className="w-full flex justify-center items-center min-h-screen p-4">
             <div className="responsive-container">
               <div className="w-full items-center justify-center resposive-containerblack">
-              <div className="mb-4 text-center text-white font-medium text-sm">
-                Mensagem do backend: {mensagem}
-              </div>
               <h1 className="text-center">Login</h1>
               <form onSubmit={LoginSubmit}>
                 <h2>Insira seu Username</h2>
