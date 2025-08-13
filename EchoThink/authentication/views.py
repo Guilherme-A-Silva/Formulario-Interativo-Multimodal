@@ -81,14 +81,13 @@ class LoginView(APIView):
         return Response({'error': 'Credenciais inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
 
 # ------------------ Logout ------------------
-@method_decorator(csrf_exempt, name='dispatch')
 class LogoutView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]  # apenas usuários logados
 
     def post(self, request):
         logout(request)
         return Response({"mensagem": "Logout realizado com sucesso"}, status=status.HTTP_200_OK)
-
+    
 # ------------------ CSRF ------------------
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class CSRFTokenView(APIView):
