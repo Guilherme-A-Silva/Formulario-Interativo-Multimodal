@@ -250,7 +250,8 @@ const LoginDefault = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Success:", data);
-        // você pode redirecionar ou mostrar mensagem aqui
+        alert("Cadastro realizado com sucesso! Você já pode fazer login.");
+        ShowLogin();
       })
       .catch((error) => {
         console.error("Error:", error);
