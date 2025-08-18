@@ -19,6 +19,10 @@
   background-color: #072E23;
 }
 
+.bg-PrimaryFocus {
+  background-color: #818181;
+}
+
 .menu-box{
   height: 90%;
 }

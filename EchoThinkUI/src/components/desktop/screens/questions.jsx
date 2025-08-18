@@ -18,6 +18,7 @@ const LoginDefault = () => {
   const [IndicePergunta, setIndicePergunta] = useState(0);
   const [ListaPerguntas, setListaPerguntas] = useState([]);
 
+
   const BACKEND_URL = "https://cidivan-production.up.railway.app";
   
         useEffect(() => {
@@ -225,7 +226,7 @@ const ShowPerguntas = (event) => {
         </audio>
       )}
 
-      <div className="flex flex-col gap-3 mt-4 max-w-md w-full">
+      <div className="flex  gap-3 mt-4 max-w-md w-full justify-center items-center">
         {pergunta.options.map((opcao, idx) => {
           const textoOpcao =
             typeof opcao === "object" && opcao !== null
@@ -267,7 +268,7 @@ const ShowPerguntas = (event) => {
 
   
   return (
-    <section className="w-screen min-h-screen flex flex-col bg-Primary px-4 py-8 justify-center items-center">
+    <section className="w-screen min-h-screen flex flex-col bg-PrimaryFocus px-4 py-8 justify-center items-center">
       
       <section className="w-full flex items-center justify-center h-full">
         {Instrucao && (
