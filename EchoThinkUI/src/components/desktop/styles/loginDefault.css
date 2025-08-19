@@ -16,7 +16,7 @@
 }
 
 .bg-Primary {
-  background-color: #072E23;
+  background-color: white;
 }
 
 .bg-PrimaryFocus {
@@ -60,8 +60,8 @@
 }
 
 .bg-New3{
-  background-color: #006143;
-  border-color: #004C31;
+  background-color: #818181;
+  border-color: white;
   border-width: 0.625rem;
   border-radius: 1.25rem;
   margin: 0.7rem;
