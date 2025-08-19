@@ -213,16 +213,16 @@ const ShowPerguntas = (event) => {
       {pergunta.question && (
         <p className="text-center max-w-md">{pergunta.question}</p>
       )}
-      {pergunta.image && (
+      {pergunta.image_url && (
         <img
-          src={pergunta.image}
+          src={pergunta.image_url}
           alt="Imagem"
           className="w-full max-w-md h-auto rounded"
         />
       )}
-      {pergunta.audio && (
+      {pergunta.audio_url && (
         <audio controls className="w-full max-w-md">
-          <source src={pergunta.audio} type="audio/mp3" />
+          <source src={pergunta.audio_url} type="audio/mp3" />
           Seu navegador não suporta áudio.
         </audio>
       )}
