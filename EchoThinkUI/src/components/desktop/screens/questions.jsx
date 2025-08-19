@@ -133,7 +133,7 @@ const ShowPerguntas = (event) => {
           question: r.perguntaId,
           resposta_texto: r.resposta,
           resposta_opcao: r.resposta,
-          tempo_resposta: r.tempoEmSegundos,
+          tempo_resposta: r.tempoEmMilissegundos,
         })),
       };
       console.log("Enviando respostas:", payload);
@@ -150,7 +150,7 @@ const ShowPerguntas = (event) => {
       if (response.ok) {
         alert("Respostas enviadas com sucesso!");
       } else {
-        alert("Erro ao enviar respostas.");
+        alert("Respostas não enviadas. Pois ja tem registro para este usuário.");
       }
     } catch (err) {
       console.error("Erro ao enviar respostas:", err);
