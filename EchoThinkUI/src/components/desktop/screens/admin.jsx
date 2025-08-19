@@ -418,7 +418,7 @@ const marcarRelevante = async (id) => {
                           setQuestion("");
                           setImage(null);
                           setAudio(null);
-                          setOptions(["", "", ""]);
+                          setOptions(["", "", "", "", ""]);
                         } catch (error) {
                           console.error(error);
                           alert("Erro ao salvar pergunta");

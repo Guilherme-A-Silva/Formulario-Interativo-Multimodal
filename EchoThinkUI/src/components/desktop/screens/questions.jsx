@@ -136,7 +136,7 @@ const ShowPerguntas = (event) => {
           tempo_resposta: r.tempoEmSegundos,
         })),
       };
-
+      console.log("Enviando respostas:", payload);
       const response = await fetch(`${BACKEND_URL}/api/questions/responder-multiplo/`, {
         method: "POST",
         headers: {
@@ -217,7 +217,7 @@ const ShowPerguntas = (event) => {
         <img
           src={pergunta.image_url}
           alt="Imagem"
-          className="w-full max-w-md h-auto rounded"
+          className="w-1/2 max-w-md object-contain rounded-lg"
         />
       )}
       {pergunta.audio_url && (
