@@ -25,7 +25,7 @@ const LoginDefault = () => {
   const [question, setQuestion] = useState("");
   const [image, setImage] = useState(null);
   const [audio, setAudio] = useState(null);
-  const [options, setOptions] = useState(["", "", ""]);
+  const [options, setOptions] = useState(["", "", "", "", ""]);
 
   const [listaPerguntas, setListaPerguntas] = useState([
     {
