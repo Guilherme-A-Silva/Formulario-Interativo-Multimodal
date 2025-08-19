@@ -60,16 +60,18 @@ const LoginDefault = () => {
     navigate("/questions");
   }
 
-  const [form, setForm] = useState({
-    username: "",
-    nome: "",
-    telefone: "",
-    endereco: "",
-    idade: "",
-    genero: "",
-    email: "",
-    password: "",
-  });
+const [form, setForm] = useState({
+  nome: "",
+  username: "",
+  telefone: "",
+  endereco: "",
+  idade: "",
+  genero: "",
+  email: "",
+  password: "",
+  consentimento: "", // novo campo
+});
+
 
   const [ErrorText, setErrorText] = useState({
     Text: "",
@@ -289,9 +291,9 @@ const LoginDefault = () => {
     <section className="w-full h-full flex flex-col bg-Primary justify-center items-center">
       <section className="w-screen h-full flex items-center justify-center">
         {Login && (
-          <div className="w-full flex justify-center items-center min-h-screen p-4">
-            <div className="responsive-container">
-              <div className="w-full items-center justify-center resposive-containerblack">
+          <div className="w-full flex justify-center items-center min-h-screen p-4 shadow-lg">
+            <div className="responsive-container shadow-lg">
+              <div className="w-full items-center justify-center p-6 resposive-containerblack shadow-lg">
               <h1 className="text-center">Login</h1>
               <form onSubmit={LoginSubmit}>
                 <h2>Insira seu Username</h2>
@@ -430,11 +432,32 @@ const LoginDefault = () => {
                       onChange={handleChange}
                     />
                   </div>
-
+                  {/* Consentimento */}
+                  <div>
+                    <label className="block font-medium text-white">
+                      Você permite o uso dos seus dados?
+                    </label>
+                    <select
+                      name="consentimento"
+                      value={form.consentimento}
+                      onChange={handleChange}
+                      className="w-full p-2 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500"
+                      required
+                    >
+                      <option value="">Selecione uma opção</option>
+                      <option value="sim">Sim, eu permito</option>
+                      <option value="nao">Não, não permito</option>
+                    </select>
+                  </div>
                   {/* Botão */}
                   <button
                     type="submit"
-                    className="w-full bg-green-600 text-white font-semibold p-2 rounded-lg hover:bg-green-700 transition"
+                    className={`w-full text-white font-semibold p-2 rounded-lg transition ${
+                      form.consentimento === "sim"
+                        ? "bg-green-600 hover:bg-green-700"
+                        : "bg-gray-400 cursor-not-allowed"
+                    }`}
+                    disabled={form.consentimento !== "sim"}
                   >
                     Cadastrar
                   </button>

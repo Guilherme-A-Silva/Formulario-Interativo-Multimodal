@@ -16,7 +16,7 @@
 }
 
 .bg-Primary {
-  background-color: white;
+  background-color: #818181;
 }
 
 .bg-PrimaryFocus {
@@ -180,8 +180,8 @@
   width: 100%;
   max-width: 500px; /* limite maximo para telas grandes */
   border-radius: 24px;
-  border: 10px solid #f27d0c; /* laranja da borda que aparece na imagem */
-  background-color: #007952; /* cor verde da área do formulário */
+  border-color: #818181;
+  background-color: #818181; /* cor verde da área do formulário */
   box-sizing: border-box;
 }
 

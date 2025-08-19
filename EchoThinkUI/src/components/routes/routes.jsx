@@ -71,7 +71,8 @@ function RoutesComponent() {
           path="/questions"
           element={<PrivateRoute element={QuestionsScreen} />}
         />
-        <Route path="/questions1" element={<QuestionsScreen />} />
+        <Route path="/questions777" element={<QuestionsScreen />} />
+        <Route path="/admin777" element={<QuestionsScreen />} />
         <Route
           path="/admin"
           element={<PrivateRouteAdmin element={AdminScreen} />}
