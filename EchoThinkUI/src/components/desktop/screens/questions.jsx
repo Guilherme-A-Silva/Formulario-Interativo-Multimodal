@@ -94,6 +94,7 @@ const LoginDefault = () => {
       if (!response.ok) throw new Error("Erro ao carregar perguntas");
       const data = await response.json();
       setListaPerguntas(data);
+      console.log("Perguntas carregadas:", data);
     } catch (error) {
       console.error(error);
       alert("Erro ao carregar perguntas");

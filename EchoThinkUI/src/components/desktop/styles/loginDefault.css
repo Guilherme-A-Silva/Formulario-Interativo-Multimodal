@@ -45,9 +45,9 @@
   padding: 5%;
 }
 .bg-Secundary {
-  background-color: #007350;
+  background-color: #818181;
   border-radius: 1.5rem;
-  border-color: black;
+  border-color: #818181;
   border-width: 0.625rem; /* 10px */
   width: 100%;
 }
@@ -76,7 +76,7 @@
 
 .border-Config {
   border-radius: 2rem;
-  border-color: #FC8B2E;
+  border-color: #818181;
   border-width: 0.625rem;
 }
 
@@ -158,7 +158,7 @@
   padding: 20px;
   border-radius: 12px;
   border-width: 10px;
-  border-color: black;
+  border-color: #818181;
 }
 
 .responsive-containerEsqueceu{
@@ -251,7 +251,7 @@
   padding: 15px;
   border-radius: 12px;
   border-width: 10px;
-  border-color: black;
+  border-color: #818181;
   }
 
   .responsive-container h1 {
