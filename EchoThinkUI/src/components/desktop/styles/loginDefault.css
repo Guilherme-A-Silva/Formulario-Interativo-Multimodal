@@ -53,9 +53,10 @@
 }
 
 .bg-New {
-  background-color: #EA5F0B;
-  border-color: #EF8006;
+  background-color: #818181;
+  border-color: white;
   border-width: 0.625rem;
+  color: white;
   border-radius: 1.25rem; /* 20px */
 }
 

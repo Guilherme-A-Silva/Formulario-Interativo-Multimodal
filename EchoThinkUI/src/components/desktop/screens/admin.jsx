@@ -358,7 +358,7 @@ const marcarRelevante = async (id) => {
                   </div>
                 }
             {relatorio && (
-                <div className="self-center self- w-2/6 flex flex-col items-center gap-4 p-6 bg-green-900 rounded-lg shadow-lg">
+                <div className="self-center self- w-2/6 flex flex-col items-center gap-4 p-6 bg-gray-700 rounded-lg shadow-lg">
                   {/* Logo */}
                   <img
                     src={Logo}
@@ -372,14 +372,14 @@ const marcarRelevante = async (id) => {
                   {/* Botões */}
                   <div className="flex gap-3 mt-2">
                     <button
-                      className="flex items-center gap-2 bg-green-700 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md transition"
+                      className="flex items-center gap-2 bg-gray-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md transition"
                       onClick={() => baixarRelatorio("csv")}
                     >
                       📄 CSV
                     </button>
 
                     <button
-                      className="flex items-center gap-2 bg-green-700 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md transition"
+                      className="flex items-center gap-2 bg-gray-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md transition"
                       onClick={() => baixarRelatorio("excel")}
                     >
                       📊 Excel
@@ -431,7 +431,7 @@ const marcarRelevante = async (id) => {
                           placeholder="Título da pergunta"
                           value={title}
                           onChange={(e) => setTitle(e.target.value)}
-                          className="p-2 border border-green-950 rounded-lg bg-green-900 text-white w-full"
+                          className="p-2 border border-green-950 rounded-lg bg-gray-700 text-white w-full"
                           required
                         />
 
@@ -439,13 +439,13 @@ const marcarRelevante = async (id) => {
                           placeholder="Texto da pergunta (opcional)"
                           value={question}
                           onChange={(e) => setQuestion(e.target.value)}
-                          className="p-2 border border-green-950 rounded-lg bg-green-900 text-white w-full"
+                          className="p-2 border border-green-950 rounded-lg bg-gray-700 text-white w-full"
                           rows={3}
                         />
 
                         {/* Uploads */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-                          <label className="flex flex-col items-center justify-center border border-green-950 rounded-lg p-4 bg-green-900 text-white cursor-pointer hover:bg-green-800 transition">
+                          <label className="flex flex-col items-center justify-center border border-green-950 rounded-lg p-4 bg-gray-700 text-white cursor-pointer hover:bg-green-800 transition">
                             📷 Imagem
                             <input
                               type="file"
@@ -455,7 +455,7 @@ const marcarRelevante = async (id) => {
                             />
                           </label>
 
-                          <label className="flex flex-col items-center justify-center border border-green-950 rounded-lg p-4 bg-green-900 text-white cursor-pointer hover:bg-green-800 transition">
+                          <label className="flex flex-col items-center justify-center border border-green-950 rounded-lg p-4 bg-gray-700 text-white cursor-pointer hover:bg-green-800 transition">
                             🎵 Áudio
                             <input
                               type="file"
@@ -478,7 +478,7 @@ const marcarRelevante = async (id) => {
                               newOpts[idx] = e.target.value;
                               setOptions(newOpts);
                             }}
-                            className="p-2 border border-green-950 rounded-lg bg-green-900 text-white w-full"
+                            className="p-2 border border-green-950 rounded-lg bg-gray-700 text-white w-full"
                             required
                           />
                         ))}
@@ -502,7 +502,7 @@ const marcarRelevante = async (id) => {
                     ) : (
                       <table className="border w-full min-w-[800px] border-collapse  border-gray-400">
                         <thead>
-                          <tr className="bg-green-900">
+                          <tr className="bg-gray-700">
                             <th className=" border-gray-400 p-2 border text-white">Relevante</th>
                             <th className=" border-gray-400 p-2 border text-white">Título</th>
                             <th className=" border-gray-400 p-2 border text-white">Pergunta</th>
@@ -574,7 +574,7 @@ const marcarRelevante = async (id) => {
                     ) : (
                       <table className="w-full min-w-[700px] border-collapse  border-gray-400">
                         <thead>
-                          <tr className="bg-green-900">
+                          <tr className="bg-gray-700">
                             <th className=" border-gray-400 p-2 border text-white">ID</th>
                             <th className=" border-gray-400 p-2 border text-white">Nome</th>
                             <th className=" border-gray-400 p-2 border text-white">Telefone</th>
