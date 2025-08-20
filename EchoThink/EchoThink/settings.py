@@ -33,6 +33,9 @@ CSRF_COOKIE_HTTPONLY = False  # o token precisa estar acessível via JS
 
 CORS_ALLOW_CREDENTIALS = True
 
+CSRF_COOKIE_SAMESITE = "None" 
+SESSION_COOKIE_SAMESITE = "None"
+
 # APPS
 INSTALLED_APPS = [
     'corsheaders',  # deve vir antes dos apps django
