@@ -179,9 +179,10 @@ const ShowPerguntas = (event) => {
     }
   };
 
- const proximaPergunta = () => {
+const proximaPergunta = () => {
   const endTime = Date.now();
-  const tempoResposta = endTime - startTime; // já está em milissegundos
+  const tempoRespostaMs = endTime - startTime; // em milissegundos
+  const tempoRespostaSeg = (tempoRespostaMs / 1000).toFixed(6); // em segundos (6 casas decimais)
 
   const pergunta = ListaPerguntas[IndicePergunta];
 
@@ -189,7 +190,7 @@ const ShowPerguntas = (event) => {
     perguntaId: pergunta.id,
     perguntaTexto: pergunta.question || pergunta.title,
     resposta: respostaSelecionada,
-    tempoEmMilissegundos: tempoResposta, // nome ajustado
+    tempoEmMilissegundos: parseFloat(tempoRespostaSeg), // agora em segundos
   };
 
   const novasRespostas = [...respostas, respostaAtual];
@@ -206,66 +207,76 @@ const ShowPerguntas = (event) => {
 };
 
 
+
+
   const renderPergunta = (pergunta) => (
-    <div className="w-full max-w-xl p-4 flex flex-col items-center justify-center text-white gap-4">
-      <h2 className="text-2xl font-bold uppercase text-center">{pergunta.title}</h2>
+  <div className="w-full max-w-xl p-4 flex flex-col items-center justify-center text-white gap-4">
+    <h2 className="text-2xl font-bold uppercase text-center">{pergunta.title}</h2>
 
-      {pergunta.question && (
-        <p className="text-center max-w-md">{pergunta.question}</p>
-      )}
-      {pergunta.image_url && (
-        <img
-          src={pergunta.image_url}
-          alt="Imagem"
-          className="w-1/2 max-w-md object-contain rounded-lg"
-        />
-      )}
-      {pergunta.audio_url && (
-        <audio controls className="w-full max-w-md">
-          <source src={pergunta.audio_url} type="audio/mp3" />
-          Seu navegador não suporta áudio.
-        </audio>
-      )}
+    {pergunta.question && (
+      <p className="text-center max-w-md">{pergunta.question}</p>
+    )}
 
-      <div className="flex  gap-3 mt-4 max-w-md w-full justify-center items-center">
-        {pergunta.options.map((opcao, idx) => {
-          const textoOpcao =
-            typeof opcao === "object" && opcao !== null
-              ? opcao.text || opcao.label || JSON.stringify(opcao)
-              : opcao;
+    {pergunta.image_url && (
+      <img
+        key={`img-${pergunta.id}`}  // 🔑 força recriação da imagem
+        src={pergunta.image_url}
+        alt="Imagem"
+        className="w-1/2 max-w-md object-contain rounded-lg"
+      />
+    )}
 
-          return (
-            <label
-              key={opcao.id || idx}
-              className="flex items-center gap-2 cursor-pointer select-none text-white"
-            >
-              <input
-                type="radio"
-                name={`pergunta_${pergunta.id}`}
-                value={textoOpcao}
-                checked={respostaSelecionada === textoOpcao}
-                onChange={(e) => setRespostaSelecionada(e.target.value)}
-                className="accent-white text-white"
-                required
-              />
-              {textoOpcao}
-            </label>
-          );
-        })}
-      </div>
-      <button
-        onClick={proximaPergunta}
-        disabled={!respostaSelecionada}
-        className={`px-6 py-2 mt-4 rounded font-bold transition ${
-          respostaSelecionada
-            ? "bg-white text-black hover:bg-gray-200 cursor-pointer"
-            : "bg-gray-500 text-gray-300 cursor-not-allowed"
-        }`}
+    {pergunta.audio_url && (
+      <audio
+        key={`audio-${pergunta.id}`}  // 🔑 força recriação do áudio
+        controls
+        className="w-full max-w-md"
       >
-        {IndicePergunta + 1 < ListaPerguntas.length ? "PRÓXIMO" : "FINALIZAR"}
-      </button>
+        <source src={pergunta.audio_url} type="audio/mp3" />
+        Seu navegador não suporta áudio.
+      </audio>
+    )}
+
+    <div className="flex gap-3 mt-4 max-w-md w-full justify-center items-center">
+      {pergunta.options.map((opcao, idx) => {
+        const textoOpcao =
+          typeof opcao === "object" && opcao !== null
+            ? opcao.text || opcao.label || JSON.stringify(opcao)
+            : opcao;
+
+        return (
+          <label
+            key={opcao.id || idx}
+            className="flex items-center gap-2 cursor-pointer select-none text-white"
+          >
+            <input
+              type="radio"
+              name={`pergunta_${pergunta.id}`}
+              value={textoOpcao}
+              checked={respostaSelecionada === textoOpcao}
+              onChange={(e) => setRespostaSelecionada(e.target.value)}
+              className="accent-white text-white"
+              required
+            />
+            {textoOpcao}
+          </label>
+        );
+      })}
     </div>
-  );
+
+    <button
+      onClick={proximaPergunta}
+      disabled={!respostaSelecionada}
+      className={`px-6 py-2 mt-4 rounded font-bold transition ${
+        respostaSelecionada
+          ? "bg-white text-black hover:bg-gray-200 cursor-pointer"
+          : "bg-gray-500 text-gray-300 cursor-not-allowed"
+      }`}
+    >
+      {IndicePergunta + 1 < ListaPerguntas.length ? "PRÓXIMO" : "FINALIZAR"}
+    </button>
+  </div>
+);
 
   
   return (
