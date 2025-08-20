@@ -15,13 +15,13 @@ ALLOWED_HOSTS = [
 
 # CORS CONFIG
 CORS_ALLOWED_ORIGINS = [
+    "https://www.gelinc.com.br",
     "https://frontend-production-78a1.up.railway.app",
-    "https://gelinc.com.br",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
+    "https://www.gelinc.com.br"
     "https://frontend-production-78a1.up.railway.app",
-    "https://gelinc.com.br",
 ]
 
 CSRF_COOKIE_SECURE = True  # obrigatoriamente se estiver em HTTPS
