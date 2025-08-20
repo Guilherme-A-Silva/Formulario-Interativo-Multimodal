@@ -127,7 +127,7 @@ def solicitar_redefinicao(request):
     token = gerar_token_reset(user.username)
 
     # Link para frontend
-    link = f"https://frontend-production-78a1.up.railway.app/redefinir-senha/?token={token}"
+    link = f"https://www.gelinc.com.br/redefinir-senha/?token={token}"
 
     assunto = "🔑 Redefinição de senha - EchoThink"
     mensagem = (
