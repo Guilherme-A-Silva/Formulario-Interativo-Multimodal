@@ -284,46 +284,167 @@ const proximaPergunta = () => {
       
       <section className="w-full flex items-center justify-center h-full">
         {Instrucao && (
-          <div className="w-full max-w-7xl h-full flex items-center justify-center">
-            
-            <div className="w-full max-w-4xl borderlaran">
-              
-            <div className="w-full max-w-4xl bg-Secundary flex flex-col gap-6 items-end">
-              <button
-                onClick={handleLogout}
-                className="
-                  w-3/12 sm:w-6/12 md:w-4/12 lg:w-2/12 xl:w-1/12
-                  bg-red-500 text-white p-2
-                  text-center font-semibold arr
-                "
-              >
-                Sair
-              </button>
+  <div className="w-full max-w-7xl h-full flex items-center justify-center">
+    <div className="w-full max-w-4xl borderlaran">
+      <div className="w-full max-w-4xl bg-Secundary flex flex-col gap-6 p-6 rounded-2xl shadow-lg">
+        {/* Botão sair */}
+        <div className="flex justify-end">
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 text-white px-4 py-2 rounded font-semibold hover:bg-red-600 transition"
+          >
+            Sair
+          </button>
+        </div>
 
-              <div className="w-full max-w-4xl p-6 flex flex-col items-center gap-6">
-              <img
-                src={Logo}
-                alt="logo"
-                className="max-w-20 w-full object-contain"
-              />
-              <h1 className="text-3xl font-bold text-center text-white">Instrução</h1>
-              <ul className="list-disc pl-6 text-left text-white space-y-2 max-w-md">
-                <li>Leia atentamente cada pergunta.</li>
-                <li>Escolha apenas uma alternativa por pergunta.</li>
-                <li>Revise suas respostas antes de enviar.</li>
-              </ul>
-              <button
-                className="bg-Button px-6 py-2 rounded font-bold hover:bg-gray-200 transition"
-                onClick={ShowPerguntas}
-              >
-                INICIAR
-              </button>
+        {/* Logo */}
+        <div className="flex justify-center">
+          <img src={Logo} alt="logo" className="max-w-24 w-full object-contain" />
+        </div>
+
+        {/* Conteúdo da tela */}
+        {(() => {
+          const telas = [
+            {
+              titulo: "Bem-vindo(a) ao nosso estudo!",
+              texto: (
+                <>
+                  <p>
+                    Agradecemos imensamente o seu tempo e a sua disposição em participar desta
+                    pesquisa sobre o processamento da língua portuguesa. Sua contribuição é muito
+                    valiosa para nós.
+                  </p>
+                  <p className="mt-3">
+                    O experimento levará aproximadamente <b>15 minutos</b> para ser concluído.
+                  </p>
+                  <p className="mt-3">
+                    Por favor, procure estar em um ambiente tranquilo e sem distrações durante este
+                    período.
+                  </p>
+                </>
+              ),
+            },
+            {
+              titulo: "Como funciona a tarefa?",
+              texto: (
+                <>
+                  <p>
+                    Você ouvirá uma série de frases, uma de cada vez. Para cada frase, sua tarefa será
+                    dividida em <b>duas etapas rápidas</b>.
+                  </p>
+                </>
+              ),
+            },
+            {
+              titulo: "1ª Etapa: Avaliar a Naturalidade da Frase",
+              texto: (
+                <>
+                  <p>
+                    Após ouvir a frase, pediremos que você a avalie em uma escala de 1 a 5, indicando o
+                    quão natural ela soa para você.
+                  </p>
+                  <p className="mt-3">
+                    <b>Nota 1:</b> Soa artificial <br />
+                    <b>Nota 5:</b> Soa totalmente natural
+                  </p>
+                  <p className="mt-3">
+                    Para esta avaliação, não há respostas "certas" ou "erradas". Queremos apenas a sua
+                    opinião e intuição como falante de português. Confie no seu primeiro instinto.
+                  </p>
+                </>
+              ),
+            },
+            {
+              titulo: "2ª Etapa: Responder a uma Pergunta de Interpretação",
+              texto: (
+                <>
+                  <p>
+                    Logo após dar a sua nota, uma pergunta simples de <b>Sim/Não</b> sobre o conteúdo da
+                    frase aparecerá na tela.
+                  </p>
+                  <p className="mt-3">
+                    <i>
+                      Exemplo: Se a frase for "O menino comprou a camiseta", a pergunta poderia ser "Foi o
+                      menino quem comprou a camiseta?".
+                    </i>
+                  </p>
+                </>
+              ),
+            },
+            {
+              titulo: "Resumindo:",
+              texto: (
+                <>
+                  <ul className="list-disc list-inside space-y-2">
+                    <li>Escutar a frase clicando no botão.</li>
+                    <li>Avaliar o quão natural ela soa (de 1 a 5).</li>
+                    <li>Responder à pergunta de interpretação sobre ela.</li>
+                  </ul>
+                  <p className="mt-3">
+                    O processo se repetirá para todas as frases. Haverá alguns exemplos de treino no início
+                    para que você possa se familiarizar antes de começarmos o experimento de verdade.
+                  </p>
+                  <p className="mt-3 font-semibold">Agradecemos novamente sua colaboração!</p>
+                </>
+              ),
+            },
+          ];
+
+          const [indiceTela, setIndiceTela] = useState(0);
+
+          return (
+            <div className="text-center text-white flex flex-col gap-4">
+              <h1 className="text-2xl sm:text-3xl font-bold">{telas[indiceTela].titulo}</h1>
+              <div className="text-base sm:text-lg leading-relaxed text-justify px-2 sm:px-6">
+                {telas[indiceTela].texto}
+              </div>
+
+              {/* Indicadores de progresso */}
+              <div className="flex justify-center gap-2 mt-2">
+                {telas.map((_, i) => (
+                  <span
+                    key={i}
+                    className={`w-3 h-3 rounded-full transition ${
+                      i === indiceTela ? "bg-white scale-110" : "bg-gray-500"
+                    }`}
+                  ></span>
+                ))}
+              </div>
+
+              {/* Navegação */}
+              <div className="flex justify-center gap-4 mt-4">
+                {indiceTela > 0 && (
+                  <button
+                    className="px-5 py-2 bg-gray-500 text-white rounded font-medium hover:bg-gray-600 transition"
+                    onClick={() => setIndiceTela(indiceTela - 1)}
+                  >
+                    Voltar
+                  </button>
+                )}
+
+                {indiceTela < telas.length - 1 ? (
+                  <button
+                    className="px-5 py-2 bg-white text-black rounded font-bold hover:bg-gray-200 transition"
+                    onClick={() => setIndiceTela(indiceTela + 1)}
+                  >
+                    Próximo
+                  </button>
+                ) : (
+                  <button
+                    className="px-6 py-2 bg-Button text-black rounded font-bold hover:bg-gray-200 transition"
+                    onClick={ShowPerguntas}
+                  >
+                    INICIAR
+                  </button>
+                )}
               </div>
             </div>
-            </div>
-          </div>
+          );
+        })()}
+      </div>
+    </div>
+  </div>
         )}
-
         {Perguntas && (
           <div className="w-full max-w-7xl h-full flex items-center justify-center">
             <div className="borderlaran max-w-4xl w-full">
