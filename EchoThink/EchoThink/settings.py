@@ -20,7 +20,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://www.gelinc.com.br"
+    "https://www.gelinc.com.br",
     "https://frontend-production-78a1.up.railway.app",
 ]
 
