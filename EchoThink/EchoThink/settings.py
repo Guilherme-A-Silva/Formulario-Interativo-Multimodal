@@ -10,17 +10,20 @@ DEBUG = True  # ⚠️ Altere para False em produção
 ALLOWED_HOSTS = [
     'frontend-production-78a1.up.railway.app',
     'cidivan-production.up.railway.app',
+    'www.gelinc.com.br',
     'gelinc.com.br',
 ]
 
 # CORS CONFIG
 CORS_ALLOWED_ORIGINS = [
     "https://www.gelinc.com.br",
+    "https://gelinc.com.br",
     "https://frontend-production-78a1.up.railway.app",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://www.gelinc.com.br",
+    "https://gelinc.com.br",
     "https://frontend-production-78a1.up.railway.app",
 ]
 
