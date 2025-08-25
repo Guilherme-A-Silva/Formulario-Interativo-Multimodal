@@ -18,6 +18,92 @@ const LoginDefault = () => {
   const [IndicePergunta, setIndicePergunta] = useState(0);
   const [ListaPerguntas, setListaPerguntas] = useState([]);
   const [isValid, setIsValid] = useState(null);
+  const [indiceTela, setIndiceTela] = useState(0);
+  const telas = [
+            {
+              titulo: "Bem-vindo(a) ao nosso estudo!",
+              texto: (
+                <>
+                  <p>
+                    Agradecemos imensamente o seu tempo e a sua disposição em participar desta
+                    pesquisa sobre o processamento da língua portuguesa. Sua contribuição é muito
+                    valiosa para nós.
+                  </p>
+                  <p className="mt-3">
+                    O experimento levará aproximadamente <b>15 minutos</b> para ser concluído.
+                  </p>
+                  <p className="mt-3">
+                    Por favor, procure estar em um ambiente tranquilo e sem distrações durante este
+                    período.
+                  </p>
+                </>
+              ),
+            },
+            {
+              titulo: "Como funciona a tarefa?",
+              texto: (
+                <>
+                  <p>
+                    Você ouvirá uma série de frases, uma de cada vez. Para cada frase, sua tarefa será
+                    dividida em <b>duas etapas rápidas</b>.
+                  </p>
+                </>
+              ),
+            },
+            {
+              titulo: "1ª Etapa: Avaliar a Naturalidade da Frase",
+              texto: (
+                <>
+                  <p>
+                    Após ouvir a frase, pediremos que você a avalie em uma escala de 1 a 5, indicando o
+                    quão natural ela soa para você.
+                  </p>
+                  <p className="mt-3">
+                    <b>Nota 1:</b> Soa artificial <br />
+                    <b>Nota 5:</b> Soa totalmente natural
+                  </p>
+                  <p className="mt-3">
+                    Para esta avaliação, não há respostas "certas" ou "erradas". Queremos apenas a sua
+                    opinião e intuição como falante de português. Confie no seu primeiro instinto.
+                  </p>
+                </>
+              ),
+            },
+            {
+              titulo: "2ª Etapa: Responder a uma Pergunta de Interpretação",
+              texto: (
+                <>
+                  <p>
+                    Logo após dar a sua nota, uma pergunta simples de <b>Sim/Não</b> sobre o conteúdo da
+                    frase aparecerá na tela.
+                  </p>
+                  <p className="mt-3">
+                    <i>
+                      Exemplo: Se a frase for "O menino comprou a camiseta", a pergunta poderia ser "Foi o
+                      menino quem comprou a camiseta?".
+                    </i>
+                  </p>
+                </>
+              ),
+            },
+            {
+              titulo: "Resumindo:",
+              texto: (
+                <>
+                  <ul className="list-disc list-inside space-y-2">
+                    <li>Escutar a frase clicando no botão.</li>
+                    <li>Avaliar o quão natural ela soa (de 1 a 5).</li>
+                    <li>Responder à pergunta de interpretação sobre ela.</li>
+                  </ul>
+                  <p className="mt-3">
+                    O processo se repetirá para todas as frases. Haverá alguns exemplos de treino no início
+                    para que você possa se familiarizar antes de começarmos o experimento de verdade.
+                  </p>
+                  <p className="mt-3 font-semibold">Agradecemos novamente sua colaboração!</p>
+                </>
+              ),
+            },
+          ];
 
   const BACKEND_URL = "https://cidivan-production.up.railway.app";
   
@@ -304,94 +390,6 @@ const proximaPergunta = () => {
 
         {/* Conteúdo da tela */}
         {(() => {
-          const telas = [
-            {
-              titulo: "Bem-vindo(a) ao nosso estudo!",
-              texto: (
-                <>
-                  <p>
-                    Agradecemos imensamente o seu tempo e a sua disposição em participar desta
-                    pesquisa sobre o processamento da língua portuguesa. Sua contribuição é muito
-                    valiosa para nós.
-                  </p>
-                  <p className="mt-3">
-                    O experimento levará aproximadamente <b>15 minutos</b> para ser concluído.
-                  </p>
-                  <p className="mt-3">
-                    Por favor, procure estar em um ambiente tranquilo e sem distrações durante este
-                    período.
-                  </p>
-                </>
-              ),
-            },
-            {
-              titulo: "Como funciona a tarefa?",
-              texto: (
-                <>
-                  <p>
-                    Você ouvirá uma série de frases, uma de cada vez. Para cada frase, sua tarefa será
-                    dividida em <b>duas etapas rápidas</b>.
-                  </p>
-                </>
-              ),
-            },
-            {
-              titulo: "1ª Etapa: Avaliar a Naturalidade da Frase",
-              texto: (
-                <>
-                  <p>
-                    Após ouvir a frase, pediremos que você a avalie em uma escala de 1 a 5, indicando o
-                    quão natural ela soa para você.
-                  </p>
-                  <p className="mt-3">
-                    <b>Nota 1:</b> Soa artificial <br />
-                    <b>Nota 5:</b> Soa totalmente natural
-                  </p>
-                  <p className="mt-3">
-                    Para esta avaliação, não há respostas "certas" ou "erradas". Queremos apenas a sua
-                    opinião e intuição como falante de português. Confie no seu primeiro instinto.
-                  </p>
-                </>
-              ),
-            },
-            {
-              titulo: "2ª Etapa: Responder a uma Pergunta de Interpretação",
-              texto: (
-                <>
-                  <p>
-                    Logo após dar a sua nota, uma pergunta simples de <b>Sim/Não</b> sobre o conteúdo da
-                    frase aparecerá na tela.
-                  </p>
-                  <p className="mt-3">
-                    <i>
-                      Exemplo: Se a frase for "O menino comprou a camiseta", a pergunta poderia ser "Foi o
-                      menino quem comprou a camiseta?".
-                    </i>
-                  </p>
-                </>
-              ),
-            },
-            {
-              titulo: "Resumindo:",
-              texto: (
-                <>
-                  <ul className="list-disc list-inside space-y-2">
-                    <li>Escutar a frase clicando no botão.</li>
-                    <li>Avaliar o quão natural ela soa (de 1 a 5).</li>
-                    <li>Responder à pergunta de interpretação sobre ela.</li>
-                  </ul>
-                  <p className="mt-3">
-                    O processo se repetirá para todas as frases. Haverá alguns exemplos de treino no início
-                    para que você possa se familiarizar antes de começarmos o experimento de verdade.
-                  </p>
-                  <p className="mt-3 font-semibold">Agradecemos novamente sua colaboração!</p>
-                </>
-              ),
-            },
-          ];
-
-          const [indiceTela, setIndiceTela] = useState(0);
-
           return (
             <div className="text-center text-white flex flex-col gap-4">
               <h1 className="text-2xl sm:text-3xl font-bold">{telas[indiceTela].titulo}</h1>
