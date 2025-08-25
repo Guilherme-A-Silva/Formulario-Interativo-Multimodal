@@ -17,7 +17,7 @@ const LoginDefault = () => {
   const [startTime, setStartTime] = useState(null);
   const [IndicePergunta, setIndicePergunta] = useState(0);
   const [ListaPerguntas, setListaPerguntas] = useState([]);
-
+  const [isValid, setIsValid] = useState(null);
 
   const BACKEND_URL = "https://cidivan-production.up.railway.app";
   
