@@ -447,11 +447,6 @@ const proximaPergunta = () => {
           <div className="w-full max-w-7xl h-full flex items-center justify-center">
             <div className="borderlaran max-w-4xl w-full">
             <div className="w-full max-w-4xl bg-Secundary p-6 flex flex-col items-center gap-6">
-              <img
-                src={Logo}
-                alt="logo"
-                className="max-w-20 w-full object-contain"
-              />
               {ListaPerguntas.length === 0 ? (
                 <p>Carregando perguntas...</p>
               ) : (
