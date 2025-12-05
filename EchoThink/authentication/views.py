@@ -194,3 +194,20 @@ def redefinir_senha(request):
         {"mensagem": "Senha redefinida com sucesso"},
         status=status.HTTP_200_OK
     )
+
+@api_view(["POST"])
+def deletar_participante(request, id):
+    try:
+      participante = UserProfile.objects.get(id=id)
+    except UserProfile.DoesNotExist:
+        return Response(
+            {"erro": "Participante não encontrado"},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    participante.delete()
+
+    return Response(
+        {"mensagem": "Participante excluído com sucesso"},
+        status=status.HTTP_200_OK
+    )
