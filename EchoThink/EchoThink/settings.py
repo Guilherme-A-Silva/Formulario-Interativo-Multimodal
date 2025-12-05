@@ -7,30 +7,36 @@ SECRET_KEY = 'django-insecure-f($vp@q_0r5c1%mgv$ntfdyh5s5eglzmz1*2o&x4h4mimql_=%
 
 DEBUG = True  # ⚠️ Alterar para False em produção
 
-# Permitir todos os hosts
+# Permitir todos os hosts (em produção, especifique os domínios)
 ALLOWED_HOSTS = ["*"]
 
 # CORS CONFIG
-# Para permitir todos os domínios em desenvolvimento
-CORS_ALLOW_ALL_ORIGINS = True
+# Permitir somente domínios específicos quando credentials=True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://frontend-production-78a1.up.railway.app",
+    "https://cidivan-production.up.railway.app",
+    "https://www.gelinc.com.br",  # ⚠️ Adicione seu domínio de produção
+]
 CORS_ALLOW_CREDENTIALS = True
 
 # CSRF CONFIG
-# Django 4+ não aceita '*' aqui, liste os domínios de front-end
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "https://frontend-production-78a1.up.railway.app",
     "https://cidivan-production.up.railway.app",
+    "https://www.gelinc.com.br",
 ]
 
 # Cookies
-# Em produção com HTTPS, altere CSRF_COOKIE_SECURE e SESSION_COOKIE_SECURE para True
-CSRF_COOKIE_SECURE = False
-SESSION_COOKIE_SECURE = False
+# Para cross-origin com HTTPS
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = False  # Token acessível via JS
-CSRF_COOKIE_SAMESITE = "Lax"
-SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SAMESITE = "None"
 
 # APPS
 INSTALLED_APPS = [
@@ -66,7 +72,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',  # ⚠️ Troque para AllowAny se quiser liberar rotas públicas
+        'rest_framework.permissions.IsAuthenticated',  # ou AllowAny para rotas públicas
     ],
 }
 
@@ -105,18 +111,10 @@ DATABASES = {
 
 # PASSWORD VALIDATORS
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 # INTERNACIONALIZAÇÃO
@@ -127,7 +125,6 @@ USE_TZ = True
 
 # STATIC & MEDIA
 STATIC_URL = 'static/'
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
