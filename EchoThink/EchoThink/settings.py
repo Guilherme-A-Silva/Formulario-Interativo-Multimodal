@@ -7,12 +7,7 @@ SECRET_KEY = 'django-insecure-f($vp@q_0r5c1%mgv$ntfdyh5s5eglzmz1*2o&x4h4mimql_=%
 
 DEBUG = True  # ⚠️ Altere para False em produção
 
-ALLOWED_HOSTS = [
-    'www.gelinc.com.br',
-    'gelinc.com.br',
-    'frontend-production-78a1.up.railway.app',
-    'cidivan-production.up.railway.app',
-]
+ALLOWED_HOSTS = ["*"]
 
 # CORS CONFIG
 CORS_ALLOWED_ORIGINS = [
