@@ -15,11 +15,11 @@ const Unauthorized = () => {
       >
         <motion.h1
           className="text-4xl font-extrabold text-white mb-4"
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
         >
-            🚫 🚫 🚫 
+          🚫 🚫 🚫
         </motion.h1>
         <motion.h1
           className="text-4xl font-extrabold text-red-600 mb-4"
