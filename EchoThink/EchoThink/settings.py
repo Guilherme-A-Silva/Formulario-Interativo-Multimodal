@@ -5,24 +5,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-f($vp@q_0r5c1%mgv$ntfdyh5s5eglzmz1*2o&x4h4mimql_=%'
 
-DEBUG = True  # ⚠️ Altere para False em produção
+DEBUG = True  # ⚠️ Alterar para False em produção
 
-ALLOWED_HOSTS = [
-    "http://localhost:5173",
-    'www.gelinc.com.br',
-    'gelinc.com.br',
-    'frontend-production-78a1.up.railway.app',
-    'cidivan-production.up.railway.app',
-]
+# Permitir todos os hosts
+ALLOWED_HOSTS = ["*"]
 
 # CORS CONFIG
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "https://www.gelinc.com.br",
-    "https://gelinc.com.br",
-    "https://frontend-production-78a1.up.railway.app",
-]
+# Para permitir todos os domínios em desenvolvimento
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
+# CSRF CONFIG
+# Django 4+ não aceita '*' aqui, liste os domínios de front-end
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
@@ -30,18 +24,17 @@ CSRF_TRUSTED_ORIGINS = [
     "https://cidivan-production.up.railway.app",
 ]
 
-CSRF_COOKIE_SECURE = True  # obrigatoriamente se estiver em HTTPS
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_HTTPONLY = False  # o token precisa estar acessível via JS
-
-CORS_ALLOW_CREDENTIALS = True
-
-CSRF_COOKIE_SAMESITE = "None" 
-SESSION_COOKIE_SAMESITE = "None"
+# Cookies
+# Em produção com HTTPS, altere CSRF_COOKIE_SECURE e SESSION_COOKIE_SECURE para True
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_HTTPONLY = False  # Token acessível via JS
+CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "Lax"
 
 # APPS
 INSTALLED_APPS = [
-    'corsheaders',  # deve vir antes dos apps django
+    'corsheaders',  # deve vir antes dos apps Django
     'authentication',
     'questions',
     'django.contrib.admin',
@@ -57,7 +50,7 @@ INSTALLED_APPS = [
 
 # MIDDLEWARE
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # deve ser o primeiro
+    'corsheaders.middleware.CorsMiddleware',  # primeiro
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -73,7 +66,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',  # ⚠️ Troque para IsAuthenticated se quiser proteger por padrão
+        'rest_framework.permissions.IsAuthenticated',  # ⚠️ Troque para AllowAny se quiser liberar rotas públicas
     ],
 }
 
@@ -141,10 +134,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # AUTO FIELD
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# EMAIL CONFIG
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'cidivanc@gmail.com'
-EMAIL_HOST_PASSWORD = 'tebjhuvzskqhadsh' 
+EMAIL_HOST_PASSWORD = 'tebjhuvzskqhadsh'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
