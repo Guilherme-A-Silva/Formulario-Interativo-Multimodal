@@ -22,6 +22,7 @@ const LoginDefault = () => {
 
   const [audioConcluido, setAudioConcluido] = useState(true); // true por padrão (perguntas sem áudio)
   const audioRef = useRef(null);
+  const audioTimeoutRef = useRef(null); // <- novo: armazena o timeout do play
 
   const telas = [
     {
@@ -168,44 +169,62 @@ const LoginDefault = () => {
     const pergunta = ListaPerguntas[IndicePergunta];
     setRespostaSelecionada(null); // reset da seleção ao trocar pergunta
 
-    // Se existe áudio: bloquear respostas até o áudio terminar e tocar o áudio
+    // Limpa qualquer timeout anterior
+    if (audioTimeoutRef.current) {
+      clearTimeout(audioTimeoutRef.current);
+      audioTimeoutRef.current = null;
+    }
+
+    // Pause e reset em qualquer áudio anterior
+    if (audioRef.current) {
+      try {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      } catch (err) {
+        // ignore
+      }
+    }
+
     if (pergunta.audio_url) {
+      // Bloqueia seleção enquanto o áudio não terminar
       setAudioConcluido(false);
       setStartTime(null); // ainda não iniciou o timer
 
-      // Pause e reset em qualquer áudio anterior
-      if (audioRef.current) {
-        try {
-          audioRef.current.pause();
-          audioRef.current.currentTime = 0;
-        } catch (err) {
-          // ignore
-        }
-      }
-
-      // Tentar tocar programaticamente (autoplay pode ser bloqueado em alguns navegadores)
-      // fallback: o elemento <audio> tem autoPlay também, e temos onEnded e onError handlers.
-      setTimeout(() => {
+      // AGORA: tocar o áudio APÓS 5s
+      audioTimeoutRef.current = setTimeout(() => {
         if (audioRef.current && typeof audioRef.current.play === "function") {
           audioRef.current
             .play()
             .then(() => {
-              // tocando normalmente
+              // tocando normalmente; o timer de resposta continuará
+              // sendo iniciado no onEnded (handleAudioEnd)
             })
             .catch((err) => {
               // se o autoplay foi bloqueado, liberamos a pergunta (fallback)
               console.warn("Autoplay bloqueado ou erro ao tocar audio:", err);
-              // Considerar liberar para evitar travar a experiência:
               setAudioConcluido(true);
               setStartTime(Date.now());
             });
+        } else {
+          // sem elemento de áudio disponível (fallback)
+          setAudioConcluido(true);
+          setStartTime(Date.now());
         }
-      }, 100); // pequeno delay para garantir que o elemento foi criado
+        audioTimeoutRef.current = null; // cleanup da referência após executar
+      }, 5000); // <- 5 segundos
     } else {
       // Sem áudio: liberar imediatamente e iniciar o timer
       setAudioConcluido(true);
       setStartTime(Date.now());
     }
+
+    // Cleanup quando a pergunta mudar ou componente desmontar
+    return () => {
+      if (audioTimeoutRef.current) {
+        clearTimeout(audioTimeoutRef.current);
+        audioTimeoutRef.current = null;
+      }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [IndicePergunta, Perguntas, ListaPerguntas]);
 
