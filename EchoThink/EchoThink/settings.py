@@ -10,17 +10,9 @@ DEBUG = True  # ⚠️ Altere para False em produção
 ALLOWED_HOSTS = ["*"]
 
 # CORS CONFIG
-CORS_ALLOWED_ORIGINS = [
-    "https://www.gelinc.com.br",
-    "https://gelinc.com.br",
-    "https://frontend-production-78a1.up.railway.app",
-]
+CORS_ALLOWED_ORIGINS = ["*"]
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://www.gelinc.com.br",
-    "https://gelinc.com.br",
-    "https://frontend-production-78a1.up.railway.app",
-]
+CSRF_TRUSTED_ORIGINS = ["*"]
 
 CSRF_COOKIE_SECURE = True  # obrigatoriamente se estiver em HTTPS
 SESSION_COOKIE_SECURE = True
