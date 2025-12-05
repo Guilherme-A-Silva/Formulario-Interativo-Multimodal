@@ -7,12 +7,28 @@ SECRET_KEY = 'django-insecure-f($vp@q_0r5c1%mgv$ntfdyh5s5eglzmz1*2o&x4h4mimql_=%
 
 DEBUG = True  # ⚠️ Altere para False em produção
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    "http://localhost:5173",
+    'www.gelinc.com.br',
+    'gelinc.com.br',
+    'frontend-production-78a1.up.railway.app',
+    'cidivan-production.up.railway.app',
+]
 
 # CORS CONFIG
-CORS_ALLOWED_ORIGINS = ["*"]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "https://www.gelinc.com.br",
+    "https://gelinc.com.br",
+    "https://frontend-production-78a1.up.railway.app",
+]
 
-CSRF_TRUSTED_ORIGINS = ["*"]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://frontend-production-78a1.up.railway.app",
+    "https://cidivan-production.up.railway.app",
+]
 
 CSRF_COOKIE_SECURE = True  # obrigatoriamente se estiver em HTTPS
 SESSION_COOKIE_SECURE = True
