@@ -341,17 +341,13 @@ const LoginDefault = () => {
     }
   };
 
-  /* --------------------------
-     Enviar respostas para o backend
-     - aceita um array opcional (usado no fechamento) ou usa o state `respostas`
-     -------------------------- */
   const enviarRespostas = async (respostasParaEnviar = null) => {
     const payloadArray = (respostasParaEnviar ?? respostas).map((r) => ({
-      user: 1, // Substitua pelo ID do usuário real (se tiver)
+      user: 1,
       question: r.perguntaId,
       resposta_texto: r.resposta,
       resposta_opcao: r.resposta,
-      tempo_resposta: r.tempoEmMilissegundos, // ms
+      tempo_resposta: (r.tempoEmMilissegundos / 1000).toFixed(8),
     }));
 
     const payload = { respostas: payloadArray };
@@ -374,15 +370,12 @@ const LoginDefault = () => {
       if (response.ok) {
         alert("Respostas enviadas com sucesso!");
       } else {
-        // ler corpo da resposta para entender erro
         let errText =
           "Respostas não enviadas. Pois ja tem registro para este usuário.";
         try {
           const data = await response.json();
           errText = data.message || data.detail || errText;
-        } catch {
-          // sem JSON
-        }
+        } catch {}
         alert(errText);
       }
     } catch (err) {

@@ -19,7 +19,6 @@ const PrivateRoute = ({ element: Element }) => {
   useEffect(() => {
     const validateSession = async () => {
       try {
-        // Primeiro: obter o CSRF token (o cookie será setado aqui)
         await fetch(`${BACKEND_URL}/api/csrf/`, {
           method: "GET",
           credentials: "include",
@@ -31,7 +30,6 @@ const PrivateRoute = ({ element: Element }) => {
           })
           .catch((err) => console.error("Erro ao buscar CSRF:", err));
 
-        // Segundo: validar a sessão com CSRF
         const response = await fetch(`${BACKEND_URL}/me/`, {
           method: "GET",
           headers: {
@@ -60,7 +58,6 @@ const PrivateRoute = ({ element: Element }) => {
 
   return isValid ? <Element /> : <Unauthorized />;
 };
-// Componente de Rotas
 function RoutesComponent() {
   return (
     <BrowserRouter>
