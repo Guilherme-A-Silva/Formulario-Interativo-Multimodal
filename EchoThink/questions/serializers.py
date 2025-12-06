@@ -45,8 +45,7 @@ class MultipleUserResponsesSerializer(serializers.Serializer):
         respostas_objs = []
 
         for item in respostas_data:
-            if "tempo_resposta" in item:
-                item["tempo_resposta"] = Decimal(item["tempo_resposta"]).quantize(Decimal('1.00000000'))
+            # tempo_resposta já foi formatado na view
             respostas_objs.append(UserResponse(**item))
 
         return UserResponse.objects.bulk_create(respostas_objs)

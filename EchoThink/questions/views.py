@@ -152,10 +152,15 @@ def registrar_varias_respostas(request):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    # Adiciona o usuário nos dados das respostas (pois seu serializer espera campo user)
+    # Adiciona o usuário nos dados das respostas
     for resposta in respostas:
         resposta["user"] = user.id
 
+        # Força tempo_resposta com até 8 casas decimais
+        if "tempo_resposta" in resposta and resposta["tempo_resposta"] is not None:
+            resposta["tempo_resposta"] = float(f"{float(resposta['tempo_resposta']):.8f}")
+
+    # Cria o serializer e salva todas as respostas
     serializer = MultipleUserResponsesSerializer(data={"respostas": respostas})
     if serializer.is_valid():
         serializer.save()
@@ -163,4 +168,5 @@ def registrar_varias_respostas(request):
             {"message": "Todas as respostas foram registradas com sucesso"},
             status=status.HTTP_201_CREATED
         )
+
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
