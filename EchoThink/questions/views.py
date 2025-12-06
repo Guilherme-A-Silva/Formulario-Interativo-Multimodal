@@ -75,6 +75,10 @@ def marcar_relevante(request, pk):
 import pandas as pd
 from django.http import HttpResponse
 
+import pandas as pd
+from django.http import HttpResponse
+from .models import UserResponse
+
 def gerar_relatorio_respostas_pivotado(request, formato):
     # Busca respostas de perguntas relevantes
     respostas = UserResponse.objects.filter(question__is_relevant=True).values(
@@ -105,6 +109,8 @@ def gerar_relatorio_respostas_pivotado(request, formato):
 
     # Montar um pivot para tempo de resposta
     df_pivot_tempo = df.pivot(index='user__username', columns='question__title', values='tempo_resposta')
+    # Formatar todos os tempos para 8 casas decimais
+    df_pivot_tempo = df_pivot_tempo.applymap(lambda x: f"{x:.8f}" if pd.notnull(x) else "")
     df_pivot_tempo.columns = [f"Tempo (s) - {col}" for col in df_pivot_tempo.columns]
 
     # Juntar os dois pivots lado a lado
