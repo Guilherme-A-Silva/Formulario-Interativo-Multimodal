@@ -1,5 +1,10 @@
 from rest_framework import serializers
 from .models import Question, Option, UserResponse
+from decimal import Decimal, getcontext
+
+
+getcontext().prec = 10  # garante precisão suficiente
+
 
 class OptionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,5 +42,11 @@ class MultipleUserResponsesSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         respostas_data = validated_data.pop("respostas")
-        respostas_objs = [UserResponse(**item) for item in respostas_data]
+        respostas_objs = []
+
+        for item in respostas_data:
+            if "tempo_resposta" in item:
+                item["tempo_resposta"] = Decimal(item["tempo_resposta"]).quantize(Decimal('1.00000000'))
+            respostas_objs.append(UserResponse(**item))
+
         return UserResponse.objects.bulk_create(respostas_objs)
