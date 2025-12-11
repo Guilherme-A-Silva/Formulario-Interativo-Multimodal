@@ -18,9 +18,7 @@ const LoginDefault = () => {
   const [addPerguntas, setaddPerguntas] = useState(false);
   const [listarPerguntas, setlistarPerguntas] = useState(false);
   const [listarParticipantes, setlistarParticipantes] = useState(false);
-  const [listarParticipantesArray, setlistarParticipantesArray] = useState([
-    "",
-  ]);
+  const [listarParticipantesArray, setlistarParticipantesArray] = useState([]);
   const [csrfToken, setCsrfToken] = useState("");
 
   const [title, setTitle] = useState("");
@@ -29,26 +27,45 @@ const LoginDefault = () => {
   const [audio, setAudio] = useState(null);
   const [options, setOptions] = useState(["", "", "", "", ""]);
 
-  const [listaPerguntas, setListaPerguntas] = useState([
-    {
-      id: 0,
-      title: "",
-      question: "",
-      image_url: "",
-      audio_url: "",
-      options: [],
-      is_relevant: false,
-    },
-  ]);
-
-  //const [listaPerguntas, setListaPerguntas] = useState([]);
+  const [listaPerguntas, setListaPerguntas] = useState([]);
   const [loadingPerguntas, setLoadingPerguntas] = useState(false);
-
   const [loadingParticipantes, setLoadingParticipantes] = useState(false);
-
   const [isValid, setIsValid] = useState(null);
 
   const BACKEND_URL = "https://cidivan-production.up.railway.app";
+
+  // --- util helpers ---
+  const extrairNomeArquivo = (url) => {
+    if (!url) return "";
+    try {
+      // remove query/hash
+      const cleaned = url.split("?")[0].split("#")[0];
+      const parts = cleaned.split("/");
+      const last = parts.pop() || parts.pop(); // lida com trailing slash
+      return decodeURIComponent(last || "");
+    } catch (e) {
+      return url;
+    }
+  };
+
+  // --- participantes ---
+  const fetchParticipantes = async () => {
+    setLoadingParticipantes(true);
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/auth/listar-participantes/`, {
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Erro ao carregar participantes");
+      const data = await res.json();
+      // inverter para colocar o mais novo em cima
+      setlistarParticipantesArray([...data].reverse());
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao carregar participantes");
+    } finally {
+      setLoadingParticipantes(false);
+    }
+  };
 
   const deleteParticipante = async (id) => {
     if (!window.confirm("Tem certeza que deseja excluir este participante?"))
@@ -56,7 +73,7 @@ const LoginDefault = () => {
 
     try {
       const response = await fetch(
-        `https://cidivan-production.up.railway.app/api/auth/deletar-participante/${id}/`,
+        `${BACKEND_URL}/api/auth/deletar-participante/${id}/`,
         {
           method: "POST",
           credentials: "include",
@@ -80,102 +97,28 @@ const LoginDefault = () => {
     }
   };
 
-  useEffect(() => {
-    const validateSession = async () => {
-      try {
-        // Primeiro: obter o CSRF token (o cookie será setado aqui)
-        await fetch(`${BACKEND_URL}/api/csrf/`, {
-          method: "GET",
-          credentials: "include",
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log("Token do backend:", data.csrfToken);
-            setCsrfToken(data.csrfToken);
-          })
-          .catch((err) => console.error("Erro ao buscar CSRF:", err));
-
-        // Segundo: validar a sessão com CSRF
-        const response = await fetch(`${BACKEND_URL}/me/`, {
-          method: "GET",
-          headers: {
-            "X-CSRFToken": csrfToken,
-          },
-          credentials: "include",
-        });
-
-        if (response.ok) {
-          setIsValid(true);
-        } else {
-          setIsValid(false);
-        }
-      } catch (error) {
-        console.error("Erro na validação da sessão:", error);
-        setIsValid(false);
-      }
-    };
-
-    validateSession();
-  }, []);
-
-  const baixarRelatorio = async (formato) => {
+  const fetchPerguntas = async () => {
     try {
+      setLoadingPerguntas(true);
       const response = await fetch(
-        `https://cidivan-production.up.railway.app/api/questions/relatorio-respostas/${formato}/`,
+        `${BACKEND_URL}/api/questions/listar-perguntas/`,
         {
           method: "GET",
-          credentials: "include", // se estiver usando autenticação por sessão/cookie
-        }
-      );
-
-      if (!response.ok) {
-        const text = await response.text();
-        alert(`Erro ao gerar relatório: ${text}`);
-        return;
-      }
-
-      const blob = await response.blob();
-
-      // Define o nome do arquivo conforme o formato
-      const nomeArquivo =
-        formato === "excel"
-          ? "relatorio_respostas.xlsx"
-          : "relatorio_respostas.csv";
-
-      // Cria uma URL temporária para download
-      const url = window.URL.createObjectURL(blob);
-
-      // Cria um elemento <a> para disparar o download
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = nomeArquivo;
-      document.body.appendChild(a);
-      a.click();
-
-      // Remove o elemento e libera a URL
-      a.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      alert("Erro ao baixar relatório: " + error.message);
-    }
-  };
-
-  const fetchParticipantes = async () => {
-    setLoadingParticipantes(true);
-    try {
-      const res = await fetch(
-        "https://cidivan-production.up.railway.app/api/auth/listar-participantes/",
-        {
           credentials: "include",
         }
       );
-      const data = await res.json();
-      setlistarParticipantesArray(data);
+      if (!response.ok) throw new Error("Erro ao carregar perguntas");
+
+      const data = await response.json();
+
+      const ordenadas = [...data].sort((a, b) => Number(b.id) - Number(a.id));
+
+      setListaPerguntas(ordenadas);
     } catch (error) {
-      alert("Erro ao carregar participantes");
+      console.error(error);
+      alert("Erro ao carregar perguntas");
     } finally {
-      setLoadingParticipantes(false);
-      console.log("Lista de participantes:", listarParticipantes);
+      setLoadingPerguntas(false);
     }
   };
 
@@ -185,7 +128,7 @@ const LoginDefault = () => {
 
     try {
       const response = await fetch(
-        `https://cidivan-production.up.railway.app/api/questions/deletar-pergunta/${id}/`,
+        `${BACKEND_URL}/api/questions/deletar-pergunta/${id}/`,
         {
           method: "DELETE",
           credentials: "include",
@@ -208,7 +151,7 @@ const LoginDefault = () => {
   const marcarRelevante = async (id) => {
     try {
       const response = await fetch(
-        `https://cidivan-production.up.railway.app/api/questions/marcar-relevante/${id}/`,
+        `${BACKEND_URL}/api/questions/marcar-relevante/${id}/`,
         {
           method: "PATCH",
           credentials: "include",
@@ -224,33 +167,86 @@ const LoginDefault = () => {
         throw new Error("Erro ao marcar pergunta como relevante");
 
       alert("Pergunta marcada como relevante!");
-      // Atualiza lista
-      listarPerguntas();
+      // Atualiza lista corretamente
+      fetchPerguntas();
     } catch (error) {
       console.error(error);
+      alert("Erro ao marcar pergunta como relevante");
     }
   };
 
-  const fetchPerguntas = async () => {
+  const baixarRelatorio = async (formato) => {
     try {
-      setLoadingPerguntas(true);
       const response = await fetch(
-        "https://cidivan-production.up.railway.app/api/questions/listar-perguntas/",
+        `${BACKEND_URL}/api/questions/relatorio-respostas/${formato}/`,
         {
           method: "GET",
-          credentials: "include", // mantém cookies/CSRF
+          credentials: "include",
         }
       );
-      if (!response.ok) throw new Error("Erro ao carregar perguntas");
-      const data = await response.json();
-      setListaPerguntas(data);
+
+      if (!response.ok) {
+        const text = await response.text();
+        alert(`Erro ao gerar relatório: ${text}`);
+        return;
+      }
+
+      const blob = await response.blob();
+
+      const nomeArquivo =
+        formato === "excel"
+          ? "relatorio_respostas.xlsx"
+          : "relatorio_respostas.csv";
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = nomeArquivo;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error(error);
-      alert("Erro ao carregar perguntas");
-    } finally {
-      setLoadingPerguntas(false);
+      alert("Erro ao baixar relatório: " + error.message);
     }
   };
+
+  useEffect(() => {
+    const validateSession = async () => {
+      try {
+        // Primeiro: obter o CSRF token (o cookie será setado aqui)
+        await fetch(`${BACKEND_URL}/api/csrf/`, {
+          method: "GET",
+          credentials: "include",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("Token do backend:", data.csrfToken);
+            setCsrfToken(data.csrfToken);
+          })
+          .catch((err) => console.error("Erro ao buscar CSRF:", err));
+
+        const response = await fetch(`${BACKEND_URL}/me/`, {
+          method: "GET",
+          headers: {
+            "X-CSRFToken": csrfToken,
+          },
+          credentials: "include",
+        });
+
+        if (response.ok) {
+          setIsValid(true);
+        } else {
+          setIsValid(false);
+        }
+      } catch (error) {
+        console.error("Erro na validação da sessão:", error);
+        setIsValid(false);
+      }
+    };
+
+    validateSession();
+  }, []);
 
   useEffect(() => {
     document.title = "EchoThink";
@@ -258,6 +254,7 @@ const LoginDefault = () => {
     link.rel = "icon";
     link.href = Icon;
     document.head.appendChild(link);
+
     const fetchCsrfToken = async () => {
       getCSRFToken();
     };
@@ -280,6 +277,11 @@ const LoginDefault = () => {
       setLogo(Logo);
     };
     loadImages();
+    // cleanup: remover link se componente desmontar
+    return () => {
+      if (link && link.parentNode) link.parentNode.removeChild(link);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // funções de navegação
@@ -325,20 +327,17 @@ const LoginDefault = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(
-        "https://cidivan-production.up.railway.app/api/auth/logout/",
-        {
-          method: "POST",
-          credentials: "include", // importante para enviar cookies de sessão
-          headers: {
-            "X-CSRFToken": csrfToken,
-          },
-        }
-      );
+      const response = await fetch(`${BACKEND_URL}/api/auth/logout/`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "X-CSRFToken": csrfToken,
+        },
+      });
 
       if (response.ok) {
         alert("Logout realizado com sucesso!");
-        window.location.href = "/"; // redireciona para a tela de login
+        window.location.href = "/";
       } else {
         const data = await response.json();
         alert("Erro ao deslogar: " + (data.mensagem || "Erro desconhecido"));
@@ -438,21 +437,18 @@ const LoginDefault = () => {
                       </button>
                     </div>
                   )}
+
                   {relatorio && (
                     <div className="self-center self- w-2/6 flex flex-col items-center gap-4 p-6 bg-gray-700 rounded-lg shadow-lg">
-                      {/* Logo */}
                       <img
                         src={Logo}
                         alt="Logo"
                         className="max-w-[150px] h-auto drop-shadow-lg"
                       />
-
-                      {/* Título */}
                       <h1 className="text-white text-2xl font-bold">
                         Relatório
                       </h1>
 
-                      {/* Botões */}
                       <div className="flex gap-3 mt-2">
                         <button
                           className="flex items-center gap-2 bg-gray-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md transition"
@@ -470,6 +466,7 @@ const LoginDefault = () => {
                       </div>
                     </div>
                   )}
+
                   {addPerguntas && (
                     <div className="flex flex-col items-center gap-4">
                       <h1 className="text-white">Adicionar Perguntas</h1>
@@ -489,7 +486,7 @@ const LoginDefault = () => {
 
                           try {
                             const response = await fetch(
-                              "https://cidivan-production.up.railway.app/api/questions/criar-pergunta/",
+                              `${BACKEND_URL}/api/questions/criar-pergunta/`,
                               {
                                 method: "POST",
                                 body: formData,
@@ -505,18 +502,21 @@ const LoginDefault = () => {
                               "Pergunta criada com sucesso! ID: " + data.id
                             );
 
+                            // limpa formulário
                             setTitle("");
                             setQuestion("");
                             setImage(null);
                             setAudio(null);
                             setOptions(["", "", "", "", ""]);
+
+                            // atualiza lista já com o novo item no topo
+                            fetchPerguntas();
                           } catch (error) {
                             console.error(error);
                             alert("Erro ao salvar pergunta");
                           }
                         }}
                       >
-                        {/* Título */}
                         <input
                           type="text"
                           placeholder="Título da pergunta"
@@ -534,7 +534,6 @@ const LoginDefault = () => {
                           rows={3}
                         />
 
-                        {/* Uploads */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
                           <label className="flex flex-col items-center justify-center border border-green-950 rounded-lg p-4 bg-gray-700 text-white cursor-pointer hover:bg-green-800 transition">
                             📷 Imagem
@@ -557,7 +556,6 @@ const LoginDefault = () => {
                           </label>
                         </div>
 
-                        {/* Alternativas */}
                         {options.map((opt, idx) => (
                           <input
                             key={idx}
@@ -574,7 +572,6 @@ const LoginDefault = () => {
                           />
                         ))}
 
-                        {/* Botão */}
                         <button
                           type="submit"
                           className="bg-blue-500 text-white p-2 rounded w-full hover:bg-blue-600 transition"
@@ -593,7 +590,7 @@ const LoginDefault = () => {
                       {loadingPerguntas ? (
                         <p>Carregando perguntas...</p>
                       ) : (
-                        <table className="border w-full min-w-[800px] border-collapse  border-gray-400">
+                        <table className="border w-full min-w-[900px] border-collapse  border-gray-400">
                           <thead>
                             <tr className="bg-gray-700">
                               <th className=" border-gray-400 p-2 border text-white">
@@ -611,6 +608,12 @@ const LoginDefault = () => {
                               <th className=" border-gray-400 p-2 border text-white">
                                 Áudio
                               </th>
+
+                              {/* Coluna nova: nome do arquivo */}
+                              <th className=" border-gray-400 p-2 border text-white">
+                                Nome do Arquivo
+                              </th>
+
                               <th className=" border-gray-400 p-2 border text-white">
                                 Opções
                               </th>
@@ -655,11 +658,31 @@ const LoginDefault = () => {
                                     "-"
                                   )}
                                 </td>
+
+                                {/* Nome do arquivo (imagem primeiro, senão audio) */}
+                                <td className=" border-gray-400 p-2 border text-center text-white">
+                                  {p.image_url &&
+                                  extrairNomeArquivo(p.image_url)
+                                    ? extrairNomeArquivo(p.image_url)
+                                    : p.audio_url
+                                    ? extrairNomeArquivo(p.audio_url)
+                                    : "—"}
+                                </td>
+
                                 <td className=" border-gray-400 p-2 border text-center">
                                   <ul className="list-disc pl-4 text-white">
-                                    {p.options.map((opt, idx) => (
-                                      <li key={idx}>{opt.text}</li>
-                                    ))}
+                                    {Array.isArray(p.options) &&
+                                    p.options.length > 0 ? (
+                                      p.options.map((opt, idx) => (
+                                        <li key={idx}>
+                                          {opt && typeof opt === "object"
+                                            ? opt.text
+                                            : opt}
+                                        </li>
+                                      ))
+                                    ) : (
+                                      <li>-</li>
+                                    )}
                                   </ul>
                                 </td>
                                 <td className=" border-gray-400 p-2 text-center border flex justify-center items-center gap-2">
