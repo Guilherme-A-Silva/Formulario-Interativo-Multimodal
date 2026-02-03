@@ -15,53 +15,81 @@ def criar_pergunta(request):
     title = (request.data.get("title") or "").strip()
     question = request.data.get("question")
 
-    image_file = request.FILES.get("image")  # <InMemoryUploadedFile / TemporaryUploadedFile>
+    image_file = request.FILES.get("image")
     audio_file = request.FILES.get("audio")
 
     options = request.data.getlist("options")
 
-    # Se você quer permitir title vazio, remova essa validação de title:
     if not options or len([o for o in options if str(o).strip()]) == 0:
         return Response(
             {"error": "Opções são obrigatórias."},
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    # cria primeiro (sem files), depois seta os bytes/mime
-    q = Question.objects.create(
-        title=title,               # pode ser ""
-        question=question,
-        # (legado) se quiser manter os arquivos no filesystem também:
-        image=image_file if image_file else None,
-        audio=audio_file if audio_file else None,
-    )
+    # =========================
+    # 1) Leia os bytes ANTES
+    # =========================
+    image_raw = None
+    image_mime = None
+    image_name = None
 
-    # -----------------------------
-    # salva IMAGEM no banco
-    # -----------------------------
     if image_file:
         try:
-            q.image_bytes = image_file.read()
-            q.image_mime = getattr(image_file, "content_type", None) or "image/*"
+            image_raw = image_file.read()
+            image_mime = getattr(image_file, "content_type", None) or "image/*"
+            image_name = getattr(image_file, "name", "image")
         except Exception:
-            # se der qualquer problema de leitura, não quebra a criação
-            q.image_bytes = None
-            q.image_mime = None
+            image_raw = None
+            image_mime = None
+            image_name = None
 
-    # -----------------------------
-    # salva ÁUDIO no banco
-    # -----------------------------
+    audio_raw = None
+    audio_mime = None
+    audio_name = None
+
     if audio_file:
         try:
-            q.audio_bytes = audio_file.read()
-            q.audio_mime = getattr(audio_file, "content_type", None) or "audio/*"
+            audio_raw = audio_file.read()
+            audio_mime = getattr(audio_file, "content_type", None) or "audio/*"
+            audio_name = getattr(audio_file, "name", "audio")
         except Exception:
-            q.audio_bytes = None
-            q.audio_mime = None
+            audio_raw = None
+            audio_mime = None
+            audio_name = None
+
+    # =========================
+    # 2) Cria sem anexar arquivo direto (pra não consumir stream)
+    # =========================
+    q = Question.objects.create(
+        title=title,
+        question=question,
+        image=None,
+        audio=None,
+    )
+
+    # =========================
+    # 3) Salva bytes + mime no banco
+    # =========================
+    if image_raw:
+        q.image_bytes = image_raw
+        q.image_mime = image_mime
+
+    if audio_raw:
+        q.audio_bytes = audio_raw
+        q.audio_mime = audio_mime
+
+    # =========================
+    # 4) (Legado) Salva também no FileField usando ContentFile
+    #    (assim não depende do stream original)
+    # =========================
+    if image_raw and image_name:
+        q.image.save(image_name, ContentFile(image_raw), save=False)
+
+    if audio_raw and audio_name:
+        q.audio.save(audio_name, ContentFile(audio_raw), save=False)
 
     q.save()
 
-    # opções
     for opt in options:
         opt = str(opt).strip()
         if opt:
