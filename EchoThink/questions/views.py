@@ -12,8 +12,6 @@ import pandas as pd
 from django.core.files.base import ContentFile
 from django.utils.text import get_valid_filename
 
-@api_view(["POST"])
-@parser_classes([MultiPartParser, FormParser])
 
 def safe_filename(name, fallback):
     """
@@ -31,7 +29,8 @@ def safe_filename(name, fallback):
 
     return name or fallback
 
-
+@api_view(["POST"])
+@parser_classes([MultiPartParser, FormParser])
 def criar_pergunta(request):
     title = (request.data.get("title") or "").strip()
     question = request.data.get("question")
