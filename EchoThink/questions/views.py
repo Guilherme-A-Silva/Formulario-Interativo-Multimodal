@@ -8,8 +8,6 @@ from .models import Question, Option, UserResponse
 from .serializers import QuestionSerializer, UserResponseSerializer, MultipleUserResponsesSerializer
 from django.http import HttpResponse
 import pandas as pd
-from io import BytesIO
-
 
 @api_view(["POST"])
 @parser_classes([MultiPartParser, FormParser])
@@ -83,7 +81,7 @@ def gerar_relatorio_respostas_pivotado(request, formato):
         "resposta_texto",
         "resposta_opcao",
         "tempo_resposta",
-        "data_resposta",
+        "data_resposta"
     )
 
     if not respostas.exists():
@@ -91,106 +89,65 @@ def gerar_relatorio_respostas_pivotado(request, formato):
 
     df = pd.DataFrame(list(respostas))
 
-    # -----------------------------
-    # Normalizações para evitar 500
-    # -----------------------------
-
-    # data_resposta -> naive (Excel não gosta de timezone-aware)
+    # Converter datetime com timezone para naive, para evitar erro no Excel
     if "data_resposta" in df.columns:
-        df["data_resposta"] = pd.to_datetime(df["data_resposta"], errors="coerce")
-        # Se vier timezone-aware, remove timezone; se vier naive, mantém
-        try:
-            df["data_resposta"] = df["data_resposta"].dt.tz_localize(None)
-        except TypeError:
-            pass
+        df["data_resposta"] = pd.to_datetime(df["data_resposta"]).dt.tz_localize(None)
 
-    # resposta_final: usa opção se existir, senão texto (e garante string)
-    df["resposta_opcao"] = df.get("resposta_opcao")
-    df["resposta_texto"] = df.get("resposta_texto")
-
+    # resposta final
     df["resposta_final"] = df["resposta_opcao"].combine_first(df["resposta_texto"])
 
-    # tempo_resposta -> numérico (pra formatar depois)
-    if "tempo_resposta" in df.columns:
-        df["tempo_resposta"] = pd.to_numeric(df["tempo_resposta"], errors="coerce")
-
-    # Coluna "titulo_final" para pivot (evita nulo/vazio e evita duplicação)
-    # 1) usa title se tiver
-    # 2) se não tiver, usa nome do arquivo de áudio (sem path)
-    # 3) se não tiver, usa "Q{id}"
-    def _titulo_final(row):
-        title = (row.get("question__title") or "").strip()
-        if title:
-            return title
-
-        audio = (row.get("question__audio") or "").strip()
-        if audio:
-            # pega só o nome do arquivo
-            return audio.split("/")[-1]
-
+    # ---------
+    # NOME EXIBIDO DA PERGUNTA (sem mudar o banco)
+    # title pode ficar em branco, mas no relatório sempre terá um label único.
+    # ---------
+    def build_label(row):
+        title = row.get("question__title")
         qid = row.get("question__id")
-        return f"Q{qid}" if qid is not None else "Pergunta"
 
-    df["titulo_final"] = df.apply(_titulo_final, axis=1)
+        # normaliza title vazio
+        if title is not None:
+            title = str(title).strip()
+        if title:
+            return title  # mantém título como está
 
-    # Se ainda assim existir duplicidade de titulo_final (muito comum),
-    # adiciona o id da pergunta no final para garantir colunas únicas.
-    # Ex: "AS20.wav (101)"
-    df["titulo_final"] = df["titulo_final"] + " (" + df["question__id"].astype(str) + ")"
+        audio = row.get("question__audio")
+        if audio:
+            audio_name = str(audio).split("/")[-1]  # só nome do arquivo
+            return f"{audio_name} ({qid})"
 
-    # -----------------------------
-    # Pivots (usa pivot_table para não quebrar com duplicados)
-    # -----------------------------
+        return f"Pergunta {qid}"
 
-    df_pivot_resp = df.pivot_table(
-        index="user__username",
-        columns="titulo_final",
-        values="resposta_final",
-        aggfunc="first",   # pega a primeira resposta se houver duplicidade
-    )
+    df["question_label"] = df.apply(build_label, axis=1)
+
+    # Pivot respostas
+    df_pivot_resp = df.pivot(index="user__username", columns="question_label", values="resposta_final")
     df_pivot_resp.columns = [f"Resposta - {col}" for col in df_pivot_resp.columns]
 
-    df_pivot_tempo = df.pivot_table(
-        index="user__username",
-        columns="titulo_final",
-        values="tempo_resposta",
-        aggfunc="first",
-    )
-
-    # Formata tempos para 8 casas decimais (sem estourar com NaN)
-    df_pivot_tempo = df_pivot_tempo.applymap(
-        lambda x: f"{float(x):.8f}" if pd.notnull(x) else ""
-    )
+    # Pivot tempo
+    df_pivot_tempo = df.pivot(index="user__username", columns="question_label", values="tempo_resposta")
+    df_pivot_tempo = df_pivot_tempo.applymap(lambda x: f"{x:.8f}" if pd.notnull(x) else "")
     df_pivot_tempo.columns = [f"Tempo (s) - {col}" for col in df_pivot_tempo.columns]
 
+    # Junta
     df_final = pd.concat([df_pivot_resp, df_pivot_tempo], axis=1).reset_index()
     df_final.rename(columns={"user__username": "usuario"}, inplace=True)
 
-    # -----------------------------
-    # Export
-    # -----------------------------
-
     if formato == "csv":
-        response = HttpResponse(content_type="text/csv; charset=utf-8")
+        response = HttpResponse(content_type="text/csv")
         response["Content-Disposition"] = 'attachment; filename="relatorio_respostas_pivotado.csv"'
         df_final.to_csv(path_or_buf=response, index=False)
         return response
 
     elif formato == "excel":
-        output = BytesIO()
-        with pd.ExcelWriter(output, engine="openpyxl") as writer:
-            df_final.to_excel(writer, index=False, sheet_name="Relatorio")
-
-        output.seek(0)
         response = HttpResponse(
-            output.getvalue(),
-            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
         response["Content-Disposition"] = 'attachment; filename="relatorio_respostas_pivotado.xlsx"'
+        df_final.to_excel(response, index=False, engine="openpyxl")
         return response
 
-    else:
-        return HttpResponse("Formato inválido. Use 'csv' ou 'excel'.", status=400)
+    return HttpResponse("Formato inválido. Use 'csv' ou 'excel'.", status=400)
+
 
 @api_view(["POST"])
 def registrar_resposta(request):
