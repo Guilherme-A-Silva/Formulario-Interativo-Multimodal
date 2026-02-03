@@ -1,3 +1,4 @@
+import os
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
@@ -9,9 +10,28 @@ from .serializers import QuestionSerializer, UserResponseSerializer, MultipleUse
 from django.http import HttpResponse
 import pandas as pd
 from django.core.files.base import ContentFile
+from django.utils.text import get_valid_filename
 
 @api_view(["POST"])
 @parser_classes([MultiPartParser, FormParser])
+
+def safe_filename(name, fallback):
+    """
+    Garante um nome de arquivo limpo e seguro.
+    """
+    name = (name or "").strip()
+    if not name:
+        return fallback
+
+    # remove qualquer caminho
+    name = os.path.basename(name)
+
+    # remove caracteres inválidos
+    name = get_valid_filename(name)
+
+    return name or fallback
+
+
 def criar_pergunta(request):
     title = (request.data.get("title") or "").strip()
     question = request.data.get("question")
@@ -28,38 +48,45 @@ def criar_pergunta(request):
         )
 
     # =========================
-    # 1) Leia os bytes ANTES
+    # 1) Lê os bytes ANTES
     # =========================
     image_raw = None
     image_mime = None
-    image_name = None
 
     if image_file:
         try:
             image_raw = image_file.read()
             image_mime = getattr(image_file, "content_type", None) or "image/*"
-            image_name = getattr(image_file, "name", "image")
         except Exception:
             image_raw = None
             image_mime = None
-            image_name = None
 
     audio_raw = None
     audio_mime = None
-    audio_name = None
 
     if audio_file:
         try:
             audio_raw = audio_file.read()
             audio_mime = getattr(audio_file, "content_type", None) or "audio/*"
-            audio_name = getattr(audio_file, "name", "audio")
         except Exception:
             audio_raw = None
             audio_mime = None
-            audio_name = None
 
     # =========================
-    # 2) Cria sem anexar arquivo direto (pra não consumir stream)
+    # 2) Resolve nomes (prioriza frontend)
+    # =========================
+    image_name = safe_filename(
+        request.data.get("image_name") or getattr(image_file, "name", None),
+        "image"
+    )
+
+    audio_name = safe_filename(
+        request.data.get("audio_name") or getattr(audio_file, "name", None),
+        "audio.wav"
+    )
+
+    # =========================
+    # 3) Cria sem anexar arquivos
     # =========================
     q = Question.objects.create(
         title=title,
@@ -69,7 +96,7 @@ def criar_pergunta(request):
     )
 
     # =========================
-    # 3) Salva bytes + mime no banco
+    # 4) Salva bytes + mime no banco
     # =========================
     if image_raw:
         q.image_bytes = image_raw
@@ -80,17 +107,19 @@ def criar_pergunta(request):
         q.audio_mime = audio_mime
 
     # =========================
-    # 4) (Legado) Salva também no FileField usando ContentFile
-    #    (assim não depende do stream original)
+    # 5) (Legado) Salva no FileField usando ContentFile
     # =========================
-    if image_raw and image_name:
+    if image_raw:
         q.image.save(image_name, ContentFile(image_raw), save=False)
 
-    if audio_raw and audio_name:
+    if audio_raw:
         q.audio.save(audio_name, ContentFile(audio_raw), save=False)
 
     q.save()
 
+    # =========================
+    # 6) Opções
+    # =========================
     for opt in options:
         opt = str(opt).strip()
         if opt:
