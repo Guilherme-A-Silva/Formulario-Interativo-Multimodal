@@ -8,6 +8,7 @@ from .models import Question, Option, UserResponse
 from .serializers import QuestionSerializer, UserResponseSerializer, MultipleUserResponsesSerializer
 from django.http import HttpResponse
 import pandas as pd
+from django.core.files.base import ContentFile
 
 @api_view(["POST"])
 @parser_classes([MultiPartParser, FormParser])
