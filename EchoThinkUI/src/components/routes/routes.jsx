@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 
 import LoginScreen from "../desktop/auth/loginDefault";
+import LoadingScreen from "../desktop/screens/loading";
 import QuestionsScreen from "../desktop/screens/questions";
 import AdminScreen from "../desktop/screens/admin";
 import ResetPasswordScreen from "../desktop/screens/reset";
@@ -53,7 +54,7 @@ const PrivateRoute = ({ element: Element }) => {
   }, []);
 
   if (isValid === null) {
-    return <div>Carregando...</div>; // loading temporário
+    return <LoadingScreen />;
   }
 
   return isValid ? <Element /> : <Unauthorized />;
@@ -64,6 +65,7 @@ function RoutesComponent() {
       <Routes>
         <Route path="/" element={<LoginScreen />} />
         <Route path="/login" element={<LoginScreen />} />
+        <Route path="/loading" element={<LoadingScreen />} />
         <Route
           path="/questions"
           element={<PrivateRoute element={QuestionsScreen} />}

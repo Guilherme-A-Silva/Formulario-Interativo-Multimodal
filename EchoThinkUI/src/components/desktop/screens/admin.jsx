@@ -81,7 +81,7 @@ const LoginDefault = () => {
             "X-CSRFToken": csrfToken,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -105,7 +105,7 @@ const LoginDefault = () => {
         {
           method: "GET",
           credentials: "include",
-        }
+        },
       );
       if (!response.ok) throw new Error("Erro ao carregar perguntas");
 
@@ -135,7 +135,7 @@ const LoginDefault = () => {
           headers: {
             "X-CSRFToken": csrfToken,
           },
-        }
+        },
       );
 
       if (!response.ok) throw new Error("Erro ao excluir pergunta");
@@ -160,7 +160,7 @@ const LoginDefault = () => {
             "X-CSRFToken": csrfToken,
           },
           body: JSON.stringify({ is_relevant: true }),
-        }
+        },
       );
 
       if (!response.ok)
@@ -182,7 +182,7 @@ const LoginDefault = () => {
         {
           method: "GET",
           credentials: "include",
-        }
+        },
       );
 
       if (!response.ok) {
@@ -475,14 +475,64 @@ const LoginDefault = () => {
                         onSubmit={async (e) => {
                           e.preventDefault();
 
+                          // logs do state (pra ver se virou Blob/arquivo sem nome)
+                          console.log("STATE audio:", audio);
+                          console.log("STATE audio.name:", audio?.name);
+                          console.log("STATE audio.type:", audio?.type);
+                          console.log("STATE audio.size:", audio?.size);
+
+                          console.log("STATE image:", image);
+                          console.log("STATE image.name:", image?.name);
+                          console.log("STATE image.type:", image?.type);
+                          console.log("STATE image.size:", image?.size);
+
                           const formData = new FormData();
                           formData.append("title", title);
                           formData.append("question", question);
-                          if (image) formData.append("image", image);
-                          if (audio) formData.append("audio", audio);
+
+                          if (audio) {
+                            // garante nome (se vier vazio/undefined, cria um fallback)
+                            const audioName =
+                              audio?.name && String(audio.name).trim()
+                                ? audio.name
+                                : `audio_${Date.now()}.wav`;
+
+                            formData.append("audio", audio, audioName);
+                            formData.append("audio_name", audioName);
+                          }
+
+                          if (image) {
+                            const imageName =
+                              image?.name && String(image.name).trim()
+                                ? image.name
+                                : `image_${Date.now()}.png`;
+
+                            formData.append("image", image, imageName);
+                            formData.append("image_name", imageName);
+                          }
+
                           options.forEach((opt) =>
-                            formData.append("options", opt)
+                            formData.append("options", opt),
                           );
+
+                          // ✅ log real do conteúdo do FormData
+                          console.log("=== FormData entries ===");
+                          for (const [key, value] of formData.entries()) {
+                            if (value instanceof File) {
+                              console.log(
+                                key,
+                                "FILE:",
+                                value.name,
+                                "| type:",
+                                value.type,
+                                "| size:",
+                                value.size,
+                              );
+                            } else {
+                              console.log(key, value);
+                            }
+                          }
+                          console.log("========================");
 
                           try {
                             const response = await fetch(
@@ -492,24 +542,23 @@ const LoginDefault = () => {
                                 body: formData,
                                 credentials: "include",
                                 headers: { "X-CSRFToken": csrfToken },
-                              }
+                              },
                             );
 
                             if (!response.ok)
                               throw new Error("Erro ao criar pergunta");
+
                             const data = await response.json();
                             alert(
-                              "Pergunta criada com sucesso! ID: " + data.id
+                              "Pergunta criada com sucesso! ID: " + data.id,
                             );
 
-                            // limpa formulário
                             setTitle("");
                             setQuestion("");
                             setImage(null);
                             setAudio(null);
                             setOptions(["", "", "", "", ""]);
 
-                            // atualiza lista já com o novo item no topo
                             fetchPerguntas();
                           } catch (error) {
                             console.error(error);
@@ -659,14 +708,8 @@ const LoginDefault = () => {
                                   )}
                                 </td>
 
-                                {/* Nome do arquivo (imagem primeiro, senão audio) */}
-                                <td className=" border-gray-400 p-2 border text-center text-white">
-                                  {p.image_url &&
-                                  extrairNomeArquivo(p.image_url)
-                                    ? extrairNomeArquivo(p.image_url)
-                                    : p.audio_url
-                                    ? extrairNomeArquivo(p.audio_url)
-                                    : "—"}
+                                <td className="border-gray-400 p-2 border text-center text-white">
+                                  {p.image_filename || p.audio_filename || "—"}
                                 </td>
 
                                 <td className=" border-gray-400 p-2 border text-center">
