@@ -12,33 +12,65 @@ import pandas as pd
 @api_view(["POST"])
 @parser_classes([MultiPartParser, FormParser])
 def criar_pergunta(request):
-    """
-    Exemplo de requisição via POST (multipart/form-data):
-
-    title: Pergunta 1
-    question: Qual dessas alternativas você prefere?
-    image: [arquivo.jpg] (opcional)
-    audio: [arquivo.mp3] (opcional)
-    options: Alternativa 1
-    options: Alternativa 2
-    options: Alternativa 3
-    """
-    title = request.data.get("title")
+    title = (request.data.get("title") or "").strip()
     question = request.data.get("question")
-    image = request.FILES.get("image")
-    audio = request.FILES.get("audio")
+
+    image_file = request.FILES.get("image")  # <InMemoryUploadedFile / TemporaryUploadedFile>
+    audio_file = request.FILES.get("audio")
+
     options = request.data.getlist("options")
 
-    if not title or not options:
-        return Response({"error": "Título e opções são obrigatórios."}, status=status.HTTP_400_BAD_REQUEST)
+    # Se você quer permitir title vazio, remova essa validação de title:
+    if not options or len([o for o in options if str(o).strip()]) == 0:
+        return Response(
+            {"error": "Opções são obrigatórias."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
-    q = Question.objects.create(title=title, question=question, image=image, audio=audio)
+    # cria primeiro (sem files), depois seta os bytes/mime
+    q = Question.objects.create(
+        title=title,               # pode ser ""
+        question=question,
+        # (legado) se quiser manter os arquivos no filesystem também:
+        image=image_file if image_file else None,
+        audio=audio_file if audio_file else None,
+    )
 
+    # -----------------------------
+    # salva IMAGEM no banco
+    # -----------------------------
+    if image_file:
+        try:
+            q.image_bytes = image_file.read()
+            q.image_mime = getattr(image_file, "content_type", None) or "image/*"
+        except Exception:
+            # se der qualquer problema de leitura, não quebra a criação
+            q.image_bytes = None
+            q.image_mime = None
+
+    # -----------------------------
+    # salva ÁUDIO no banco
+    # -----------------------------
+    if audio_file:
+        try:
+            q.audio_bytes = audio_file.read()
+            q.audio_mime = getattr(audio_file, "content_type", None) or "audio/*"
+        except Exception:
+            q.audio_bytes = None
+            q.audio_mime = None
+
+    q.save()
+
+    # opções
     for opt in options:
-        Option.objects.create(question=q, text=opt)
+        opt = str(opt).strip()
+        if opt:
+            Option.objects.create(question=q, text=opt)
 
-    return Response({"message": "Pergunta criada com sucesso!", "id": q.id}, status=status.HTTP_201_CREATED)
-
+    return Response(
+        {"message": "Pergunta criada com sucesso!", "id": q.id},
+        status=status.HTTP_201_CREATED
+    )
 
 @api_view(["GET"])
 def listar_perguntas(request):
